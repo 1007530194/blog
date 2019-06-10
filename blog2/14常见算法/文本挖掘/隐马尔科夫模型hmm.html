@@ -1,0 +1,5791 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,minimum-scale=1">
+
+  <title>隐马尔科夫模型HMM</title>
+  <meta name="description" content="  title: algorithms-隐马尔科夫模型HMM  author: niult  date: 2019-01-16  category: 文本挖掘  tags: python,numpy,文本挖掘">
+
+  <link rel="canonical" href="https://jupyter.org/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8BHMM.html">
+  <link rel="alternate" type="application/rss+xml" title="MyBook" href="https://jupyter.org/jupyter-book/feed.xml">
+
+  <meta property="og:url"         content="https://jupyter.org/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8BHMM.html" />
+<meta property="og:type"        content="article" />
+<meta property="og:title"       content="隐马尔科夫模型HMM" />
+<meta property="og:description" content="  title: algorithms-隐马尔科夫模型HMM  author: niult  date: 2019-01-16  category: 文本挖掘  tags: python,numpy,文本挖掘" />
+<meta property="og:image"       content="" />
+
+
+  <script type="application/ld+json">
+  {
+  "@context": "http://schema.org",
+  "@type": "NewsArticle",
+  "mainEntityOfPage":
+    "https://jupyter.org/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8BHMM.html",
+  "headline":
+    "隐马尔科夫模型HMM",
+  "datePublished":
+    "2019-06-10T17:02:04+08:00",
+  "dateModified":
+    "2019-06-10T17:02:04+08:00",
+  "description":
+    "  title: algorithms-隐马尔科夫模型HMM  author: niult  date: 2019-01-16  category: 文本挖掘  tags: python,numpy,文本挖掘",
+  "author": {
+    "@type": "Person",
+    "name": "niult"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Data 100 at UC Berkeley",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://jupyter.org/jupyter-book",
+      "width": 60,
+      "height": 60
+    }
+  },
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://jupyter.org/jupyter-book",
+    "height": 60,
+    "width": 60
+  }
+}
+
+  </script>
+  <link rel="stylesheet" href="/jupyter-book/assets/css/styles.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css ">
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+
+  <!-- <link rel="manifest" href="/manifest.json"> -->
+  <!-- <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#efae0a"> -->
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+  <meta name="theme-color" content="#233947">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="/jupyter-book/images/logo/favicon.ico">
+
+  <!-- MathJax Config -->
+  <!-- Allow inline math using $ and automatically break long math lines -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true,
+        processEnvironments: true
+    },
+    CommonHTML: {
+        linebreaks: {
+            automatic: true,
+        },
+    },
+});
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML' async></script>
+
+  <!-- DOM updating function -->
+  <script>
+const runWhenDOMLoaded = cb => {
+  if (document.readyState != 'loading') {
+    cb()
+  } else if (document.addEventListener) {
+    document.addEventListener('DOMContentLoaded', cb)
+  } else {
+    document.attachEvent('onreadystatechange', function() {
+      if (document.readyState == 'complete') cb()
+    })
+  }
+}
+
+// Helper function to init things quickly
+initFunction = function(myfunc) {
+  runWhenDOMLoaded(myfunc);
+  document.addEventListener('turbolinks:load', myfunc);
+};
+</script>
+
+  <!-- Define some javascript variables that will be useful in other javascript -->
+  <script>
+    const site_basename = '/jupyter-book';
+  </script>
+
+  <!-- Add AnchorJS to let headers be linked -->
+  <script src="/jupyter-book/assets/js/anchor.min.js"  type="text/javascript"></script>
+  <script>
+
+initFunction(function () {
+    anchors.add("main h1, main h2, main h3, main h4")
+});
+
+</script>
+
+  <!-- Include Turbolinks to make page loads fast -->
+  <!-- https://github.com/turbolinks/turbolinks -->
+  <script src="/jupyter-book/assets/js/turbolinks.js" async></script>
+  <meta name="turbolinks-cache-control" content="no-cache">
+
+  <!-- Load nbinteract for widgets -->
+  
+
+  <!-- Load Thebelab for interactive widgets -->
+  <!-- Include Thebelab for interactive code if it's enabled -->
+
+
+<!-- Display Thebelab button in each code cell -->
+<script>
+/**
+ * Set up thebelab button for code blocks
+ */
+
+const thebelabCellButton = id =>
+  `<a id="thebelab-cell-button-${id}" class="btn thebebtn o-tooltip--left" data-tooltip="Interactive Mode">
+    <img src="/jupyter-book/assets/images/edit-button.svg" alt="Start interactive mode">
+  </a>`
+
+
+const addThebelabButtonToCodeCells =  () => {
+
+  const codeCells = document.querySelectorAll('div.input_area > div.highlighter-rouge:not(.output) pre')
+  codeCells.forEach((codeCell, index) => {
+    const id = codeCellId(index)
+    codeCell.setAttribute('id', id)
+    if (document.getElementById("thebelab-cell-button-" + id) == null) {
+      codeCell.insertAdjacentHTML('afterend', thebelabCellButton(id));
+    }
+  })
+}
+
+initFunction(addThebelabButtonToCodeCells);
+</script>
+
+
+
+<script type="text/x-thebe-config">
+    {
+      requestKernel: true,
+      binderOptions: {
+        repo: 'jupyter/jupyter-book',
+        ref: 'gh-pages',
+      },
+      codeMirrorConfig: {
+        theme: "abcdef"
+      },
+      kernelOptions: {
+        name: 'python3',
+      }
+    }
+</script>
+<script src="https://unpkg.com/thebelab@0.4.0/lib/index.js"></script>
+<script>
+    /**
+     * Add attributes to Thebelab blocks
+     */
+
+    const initThebelab = () => {
+        const addThebelabToCodeCells = () => {
+            console.log("Adding thebelab to code cells...");
+            // If Thebelab hasn't loaded, wait a bit and try again. This
+            // happens because we load ClipboardJS asynchronously.
+            if (window.thebelab === undefined) {
+                setTimeout(addThebelabToCodeCells, 250)
+            return
+            }
+
+            // If we already detect a Thebelab cell, don't re-run
+            if (document.querySelectorAll('div.thebelab-cell').length > 0) {
+                return;
+            }
+
+            // Find all code cells, replace with Thebelab interactive code cells
+            const codeCells = document.querySelectorAll('.input_area pre')
+            codeCells.forEach((codeCell, index) => {
+                const id = codeCellId(index)
+                codeCell.setAttribute('data-executable', 'true')
+
+                // Figure out the language it uses and add this too
+                var parentDiv = codeCell.parentElement.parentElement;
+                var arrayLength = parentDiv.classList.length;
+                for (var ii = 0; ii < arrayLength; ii++) {
+                    var parts = parentDiv.classList[ii].split('language-');
+                    if (parts.length === 2) {
+                        // If found, assign dataLanguage and break the loop
+                        var dataLanguage = parts[1];
+                        break;
+                    }
+                }
+                codeCell.setAttribute('data-language', dataLanguage)
+
+                // If the code cell is hidden, show it
+                var inputCheckbox = document.querySelector(`input#hidebtn${codeCell.id}`);
+                if (inputCheckbox !== null) {
+                    setCodeCellVisibility(inputCheckbox, 'visible');
+                }
+            });
+
+            // Remove the event listener from the page so keyboard press doesn't
+            // Change page
+            document.removeEventListener('keydown', initPageNav)
+            keyboardListener = false;
+
+            // Init thebelab
+            thebelab.bootstrap();
+
+            // Remove copy buttons since they won't work anymore
+            const copyAndThebeButtons = document.querySelectorAll('.copybtn, .thebebtn')
+            copyAndThebeButtons.forEach((button, index) => {
+                button.remove();
+            });
+
+            // Remove outputs since they'll be stale
+            const outputs = document.querySelectorAll('.output *, .output')
+            outputs.forEach((output, index) => {
+                output.remove();
+            });
+        }
+
+        // Add event listener for the function to modify code cells
+        const thebelabButtons = document.querySelectorAll('[id^=thebelab], [id$=thebelab]')
+        thebelabButtons.forEach((thebelabButton,index) => {
+            if (thebelabButton === null) {
+                setTimeout(initThebelab, 250)
+                return
+            };
+            thebelabButton.addEventListener('click', addThebelabToCodeCells);
+        });
+    }
+
+    // Initialize Thebelab
+    initFunction(initThebelab);
+</script>
+
+
+
+  <!-- Load the auto-generating TOC -->
+  <script src="/jupyter-book/assets/js/tocbot.min.js"  type="text/javascript"></script>
+  <script>
+var initToc = function () {
+  tocbot.init({
+    tocSelector: 'nav.onthispage',
+    contentSelector: '.c-textbook__content',
+    headingSelector: 'h2, h3',
+    orderedList: false,
+    collapseDepth: 6,
+    listClass: 'toc__menu',
+    activeListItemClass: "",  // Not using
+    activeLinkClass: "", // Not using
+  });
+  tocbot.refresh();
+}
+initFunction(initToc);
+</script>
+
+  <!-- Google analytics -->
+  <script src="/jupyter-book/assets/js/ga.js" async></script>
+
+  <!-- Clipboard copy button -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" async></script>
+
+  <!-- Load JS that depends on site variables -->
+  <script>
+/**
+ * Set up copy/paste for code blocks
+ */
+const codeCellId = index => `codecell${index}`
+
+const clipboardButton = id =>
+  `<a id="copy-button-${id}" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#${id}">
+    <img src="/jupyter-book/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a>`
+
+// Clears selected text since ClipboardJS will select the text when copying
+const clearSelection = () => {
+  if (window.getSelection) {
+    window.getSelection().removeAllRanges()
+  } else if (document.selection) {
+    document.selection.empty()
+  }
+}
+
+// Changes tooltip text for two seconds, then changes it back
+const temporarilyChangeTooltip = (el, newText) => {
+  const oldText = el.getAttribute('data-tooltip')
+  el.setAttribute('data-tooltip', newText)
+  setTimeout(() => el.setAttribute('data-tooltip', oldText), 2000)
+}
+
+const addCopyButtonToCodeCells = () => {
+  // If ClipboardJS hasn't loaded, wait a bit and try again. This
+  // happens because we load ClipboardJS asynchronously.
+  if (window.ClipboardJS === undefined) {
+    setTimeout(addCopyButtonToCodeCells, 250)
+    return
+  }
+
+  const codeCells = document.querySelectorAll('div.c-textbook__content > div.highlighter-rouge > div.highlight > pre, div.input_area pre')
+  codeCells.forEach((codeCell, index) => {
+    const id = codeCellId(index)
+    codeCell.setAttribute('id', id)
+    if (document.getElementById("copy-button" + id) == null) {
+      codeCell.insertAdjacentHTML('afterend', clipboardButton(id));
+    }
+  })
+
+  const clipboard = new ClipboardJS('.copybtn')
+  clipboard.on('success', event => {
+    clearSelection()
+    temporarilyChangeTooltip(event.trigger, 'Copied!')
+  })
+
+  clipboard.on('error', event => {
+    temporarilyChangeTooltip(event.trigger, 'Failed to copy')
+  })
+
+  // Get rid of clipboard before the next page visit to avoid memory leak
+  document.addEventListener('turbolinks:before-visit', () =>
+    clipboard.destroy()
+  )
+}
+
+initFunction(addCopyButtonToCodeCells);
+</script>
+
+
+  <!-- Hide cell code -->
+  
+<script>
+/**
+Add buttons to hide code cells
+*/
+
+
+var setCodeCellVisibility = function(inputField, kind) {
+    // Update the image and class for hidden
+    var id = inputField.getAttribute('data-id');
+    var codeCell = document.querySelector(`#${id} div.highlight`);
+
+    if (kind === "visible") {
+        codeCell.classList.remove('hidden');
+        inputField.checked = true;
+    } else {
+        codeCell.classList.add('hidden');
+        inputField.checked = false;
+    }
+}
+
+var toggleCodeCellVisibility = function (event) {
+    // The label is clicked, and now we decide what to do based on the input field's clicked status
+    if (event.target.tagName === "LABEL") {
+        var inputField = event.target.previousElementSibling;
+    } else {
+        // It is the span inside the target
+        var inputField = event.target.parentElement.previousElementSibling;
+    }
+
+    if (inputField.checked === true) {
+        setCodeCellVisibility(inputField, "visible");
+    } else {
+        setCodeCellVisibility(inputField, "hidden");
+    }
+}
+
+
+// Button constructor
+const hideCodeButton = id => `<input class="hidebtn" type="checkbox" id="hidebtn${id}" data-id="${id}"><label title="Toggle cell" for="hidebtn${id}" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label>`
+
+var addHideButton = function () {
+  // If a hide button is already added, don't add another
+  if (document.querySelector('div.hidecode input') !== null) {
+      return;
+  }
+
+  // Find the input cells and add a hide button
+  document.querySelectorAll('div.input_area').forEach(function (item, index) {
+    if (!item.classList.contains("hidecode")) {
+        // Skip the cell if it doesn't have a hidecode class
+        return;
+    }
+
+    const id = codeCellId(index)
+    item.setAttribute('id', id);
+    // Insert the button just inside the end of the next div
+    item.querySelector('div').insertAdjacentHTML('beforeend', hideCodeButton(id))
+
+    // Set up the visibility toggle
+    hideLink = document.querySelector(`#${id} div.highlight + input + label`);
+    hideLink.addEventListener('click', toggleCodeCellVisibility)
+  });
+}
+
+
+// Initialize the hide buttos
+var initHiddenCells = function () {
+    // Add hide buttons to the cells
+    addHideButton();
+
+    // Toggle the code cells that should be hidden
+    document.querySelectorAll('div.hidecode input').forEach(function (item) {
+        setCodeCellVisibility(item, 'hidden');
+        item.checked = true;
+    })
+}
+
+initFunction(initHiddenCells);
+
+</script>
+
+
+  <!-- Load custom website scripts -->
+  <script src="/jupyter-book/assets/js/scripts.js" async></script>
+
+  <!-- Load custom user CSS and JS  -->
+  <script src="/jupyter-book/assets/custom/custom.js" async></script>
+  <link rel="stylesheet" href="/jupyter-book/assets/custom/custom.css">
+
+  <!-- Update interact links w/ REST param, is defined in includes so we can use templates -->
+  
+<script>
+/**
+  * To auto-embed hub URLs in interact links if given in a RESTful fashion
+ */
+
+function getJsonFromUrl(url) {
+  var query = url.split('?');
+  if (query.length < 2) {
+    // No queries so just return false
+    return false;
+  }
+  query = query[1];
+  // Collect REST params into a dictionary
+  var result = {};
+  query.split("&").forEach(function(part) {
+    var item = part.split("=");
+    result[item[0]] = decodeURIComponent(item[1]);
+  });
+  return result;
+}
+    
+function dict2param(dict) {
+    params = Object.keys(dict).map(function(k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(dict[k])
+    });
+    return params.join('&')
+}
+
+// Parse a Binder URL, converting it to the string needed for JupyterHub
+function binder2Jupyterhub(url) {
+  newUrl = {};
+  parts = url.split('v2/gh/')[1];
+  // Grab the base repo information
+  repoinfo = parts.split('?')[0];
+  var [org, repo, ref] = repoinfo.split('/');
+  newUrl['repo'] = ['https://github.com', org, repo].join('/');
+  newUrl['branch'] = ref
+  // Grab extra parameters passed
+  params = getJsonFromUrl(url);
+  if (params['filepath'] !== undefined) {
+    newUrl['subPath'] = params['filepath']
+  }
+  return dict2param(newUrl);
+}
+
+// Filter out potentially unsafe characters to prevent xss
+function safeUrl(url)
+{
+   return String(encodeURIComponent(url))
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+}
+
+function addParamToInternalLinks(hub) {
+  var links = document.querySelectorAll("a").forEach(function(link) {
+    var href = link.href;
+    // If the link is an internal link...
+    if (href.search("https://jupyter.org") !== -1 || href.startsWith('/') || href.search("127.0.0.1:") !== -1) {
+      // Assume we're an internal link, add the hub param to it
+      var params = getJsonFromUrl(href);
+      if (params !== false) {
+        // We have REST params, so append a new one
+        params['jupyterhub'] = hub;
+      } else {
+        // Create the REST params
+        params = {'jupyterhub': hub};
+      }
+      // Update the link
+      var newHref = href.split('?')[0] + '?' + dict2param(params);
+      link.setAttribute('href', decodeURIComponent(newHref));
+    }
+  });
+  return false;
+}
+
+
+// Update interact links
+function updateInteractLink() {
+    // hack to make this work since it expects a ? in the URL
+    rest = getJsonFromUrl("?" + location.search.substr(1));
+    jupyterHubUrl = rest['jupyterhub'];
+    var hubType = null;
+    var hubUrl = null;
+    if (jupyterHubUrl !== undefined) {
+      hubType = 'jupyterhub';
+      hubUrl = jupyterHubUrl;
+    }
+
+    if (hubType !== null) {
+      // Sanitize the hubUrl
+      hubUrl = safeUrl(hubUrl);
+
+      // Add HTTP text if omitted
+      if (hubUrl.indexOf('http') < 0) {hubUrl = 'http://' + hubUrl;}
+      var interactButtons = document.querySelectorAll("button.interact-button")
+      var lastButton = interactButtons[interactButtons.length-1];
+      var link = lastButton.parentElement;
+
+      // If we've already run this, skip the link updating
+      if (link.nextElementSibling !== null) {
+        return;
+      }
+
+      // Update the link and add context div
+      var href = link.getAttribute('href');
+      if (lastButton.id === 'interact-button-binder') {
+        // If binder links exist, we need to re-work them for jupyterhub
+        if (hubUrl.indexOf('http%3A%2F%2Flocalhost') > -1) {
+          // If localhost, assume we're working from a local Jupyter server and remove `/hub`
+          first = [hubUrl, 'git-sync'].join('/')
+        } else {
+          first = [hubUrl, 'hub', 'user-redirect', 'git-sync'].join('/')
+        }
+        href = first + '?' + binder2Jupyterhub(href);
+      } else {
+        // If interact button isn't binderhub, assume it's jupyterhub
+        // If JupyterHub links, we only need to replace the hub url
+        href = href.replace("", hubUrl);
+        if (hubUrl.indexOf('http%3A%2F%2Flocalhost') > -1) {
+          // Assume we're working from a local Jupyter server and remove `/hub`
+          href = href.replace("/hub/user-redirect", "");
+        }
+      }
+      link.setAttribute('href', decodeURIComponent(href));
+
+      // Add text after interact link saying where we're launching
+      hubUrlNoHttp = decodeURIComponent(hubUrl).replace('http://', '').replace('https://', '');
+      link.insertAdjacentHTML('afterend', '<div class="interact-context">on ' + hubUrlNoHttp + '</div>');
+
+      // Update internal links so we retain the hub url
+      addParamToInternalLinks(hubUrl);
+    }
+}
+
+runWhenDOMLoaded(updateInteractLink)
+document.addEventListener('turbolinks:load', updateInteractLink)
+</script>
+
+
+  <!-- Lunr search code - will only be executed on the /search page -->
+  <script src="/jupyter-book/assets/js/lunr/lunr.min.js" type="text/javascript"></script>
+  <script>var initQuery = function() {
+  // See if we have a search box
+  var searchInput = document.querySelector('input#lunr_search');
+  if (searchInput === null) {
+    return;
+  }
+
+  // Function to parse our lunr cache
+  var idx = lunr(function () {
+    this.field('title')
+    this.field('excerpt')
+    this.field('categories')
+    this.field('tags')
+    this.ref('id')
+
+    this.pipeline.remove(lunr.trimmer)
+
+    for (var item in store) {
+      this.add({
+        title: store[item].title,
+        excerpt: store[item].excerpt,
+        categories: store[item].categories,
+        tags: store[item].tags,
+        id: item
+      })
+    }
+  });
+
+  // Run search upon keyup
+  searchInput.addEventListener('keyup', function () {
+    var resultdiv = document.querySelector('#results');
+    var query = document.querySelector("input#lunr_search").value.toLowerCase();
+    var result =
+      idx.query(function (q) {
+        query.split(lunr.tokenizer.separator).forEach(function (term) {
+          q.term(term, { boost: 100 })
+          if(query.lastIndexOf(" ") != query.length-1){
+            q.term(term, {  usePipeline: false, wildcard: lunr.Query.wildcard.TRAILING, boost: 10 })
+          }
+          if (term != ""){
+            q.term(term, {  usePipeline: false, editDistance: 1, boost: 1 })
+          }
+        })
+      });
+
+      // Empty the results div
+      while (resultdiv.firstChild) {
+        resultdiv.removeChild(resultdiv.firstChild);
+      }
+
+    resultdiv.insertAdjacentHTML('afterbegin', '<p class="results__found">'+result.length+' Result(s) found</p>');
+    for (var item in result) {
+      var ref = result[item].ref;
+      if(store[ref].teaser){
+        var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<div class="archive__item-teaser">'+
+                '<img src="'+store[ref].teaser+'" alt="">'+
+              '</div>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      else{
+    	  var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      resultdiv.insertAdjacentHTML('beforeend', searchitem);
+    }
+  });
+};
+
+initFunction(initQuery);
+</script>
+</head>
+
+  <body>
+    <!-- .js-show-sidebar shows sidebar by default -->
+    <div id="js-textbook" class="c-textbook js-show-sidebar">
+      
+
+
+
+<nav id="js-sidebar" class="c-textbook__sidebar">
+  <a href="https://jupyter.org/jupyter-book/intro.html"><img src="/jupyter-book/images/logo/logo.png" class="textbook_logo" id="sidebar-logo" data-turbolinks-permanent/></a>
+  <h2 class="c-sidebar__title">MyBook</h2>
+  <ul class="c-sidebar__chapters">
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/00Example/index.html"
+        >
+          
+            1.
+          
+          00Example
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/1/index.html"
+                >
+                  
+                    1.1
+                  
+                  1
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/1/1/index.html"
+                    >
+                      
+                        1.1.1
+                        
+                      
+                      1
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/1/2/index.html"
+                    >
+                      
+                        1.1.2
+                        
+                      
+                      2
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/1/intro.html"
+                    >
+                      
+                        1.1.3
+                        
+                      
+                      intro
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/2/index.html"
+                >
+                  
+                    1.2
+                  
+                  2
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/2/why-data-science.html"
+                    >
+                      
+                        1.2.1
+                        
+                      
+                      why-data-science
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/3/index.html"
+                >
+                  
+                    1.3
+                  
+                  3
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/3/Plotting_the_Classics.html"
+                    >
+                      
+                        1.3.1
+                        
+                      
+                      Plotting_the_Classics
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/3/subsection/index.html"
+                    >
+                      
+                        1.3.2
+                        
+                      
+                      subsection
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/4/index.html"
+                >
+                  
+                    1.4
+                  
+                  4
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/4/endnote.html"
+                    >
+                      
+                        1.4.1
+                        
+                      
+                      endnote
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/4/establishing-causality.html"
+                    >
+                      
+                        1.4.2
+                        
+                      
+                      establishing-causality
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/4/observation-and-visualization-john-snow-and-the-broad-street-pump.html"
+                    >
+                      
+                        1.4.3
+                        
+                      
+                      observation-and-visualization-john-snow-and-the-broad-street-pump
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/4/randomization.html"
+                    >
+                      
+                        1.4.4
+                        
+                      
+                      randomization
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/4/snow-s-grand-experiment.html"
+                    >
+                      
+                        1.4.5
+                        
+                      
+                      snow-s-grand-experiment
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/Calls.html"
+                >
+                  
+                    1.5
+                  
+                  Calls
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/causality-and-experiments.html"
+                >
+                  
+                    1.6
+                  
+                  causality-and-experiments
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/Expressions.html"
+                >
+                  
+                    1.7
+                  
+                  Expressions
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/features/index.html"
+                >
+                  
+                    1.8
+                  
+                  features
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/features/citations.html"
+                    >
+                      
+                        1.8.1
+                        
+                      
+                      citations
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/features/features.html"
+                    >
+                      
+                        1.8.2
+                        
+                      
+                      features
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/features/hiding.html"
+                    >
+                      
+                        1.8.3
+                        
+                      
+                      hiding
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/features/interact.html"
+                    >
+                      
+                        1.8.4
+                        
+                      
+                      interact
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/features/interactive_cells.html"
+                    >
+                      
+                        1.8.5
+                        
+                      
+                      interactive_cells
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/features/limits.html"
+                    >
+                      
+                        1.8.6
+                        
+                      
+                      limits
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/features/markdown.html"
+                    >
+                      
+                        1.8.7
+                        
+                      
+                      markdown
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/features/notebooks.html"
+                    >
+                      
+                        1.8.8
+                        
+                      
+                      notebooks
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00Example/features/search.html"
+                    >
+                      
+                        1.8.9
+                        
+                      
+                      search
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/Growth.html"
+                >
+                  
+                    1.9
+                  
+                  Growth
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/Introduction_to_Tables.html"
+                >
+                  
+                    1.10
+                  
+                  Introduction_to_Tables
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/Names.html"
+                >
+                  
+                    1.11
+                  
+                  Names
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/Numbers.html"
+                >
+                  
+                    1.12
+                  
+                  Numbers
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/programming-in-python.html"
+                >
+                  
+                    1.13
+                  
+                  programming-in-python
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/Strings.html"
+                >
+                  
+                    1.14
+                  
+                  Strings
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/Types.html"
+                >
+                  
+                    1.15
+                  
+                  Types
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00Example/what-is-data-science.html"
+                >
+                  
+                    1.16
+                  
+                  what-is-data-science
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/00TensorFlow/index.html"
+        >
+          
+            2.
+          
+          00TensorFlow
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00TensorFlow/DNN%E5%AE%9E%E4%BE%8B%E4%BB%A3%E7%A0%81%E5%9D%97.html"
+                >
+                  
+                    2.1
+                  
+                  DNN实例代码块
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00TensorFlow/DSSM%E5%8F%8C%E5%A1%94%E6%A8%A1%E5%9E%8B.html"
+                >
+                  
+                    2.2
+                  
+                  DSSM双塔模型
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00TensorFlow/keras-RNN%E5%AE%9E%E4%BE%8B.html"
+                >
+                  
+                    2.3
+                  
+                  keras-RNN实例
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00TensorFlow/KerasExample/index.html"
+                >
+                  
+                    2.4
+                  
+                  KerasExample
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/KerasExample/addition_rnn.html"
+                    >
+                      
+                        2.4.1
+                        
+                      
+                      addition_rnn
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/KerasExample/antirectifier.html"
+                    >
+                      
+                        2.4.2
+                        
+                      
+                      antirectifier
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/KerasExample/babi_memnn.html"
+                    >
+                      
+                        2.4.3
+                        
+                      
+                      babi_memnn
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/KerasExample/babi_rnn.html"
+                    >
+                      
+                        2.4.4
+                        
+                      
+                      babi_rnn
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/KerasExample/image_ocr.html"
+                    >
+                      
+                        2.4.5
+                        
+                      
+                      image_ocr
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/KerasExample/imdb_bidirectional_lstm.html"
+                    >
+                      
+                        2.4.6
+                        
+                      
+                      imdb_bidirectional_lstm
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/KerasExample/imdb_cnn.html"
+                    >
+                      
+                        2.4.7
+                        
+                      
+                      imdb_cnn
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/KerasExample/imdb_cnn_lstm.html"
+                    >
+                      
+                        2.4.8
+                        
+                      
+                      imdb_cnn_lstm
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/KerasExample/imdb_lstm.html"
+                    >
+                      
+                        2.4.9
+                        
+                      
+                      imdb_lstm
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/KerasExample/lstm-seq2seq.html"
+                    >
+                      
+                        2.4.10
+                        
+                      
+                      lstm-seq2seq
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/KerasExample/mnist_acgan.html"
+                    >
+                      
+                        2.4.11
+                        
+                      
+                      mnist_acgan
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/KerasExample/mnist_mlp.html"
+                    >
+                      
+                        2.4.12
+                        
+                      
+                      mnist_mlp
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/KerasExample/README.html"
+                    >
+                      
+                        2.4.13
+                        
+                      
+                      README
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/KerasExample/reuters_mlp.html"
+                    >
+                      
+                        2.4.14
+                        
+                      
+                      reuters_mlp
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/KerasExample/tensorboard_embeddings_mnist.html"
+                    >
+                      
+                        2.4.15
+                        
+                      
+                      tensorboard_embeddings_mnist
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00TensorFlow/keras%E6%97%A5%E5%B8%B8%E5%B0%8F%E5%B7%A5%E5%85%B7.html"
+                >
+                  
+                    2.5
+                  
+                  keras日常小工具
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00TensorFlow/kera%E5%AD%A6%E4%B9%A0-%E6%9B%B4%E6%96%B0.html"
+                >
+                  
+                    2.6
+                  
+                  kera学习-更新
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00TensorFlow/kera%E5%AE%9E%E4%BE%8B%E4%BA%8C.html"
+                >
+                  
+                    2.7
+                  
+                  kera实例二
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00TensorFlow/recommendation/index.html"
+                >
+                  
+                    2.8
+                  
+                  recommendation
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/recommendation/DeepFM%E6%A8%A1%E5%9E%8B%E7%90%86%E8%AE%BA%E5%92%8C%E5%AE%9E%E8%B7%B5.html"
+                    >
+                      
+                        2.8.1
+                        
+                      
+                      DeepFM模型理论和实践
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/recommendation/DIN%E6%A8%A1%E5%9E%8B%E7%90%86%E8%AE%BA%E5%92%8C%E5%AE%9E%E8%B7%B5.html"
+                    >
+                      
+                        2.8.2
+                        
+                      
+                      DIN模型理论和实践
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/recommendation/LR.html"
+                    >
+                      
+                        2.8.3
+                        
+                      
+                      LR
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/recommendation/MLR%E6%A8%A1%E5%9E%8B%E7%90%86%E8%AE%BA%E5%92%8C%E5%AE%9E%E8%B7%B5.html"
+                    >
+                      
+                        2.8.4
+                        
+                      
+                      MLR模型理论和实践
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/00TensorFlow/tensorflowExample/index.html"
+                >
+                  
+                    2.9
+                  
+                  tensorflowExample
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0001-ml_introduction.html"
+                    >
+                      
+                        2.9.1
+                        
+                      
+                      0001-ml_introduction
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0002-mnist_dataset_intro.html"
+                    >
+                      
+                        2.9.2
+                        
+                      
+                      0002-mnist_dataset_intro
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0101-helloworld.html"
+                    >
+                      
+                        2.9.3
+                        
+                      
+                      0101-helloworld
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0102-basic_eager_api.html"
+                    >
+                      
+                        2.9.4
+                        
+                      
+                      0102-basic_eager_api
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0103-basic_operations.html"
+                    >
+                      
+                        2.9.5
+                        
+                      
+                      0103-basic_operations
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0201-linear_regression_eager_api.html"
+                    >
+                      
+                        2.9.6
+                        
+                      
+                      0201-linear_regression_eager_api
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0202-linear_regression.html"
+                    >
+                      
+                        2.9.7
+                        
+                      
+                      0202-linear_regression
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0203-logistic_regression_eager_api.html"
+                    >
+                      
+                        2.9.8
+                        
+                      
+                      0203-logistic_regression_eager_api
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0204-nearest_neighbor.html"
+                    >
+                      
+                        2.9.9
+                        
+                      
+                      0204-nearest_neighbor
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0205-kmeans.html"
+                    >
+                      
+                        2.9.10
+                        
+                      
+                      0205-kmeans
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0206-LR.html"
+                    >
+                      
+                        2.9.11
+                        
+                      
+                      0206-LR
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0207-GBDT.html"
+                    >
+                      
+                        2.9.12
+                        
+                      
+                      0207-GBDT
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0208-word2vec.html"
+                    >
+                      
+                        2.9.13
+                        
+                      
+                      0208-word2vec
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0209-random_forest.html"
+                    >
+                      
+                        2.9.14
+                        
+                      
+                      0209-random_forest
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0301-autoencoder.html"
+                    >
+                      
+                        2.9.15
+                        
+                      
+                      0301-autoencoder
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0302-bidirectional_rnn.html"
+                    >
+                      
+                        2.9.16
+                        
+                      
+                      0302-bidirectional_rnn
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0303-convolutional_network_raw.html"
+                    >
+                      
+                        2.9.17
+                        
+                      
+                      0303-convolutional_network_raw
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0304-convolutional_network.html"
+                    >
+                      
+                        2.9.18
+                        
+                      
+                      0304-convolutional_network
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0305-dcgan.html"
+                    >
+                      
+                        2.9.19
+                        
+                      
+                      0305-dcgan
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0306-dynamic_rnn.html"
+                    >
+                      
+                        2.9.20
+                        
+                      
+                      0306-dynamic_rnn
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0307-gan.html"
+                    >
+                      
+                        2.9.21
+                        
+                      
+                      0307-gan
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0308-neural_network_eager_api.html"
+                    >
+                      
+                        2.9.22
+                        
+                      
+                      0308-neural_network_eager_api
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0309-neural_network_raw.html"
+                    >
+                      
+                        2.9.23
+                        
+                      
+                      0309-neural_network_raw
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0310-neural_network.html"
+                    >
+                      
+                        2.9.24
+                        
+                      
+                      0310-neural_network
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0311-recurrent_network.html"
+                    >
+                      
+                        2.9.25
+                        
+                      
+                      0311-recurrent_network
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0312-variational_autoencoder.html"
+                    >
+                      
+                        2.9.26
+                        
+                      
+                      0312-variational_autoencoder
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0401-save_restore_model.html"
+                    >
+                      
+                        2.9.27
+                        
+                      
+                      0401-save_restore_model
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0402-tensorboard_advanced.html"
+                    >
+                      
+                        2.9.28
+                        
+                      
+                      0402-tensorboard_advanced
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0403-tensorboard_basic.html"
+                    >
+                      
+                        2.9.29
+                        
+                      
+                      0403-tensorboard_basic
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0501-build_an_image_dataset.html"
+                    >
+                      
+                        2.9.30
+                        
+                      
+                      0501-build_an_image_dataset
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0502-tensorflow_dataset_api.html"
+                    >
+                      
+                        2.9.31
+                        
+                      
+                      0502-tensorflow_dataset_api
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0601-multigpu_basics.html"
+                    >
+                      
+                        2.9.32
+                        
+                      
+                      0601-multigpu_basics
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/00TensorFlow/tensorflowExample/0602-multigpu_cnn.html"
+                    >
+                      
+                        2.9.33
+                        
+                      
+                      0602-multigpu_cnn
+                    </a>
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/13%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/index.html"
+        >
+          
+            3.
+          
+          13推荐系统
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/13%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/test.html"
+                >
+                  
+                    3.1
+                  
+                  test
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/index.html"
+        >
+          
+            4.
+          
+          14常见算法
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/adaBoost/index.html"
+                >
+                  
+                    4.1
+                  
+                  adaBoost
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/adaBoost/AdaBoost.html"
+                    >
+                      
+                        4.1.1
+                        
+                      
+                      AdaBoost
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/adaBoost/AdaBoost%E5%85%83%E7%AE%97%E6%B3%95%E6%8F%90%E9%AB%98%E5%88%86%E7%B1%BB%E6%80%A7%E8%83%BD.html"
+                    >
+                      
+                        4.1.2
+                        
+                      
+                      AdaBoost元算法提高分类性能
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/apriori/index.html"
+                >
+                  
+                    4.2
+                  
+                  apriori
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/apriori/apriori.html"
+                    >
+                      
+                        4.2.1
+                        
+                      
+                      apriori
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/bayes/index.html"
+                >
+                  
+                    4.3
+                  
+                  bayes
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/bayes/naiveBayes.html"
+                    >
+                      
+                        4.3.1
+                        
+                      
+                      naiveBayes
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/boost/index.html"
+                >
+                  
+                    4.4
+                  
+                  boost
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/boost/Boost%E7%AE%80%E4%BB%8B.html"
+                    >
+                      
+                        4.4.1
+                        
+                      
+                      Boost简介
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/ES%E6%9F%A5%E8%AF%A2.html"
+                >
+                  
+                    4.5
+                  
+                  ES查询
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/fp-growth/index.html"
+                >
+                  
+                    4.6
+                  
+                  fp-growth
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/fp-growth/fp-growth.html"
+                    >
+                      
+                        4.6.1
+                        
+                      
+                      fp-growth
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/k-Nearest%20Neighbor/index.html"
+                >
+                  
+                    4.7
+                  
+                  k-Nearest Neighbor
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/k-Nearest%20Neighbor/knn.html"
+                    >
+                      
+                        4.7.1
+                        
+                      
+                      knn
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/k-Nearest%20Neighbor/knn_%E5%8E%9F%E7%89%88.html"
+                    >
+                      
+                        4.7.2
+                        
+                      
+                      knn_原版
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/kmeans/index.html"
+                >
+                  
+                    4.8
+                  
+                  kmeans
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/kmeans/kmeans.html"
+                    >
+                      
+                        4.8.1
+                        
+                      
+                      kmeans
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/line-regression/index.html"
+                >
+                  
+                    4.9
+                  
+                  line-regression
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/line-regression/line_regression.html"
+                    >
+                      
+                        4.9.1
+                        
+                      
+                      line_regression
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/line-regression/LR.html"
+                    >
+                      
+                        4.9.2
+                        
+                      
+                      LR
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/logistic/index.html"
+                >
+                  
+                    4.10
+                  
+                  logistic
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/logistic/logistic-code.html"
+                    >
+                      
+                        4.10.1
+                        
+                      
+                      logistic-code
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/logistic/logistic-%E7%90%86%E8%AE%BA.html"
+                    >
+                      
+                        4.10.2
+                        
+                      
+                      logistic-理论
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/logistic/temo.html"
+                    >
+                      
+                        4.10.3
+                        
+                      
+                      temo
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/pca/index.html"
+                >
+                  
+                    4.11
+                  
+                  pca
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/pca/pca.html"
+                    >
+                      
+                        4.11.1
+                        
+                      
+                      pca
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/pca%E4%B8%8Esvd%E7%9A%84%E6%AF%94%E8%BE%83/index.html"
+                >
+                  
+                    4.12
+                  
+                  pca与svd的比较
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/pca%E4%B8%8Esvd%E7%9A%84%E6%AF%94%E8%BE%83/pca.html"
+                    >
+                      
+                        4.12.1
+                        
+                      
+                      pca
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/README.html"
+                >
+                  
+                    4.13
+                  
+                  README
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/regressionTree/index.html"
+                >
+                  
+                    4.14
+                  
+                  regressionTree
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/regressionTree/CART.html"
+                    >
+                      
+                        4.14.1
+                        
+                      
+                      CART
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/svd/index.html"
+                >
+                  
+                    4.15
+                  
+                  svd
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/svd/collaborative_filter.html"
+                    >
+                      
+                        4.15.1
+                        
+                      
+                      collaborative_filter
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/svd/svd.html"
+                    >
+                      
+                        4.15.2
+                        
+                      
+                      svd
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/svm/index.html"
+                >
+                  
+                    4.16
+                  
+                  svm
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/svm/smo.html"
+                    >
+                      
+                        4.16.1
+                        
+                      
+                      smo
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/Untitled.html"
+                >
+                  
+                    4.17
+                  
+                  Untitled
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/xgboost/index.html"
+                >
+                  
+                    4.18
+                  
+                  xgboost
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/xgboost/xgboost.html"
+                    >
+                      
+                        4.18.1
+                        
+                      
+                      xgboost
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/xgboost/%E5%8D%81%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8Bxgboost.html"
+                    >
+                      
+                        4.18.2
+                        
+                      
+                      十分钟上手xgboost
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E5%86%B3%E7%AD%96%E6%A0%91(DecisionTree)/index.html"
+                >
+                  
+                    4.19
+                  
+                  决策树(DecisionTree)
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E5%86%B3%E7%AD%96%E6%A0%91(DecisionTree)/decisionTree.html"
+                    >
+                      
+                        4.19.1
+                        
+                      
+                      decisionTree
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E5%86%B3%E7%AD%96%E6%A0%91(DecisionTree)/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AE%80%E4%BB%8B.html"
+                    >
+                      
+                        4.19.2
+                        
+                      
+                      决策树简介
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E5%BB%BA%E6%A8%A1%E8%BF%87%E7%A8%8B.html"
+                >
+                  
+                    4.20
+                  
+                  建模过程
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/index.html"
+                >
+                  
+                    4.21
+                  
+                  推荐算法
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93.html"
+                    >
+                      
+                        4.21.1
+                        
+                      
+                      协同过滤推荐算法总结
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3.html"
+                    >
+                      
+                        4.21.2
+                        
+                      
+                      矩阵分解
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/index.html"
+                >
+                  
+                    4.22
+                  
+                  文本挖掘
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/LDA%E6%A8%A1%E5%9E%8B.html"
+                    >
+                      
+                        4.22.1
+                        
+                      
+                      LDA模型
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/Word2Vec.html"
+                    >
+                      
+                        4.22.2
+                        
+                      
+                      Word2Vec
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/%E6%96%87%E6%9C%AC%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B%E4%B9%8B%E6%BD%9C%E5%9C%A8%E8%AF%AD%E4%B9%89%E7%B4%A2%E5%BC%95(LSI).html"
+                    >
+                      
+                        4.22.3
+                        
+                      
+                      文本主题模型之潜在语义索引(LSI)
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98%E9%A2%84%E5%A4%84%E7%90%86%E4%B9%8BTF-IDF.html"
+                    >
+                      
+                        4.22.4
+                        
+                      
+                      文本挖掘预处理之TF-IDF
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8BHMM.html"
+                    >
+                      
+                        4.22.5
+                        
+                      
+                      隐马尔科夫模型HMM
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/index.html"
+                >
+                  
+                    4.23
+                  
+                  深度学习
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/LSTM.html"
+                    >
+                      
+                        4.23.1
+                        
+                      
+                      LSTM
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/RNN.html"
+                    >
+                      
+                        4.23.2
+                        
+                      
+                      RNN
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/Seq2Seq.html"
+                    >
+                      
+                        4.23.3
+                        
+                      
+                      Seq2Seq
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/TensorFlow-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86.html"
+                    >
+                      
+                        4.23.4
+                        
+                      
+                      TensorFlow-字符串处理
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/tensorflow%E5%AD%A6%E4%B9%A0.html"
+                    >
+                      
+                        4.23.5
+                        
+                      
+                      tensorflow学习
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/TensorFlow%E5%B8%B8%E8%A7%81%E4%BB%A3%E7%A0%81%E5%9D%97.html"
+                    >
+                      
+                        4.23.6
+                        
+                      
+                      TensorFlow常见代码块
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/tf%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95.html"
+                    >
+                      
+                        4.23.7
+                        
+                      
+                      tf优化方法
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/tf%E5%87%BD%E6%95%B0.html"
+                    >
+                      
+                        4.23.8
+                        
+                      
+                      tf函数
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html"
+                    >
+                      
+                        4.23.9
+                        
+                      
+                      人工神经网络
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/index.html"
+                >
+                  
+                    4.24
+                  
+                  神经网络
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/AutoEncoder-%E8%87%AA%E7%BC%96%E7%A0%81%E5%AE%9E%E8%B7%B5.html"
+                    >
+                      
+                        4.24.1
+                        
+                      
+                      AutoEncoder-自编码实践
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/AutoEncoder-%E8%87%AA%E7%BC%96%E7%A0%81%E7%90%86%E8%AE%BA.html"
+                    >
+                      
+                        4.24.2
+                        
+                      
+                      AutoEncoder-自编码理论
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/CNN-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA.html"
+                    >
+                      
+                        4.24.3
+                        
+                      
+                      CNN-卷积神经网络理论
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/DNN-%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html"
+                    >
+                      
+                        4.24.4
+                        
+                      
+                      DNN-深度神经网络
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/LSTM-%E9%95%BF%E7%9F%AD%E6%9C%9F%E8%AE%B0%E5%BF%86%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA.html"
+                    >
+                      
+                        4.24.5
+                        
+                      
+                      LSTM-长短期记忆网络理论
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/PCA-%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90.html"
+                    >
+                      
+                        4.24.6
+                        
+                      
+                      PCA-主成分分析
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/RBM-%E5%8F%97%E9%99%90%E7%8E%BB%E5%B0%94%E5%85%B9%E6%9B%BC%E6%9C%BA%E5%AE%9E%E8%B7%B5.html"
+                    >
+                      
+                        4.24.7
+                        
+                      
+                      RBM-受限玻尔兹曼机实践
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/RBM-%E5%8F%97%E9%99%90%E7%8E%BB%E5%B0%94%E5%85%B9%E6%9B%BC%E6%9C%BA%E7%90%86%E8%AE%BA.html"
+                    >
+                      
+                        4.24.8
+                        
+                      
+                      RBM-受限玻尔兹曼机理论
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/RNN-%E9%80%92%E5%BD%92%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA.html"
+                    >
+                      
+                        4.24.9
+                        
+                      
+                      RNN-递归神经网络理论
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%90%91%E9%87%8F%E9%99%8D%E7%BB%B4.html"
+                    >
+                      
+                        4.24.10
+                        
+                      
+                      向量降维
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%B8%B8%E8%A7%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E6%B1%87%E6%80%BB.html"
+                    >
+                      
+                        4.24.11
+                        
+                      
+                      常见损失函数汇总
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%B8%B8%E8%A7%81%E6%BF%80%E5%8A%B1%E5%87%BD%E6%95%B0%E6%B1%87%E6%80%BB.html"
+                    >
+                      
+                        4.24.12
+                        
+                      
+                      常见激励函数汇总
+                    </a>
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/15tools/index.html"
+        >
+          
+            5.
+          
+          15tools
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/15tools/latex/index.html"
+                >
+                  
+                    5.1
+                  
+                  latex
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/latex/LaTeX%E5%85%AC%E5%BC%8F%E5%AE%9E%E4%BE%8B.html"
+                    >
+                      
+                        5.1.1
+                        
+                      
+                      LaTeX公式实例
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/latex/latex%E5%85%AC%E5%BC%8F%E7%BC%96%E5%8F%B7.html"
+                    >
+                      
+                        5.1.2
+                        
+                      
+                      latex公式编号
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/latex/%E5%8D%81%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8BLaTeX.html"
+                    >
+                      
+                        5.1.3
+                        
+                      
+                      十分钟上手LaTeX
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/15tools/numpy/index.html"
+                >
+                  
+                    5.2
+                  
+                  numpy
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/numpy/numpy%E6%95%99%E7%A8%8B00.html"
+                    >
+                      
+                        5.2.1
+                        
+                      
+                      numpy教程00
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/numpy/numpy%E6%95%99%E7%A8%8B01.html"
+                    >
+                      
+                        5.2.2
+                        
+                      
+                      numpy教程01
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/numpy/numpy%E6%95%99%E7%A8%8B02.html"
+                    >
+                      
+                        5.2.3
+                        
+                      
+                      numpy教程02
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/numpy/numpy%E6%95%99%E7%A8%8B03.html"
+                    >
+                      
+                        5.2.4
+                        
+                      
+                      numpy教程03
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/15tools/pandas/index.html"
+                >
+                  
+                    5.3
+                  
+                  pandas
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/pandas/pandas.html"
+                    >
+                      
+                        5.3.1
+                        
+                      
+                      pandas
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/pandas/pandas%E5%87%BD%E6%95%B0%E6%B7%B1%E5%85%A5.html"
+                    >
+                      
+                        5.3.2
+                        
+                      
+                      pandas函数深入
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/pandas/pandas%E6%95%99%E7%A8%8B01.html"
+                    >
+                      
+                        5.3.3
+                        
+                      
+                      pandas教程01
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/pandas/pandas%E6%95%99%E7%A8%8B02.html"
+                    >
+                      
+                        5.3.4
+                        
+                      
+                      pandas教程02
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/pandas/pandas%E6%95%99%E7%A8%8B03.html"
+                    >
+                      
+                        5.3.5
+                        
+                      
+                      pandas教程03
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/pandas/%E5%8D%81%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8BPandas.html"
+                    >
+                      
+                        5.3.6
+                        
+                      
+                      十分钟上手Pandas
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/pandas/%E5%8D%81%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8BPandas%E5%87%BD%E6%95%B0.html"
+                    >
+                      
+                        5.3.7
+                        
+                      
+                      十分钟上手Pandas函数
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/15tools/%E7%94%BB%E5%9B%BE/index.html"
+                >
+                  
+                    5.4
+                  
+                  画图
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bfolium%E5%9C%B0%E5%9B%BE.html"
+                    >
+                      
+                        5.4.1
+                        
+                      
+                      python画图之folium地图
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bpycharts-3D%E5%9B%BE.html"
+                    >
+                      
+                        5.4.2
+                        
+                      
+                      python画图之pycharts-3D图
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bpycharts-kline.html"
+                    >
+                      
+                        5.4.3
+                        
+                      
+                      python画图之pycharts-kline
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bpycharts-%E5%85%B6%E4%BB%96.html"
+                    >
+                      
+                        5.4.4
+                        
+                      
+                      python画图之pycharts-其他
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bpycharts-%E5%85%B6%E4%BB%96%E5%9D%90%E6%A0%87%E7%B3%BB.html"
+                    >
+                      
+                        5.4.5
+                        
+                      
+                      python画图之pycharts-其他坐标系
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bpycharts-%E5%9C%B0%E5%9B%BE.html"
+                    >
+                      
+                        5.4.6
+                        
+                      
+                      python画图之pycharts-地图
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bpycharts-%E7%9B%B4%E8%A7%92%E5%9D%90%E6%A0%87%E7%B3%BB.html"
+                    >
+                      
+                        5.4.7
+                        
+                      
+                      python画图之pycharts-直角坐标系
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bpycharts-%E7%AE%80%E4%BB%8B.html"
+                    >
+                      
+                        5.4.8
+                        
+                      
+                      python画图之pycharts-简介
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/15tools/%E7%94%BB%E5%9B%BE/Untitled.html"
+                    >
+                      
+                        5.4.9
+                        
+                      
+                      Untitled
+                    </a>
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/colabHub/index.html"
+        >
+          
+            6.
+          
+          colabHub
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/colabHub/README.html"
+                >
+                  
+                    6.1
+                  
+                  README
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/colabHub/%E5%88%9D%E5%A7%8B%E5%8C%96.html"
+                >
+                  
+                    6.2
+                  
+                  初始化
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/DownLoadPicture.html"
+        >
+          
+            7.
+          
+          DownLoadPicture
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/Example.html"
+        >
+          
+            8.
+          
+          Example
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/guide/index.html"
+        >
+          
+            9.
+          
+          guide
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/guide/01_overview.html"
+                >
+                  
+                    9.1
+                  
+                  01_overview
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/guide/02_create.html"
+                >
+                  
+                    9.2
+                  
+                  02_create
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/guide/03_build.html"
+                >
+                  
+                    9.3
+                  
+                  03_build
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/guide/04_faq.html"
+                >
+                  
+                    9.4
+                  
+                  04_faq
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/guide/05_advanced.html"
+                >
+                  
+                    9.5
+                  
+                  05_advanced
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/intro.html"
+        >
+          
+            10.
+          
+          intro
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/jupyter-book-start.html"
+        >
+          
+            11.
+          
+          jupyter-book-start
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/LICENSE.html"
+        >
+          
+            12.
+          
+          LICENSE
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/math/index.html"
+        >
+          
+            13.
+          
+          math
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/math/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90.html"
+                >
+                  
+                    13.1
+                  
+                  主成分分析
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/math/%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95.html"
+                >
+                  
+                    13.2
+                  
+                  最小二乘法
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/math/%E7%9F%A9%E9%98%B5%E6%B1%82%E5%AF%BC.html"
+                >
+                  
+                    13.3
+                  
+                  矩阵求导
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/notebooks/index.html"
+        >
+          
+            14.
+          
+          notebooks
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/notebooks/JupyterNotebookTips.html"
+                >
+                  
+                    14.1
+                  
+                  JupyterNotebookTips
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/notebooks/LinearRegression.html"
+                >
+                  
+                    14.2
+                  
+                  LinearRegression
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/notechats/index.html"
+        >
+          
+            15.
+          
+          notechats
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/notechats/notedata%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE.html"
+                >
+                  
+                    15.1
+                  
+                  notedata测试数据
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/package/index.html"
+        >
+          
+            16.
+          
+          package
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/package/folium.html"
+                >
+                  
+                    16.1
+                  
+                  folium
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/package/graphviz%E4%B9%8B%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8.html"
+                >
+                  
+                    16.2
+                  
+                  graphviz之安装使用
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/package/pygithub.html"
+                >
+                  
+                    16.3
+                  
+                  pygithub
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/package/word2vec.html"
+                >
+                  
+                    16.4
+                  
+                  word2vec
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/package/%E5%90%91%E9%87%8F%E5%BC%95%E6%93%8Efaiss.html"
+                >
+                  
+                    16.5
+                  
+                  向量引擎faiss
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/package/%E8%AF%8D%E5%90%91%E9%87%8F%E8%AE%AD%E7%BB%83.html"
+                >
+                  
+                    16.6
+                  
+                  词向量训练
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/paper/index.html"
+        >
+          
+            17.
+          
+          paper
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/paper/atrank/index.html"
+                >
+                  
+                    17.1
+                  
+                  atrank
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/paper/atrank/Atrank.html"
+                    >
+                      
+                        17.1.1
+                        
+                      
+                      Atrank
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/jupyter-book/paper/atrank/Attention.html"
+                    >
+                      
+                        17.1.2
+                        
+                      
+                      Attention
+                    </a>
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/temp/index.html"
+        >
+          
+            18.
+          
+          temp
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/temp/merge.html"
+                >
+                  
+                    18.1
+                  
+                  merge
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/TempDir/index.html"
+        >
+          
+            19.
+          
+          TempDir
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/TempDir/Test1.html"
+                >
+                  
+                    19.1
+                  
+                  Test1
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/TempDir/%E4%B8%AA%E7%A8%8E%E8%AE%A1%E7%AE%97%E5%99%A8.html"
+                >
+                  
+                    19.2
+                  
+                  个税计算器
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/jupyter-book/TempDir/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5.html"
+                >
+                  
+                    19.3
+                  
+                  强化学习实践
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/Todo.html"
+        >
+          
+            20.
+          
+          Todo
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/jupyter-book/Untitled.html"
+        >
+          
+            21.
+          
+          Untitled
+        </a>
+
+        
+      </li>
+
+      
+    
+  </ul>
+  <p class="sidebar_footer">Powered by <a href="https://github.com/jupyter/jupyter-book">Jupyter Book</a></p>
+</nav>
+
+      
+      <!-- Empty sidebar placeholder that we'll auto-fill with javascript -->
+      <aside class="sidebar__right">
+          <header><h4 class="nav__title"><i class="fa fa-list"></i>   On this page</h4></header>
+          <nav class="onthispage">
+          </nav>
+      </aside>
+      
+      <main class="c-textbook__page" tabindex="-1">
+          <div class="o-wrapper">
+            <div class="c-sidebar-toggle">
+  <!-- We show the sidebar by default so we use .is-active -->
+  <button
+    id="js-sidebar-toggle"
+    class="hamburger hamburger--arrowalt is-active"
+  >
+    <span class="hamburger-box">
+      <span class="hamburger-inner"></span>
+    </span>
+    <span class="c-sidebar-toggle__label">Toggle Sidebar</span>
+  </button>
+</div>
+
+            
+<div class="buttons">
+<a href="/content/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8BHMM.ipynb" download>
+<button id="interact-button-download" class="interact-button">Download</button>
+</a>
+
+<button id="interact-button-thebelab" class="interact-button">Thebelab</button>
+
+
+
+
+
+
+
+
+
+<a href="https://mybinder.org/v2/gh/jupyter/jupyter-book/gh-pages?filepath=..%2Fcontent%2F14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95%2F%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98%2F%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8BHMM.ipynb"><button class="interact-button" id="interact-button-binder"><img class="interact-button-logo" src="/jupyter-book/assets/images/logo_binder.svg" alt="Interact" />Interact</button></a>
+
+
+</div>
+
+
+            <div class="c-textbook__content">
+              <ul>
+  <li>title: algorithms-隐马尔科夫模型HMM</li>
+  <li>author: niult</li>
+  <li>date: 2019-01-16</li>
+  <li>category: 文本挖掘</li>
+  <li>tags: python,numpy,文本挖掘</li>
+</ul>
+
+<h1 id="hmm模型基础">HMM模型基础</h1>
+
+<p>隐马尔科夫模型（Hidden Markov Model，以下简称HMM）是比较经典的机器学习模型了，它在语言识别，自然语言处理，模式识别等领域得到广泛的应用。当然，随着目前深度学习的崛起，尤其是<a href="http://www.cnblogs.com/pinard/p/6509630.html">RNN</a>，<a href="http://www.cnblogs.com/pinard/p/6519110.html">LSTM</a>等神经网络序列模型的火热，HMM的地位有所下降。但是作为一个经典的模型，学习HMM的模型和对应算法，对我们解决问题建模的能力提高以及算法思路的拓展还是很好的。本文是HMM系列的第一篇，关注于HMM模型的基础。</p>
+
+<h2 id="什么样的问题需要hmm模型">什么样的问题需要HMM模型</h2>
+
+<p>首先我们来看看什么样的问题解决可以用HMM模型。使用HMM模型时我们的问题一般有这两个特征：１）我们的问题是基于序列的，比如时间序列，或者状态序列。２）我们的问题中有两类数据，一类序列数据是可以观测到的，即观测序列；而另一类数据是不能观察到的，即隐藏状态序列，简称状态序列。</p>
+
+<p>有了这两个特征，那么这个问题一般可以用HMM模型来尝试解决。这样的问题在实际生活中是很多的。比如：我现在在打字写博客，我在键盘上敲出来的一系列字符就是观测序列，而我实际想写的一段话就是隐藏序列，输入法的任务就是从敲入的一系列字符尽可能的猜测我要写的一段话，并把最可能的词语放在最前面让我选择，这就可以看做一个HMM模型了。再举一个，我在和你说话，我发出的一串连续的声音就是观测序列，而我实际要表达的一段话就是状态序列，你大脑的任务，就是从这一串连续的声音中判断出我最可能要表达的话的内容。</p>
+
+<p>从这些例子中，我们可以发现，HMM模型可以无处不在。但是上面的描述还不精确，下面我们用精确的数学符号来表述我们的HMM模型。</p>
+
+<h2 id="hmm模型的定义">HMM模型的定义</h2>
+
+<p>对于HMM模型，首先我们假设$Q$是所有可能的隐藏状态的集合，$V$是所有可能的观测状态的集合，即：<script type="math/tex">Q = \{q_1,q_2,...,q_N\}, \; V =\{v_1,v_2,...v_M\}</script></p>
+
+<p>其中，$N$是可能的隐藏状态数，$M$是所有的可能的观察状态数。</p>
+
+<p>对于一个长度为$T$的序列，$I$对应的状态序列, $O$是对应的观察序列，即：<script type="math/tex">I = \{i_1,i_2,...,i_T\}, \; O =\{o_1,o_2,...o_T\}</script></p>
+
+<p>其中，任意一个隐藏状态$i_t \in Q$,任意一个观察状态$o_t \in V$</p>
+
+<p>HMM模型做了两个很重要的假设如下：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>1） 齐次马尔科夫链假设。即任意时刻的隐藏状态只依赖于它前一个隐藏状态，这个我们在<a href="http://www.cnblogs.com/pinard/p/6632399.html">MCMC(二)马尔科夫链</a>中有详细讲述。当然这样假设有点极端，因为很多时候我们的某一个隐藏状态不仅仅只依赖于前一个隐藏状态，可能是前两个或者是前三个。但是这样假设的好处就是模型简单，便于求解。如果在时刻$t$的隐藏状态是$i_t= q_i$,在时刻$t+1$的隐藏状态是$i_{t+1} = q_j$, 则从时刻$t$到时刻$t+1$的HMM状态转移概率$a_{ij}$可以表示为：$$a_{ij} = P(i_{t+1} = q_j</td>
+      <td>i_t= q_i)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这样$a_{ij}$可以组成马尔科夫链的状态转移矩阵$A$:<script type="math/tex">A=\Big [a_{ij}\Big ]_{N \times N}</script></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>2） 观测独立性假设。即任意时刻的观察状态只仅仅依赖于当前时刻的隐藏状态，这也是一个为了简化模型的假设。如果在时刻$t$的隐藏状态是$i_t= q_j$, 而对应的观察状态为$o_t = v_k$, 则该时刻观察状态$v_k$在隐藏状态$q_j$下生成的概率为$b_j(k)$,满足：$$b_j(k) = P(o_t = v_k</td>
+      <td>i_t= q_j)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>这样$b_j(k) $可以组成观测状态生成的概率矩阵$B$:<script type="math/tex">B = \Big [b_j(k) \Big ]_{N \times M}</script></p>
+
+<p>除此之外，我们需要一组在时刻$t=1$的隐藏状态概率分布$\Pi$: <script type="math/tex">\Pi = \Big [ \pi(i)\Big ]_N \; 其中 \;\pi(i) = P(i_1 = q_i)</script></p>
+
+<p>一个HMM模型，可以由隐藏状态初始概率分布$\Pi$, 状态转移概率矩阵$A$和观测状态概率矩阵$B$决定。$\Pi,A$决定状态序列，$B$决定观测序列。因此，HMM模型可以由一个三元组$\lambda$表示如下：<script type="math/tex">\lambda = (A, B, \Pi)</script></p>
+
+<h2 id="一个hmm模型实例">一个HMM模型实例</h2>
+
+<p>下面我们用一个简单的实例来描述上面抽象出的HMM模型。这是一个盒子与球的模型，例子来源于李航的《统计学习方法》。</p>
+
+<p>假设我们有3个盒子，每个盒子里都有红色和白色两种球，这三个盒子里球的数量分别是：</p>
+
+<p>盒子123红球数547白球数563</p>
+
+<p>按照下面的方法从盒子里抽球，开始的时候，从第一个盒子抽球的概率是0.2，从第二个盒子抽球的概率是0.4，从第三个盒子抽球的概率是0.4。以这个概率抽一次球后，将球放回。然后从当前盒子转移到下一个盒子进行抽球。规则是：如果当前抽球的盒子是第一个盒子，则以0.5的概率仍然留在第一个盒子继续抽球，以0.2的概率去第二个盒子抽球，以0.3的概率去第三个盒子抽球。如果当前抽球的盒子是第二个盒子，则以0.5的概率仍然留在第二个盒子继续抽球，以0.3的概率去第一个盒子抽球，以0.2的概率去第三个盒子抽球。如果当前抽球的盒子是第三个盒子，则以0.5的概率仍然留在第三个盒子继续抽球，以0.2的概率去第一个盒子抽球，以0.3的概率去第二个盒子抽球。如此下去，直到重复三次，得到一个球的颜色的观测序列:<script type="math/tex">O=\{红，白，红\}</script></p>
+
+<p>注意在这个过程中，观察者只能看到球的颜色序列，却不能看到球是从哪个盒子里取出的。</p>
+
+<p>那么按照我们上一节HMM模型的定义，我们的观察集合是:<script type="math/tex">V=\{红，白\}，M=2</script></p>
+
+<p>我们的状态集合是：<script type="math/tex">Q =\{盒子1，盒子2，盒子3\}， N=3</script></p>
+
+<p>而观察序列和状态序列的长度为3.</p>
+
+<p>初始状态分布为：<script type="math/tex">\Pi = (0.2,0.4,0.4)^T</script></p>
+
+<p>状态转移概率分布矩阵为：</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+A = \left( \begin{array} {ccc} 0.5 & 0.2 & 0.3 \\ 0.3 & 0.5 & 0.2 \\ 0.2 & 0.3 &0.5 \end{array} \right) %]]></script>
+
+<p>观测状态概率矩阵为：</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+B = \left( \begin{array} {ccc} 0.5 & 0.5 \\ 0.4 & 0.6 \\ 0.7 & 0.3 \end{array} \right) %]]></script>
+
+<h2 id="hmm观测序列的生成">HMM观测序列的生成</h2>
+
+<p>从上一节的例子，我们也可以抽象出HMM观测序列生成的过程。</p>
+
+<p>输入的是HMM的模型$\lambda = (A, B, \Pi)$,观测序列的长度$T$</p>
+
+<p>输出是观测序列$O ={o_1,o_2,…o_T}$</p>
+
+<p>生成的过程如下：</p>
+
+<p>1）根据初始状态概率分布$\Pi$生成隐藏状态$i_1$</p>
+
+<p>2) for t from 1 to T</p>
+
+<p>a. 按照隐藏状态$i_t$的观测状态分布$b_{i_t}(k)$生成观察状态$o_t$</p>
+
+<p>b. 按照隐藏状态$i_t$的状态转移概率分布$a_{i_t\;\;i_{t+1}}$产生隐藏状态$i_{t+1}$</p>
+
+<p>所有的$o_t$一起形成观测序列$O ={o_1,o_2,…o_T}$</p>
+
+<h2 id="hmm模型的三个基本问题">HMM模型的三个基本问题</h2>
+
+<p>HMM模型一共有三个经典的问题需要解决：</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>1） 评估观察序列概率。即给定模型$\lambda = (A, B, \Pi)$和观测序列$O ={o_1,o_2,…o_T}$，计算在模型$\lambda$下观测序列$O$出现的概率$P(O</td>
+      <td>\lambda)$。这个问题的求解需要用到前向后向算法，我们在这个系列的第二篇会详细讲解。这个问题是HMM模型三个问题中最简单的。</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>2）模型参数学习问题。即给定观测序列$O ={o_1,o_2,…o_T}$，估计模型$\lambda = (A, B, \Pi)$的参数，使该模型下观测序列的条件概率$P(O</td>
+      <td>\lambda)$最大。这个问题的求解需要用到基于EM算法的鲍姆-韦尔奇算法， 我们在这个系列的第三篇会详细讲解。这个问题是HMM模型三个问题中最复杂的。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>3）预测问题，也称为解码问题。即给定模型$\lambda = (A, B, \Pi)$和观测序列$O ={o_1,o_2,…o_T}$，求给定观测序列条件下，最可能出现的对应的状态序列，这个问题的求解需要用到基于动态规划的维特比算法，我们在这个系列的第四篇会详细讲解。这个问题是HMM模型三个问题中复杂度居中的算法。</p>
+
+<h1 id="前向后向算法评估观察序列概率">前向后向算法评估观察序列概率</h1>
+<h2 id="求观测序列的概率">求观测序列的概率</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>首先我们回顾下HMM模型的问题一。这个问题是这样的。我们已知HMM模型的参数$\lambda = (A, B, \Pi)$。其中$A$是隐藏状态转移概率的矩阵，$B$是观测状态生成概率的矩阵， $\Pi$是隐藏状态的初始概率分布。同时我们也已经得到了观测序列$O ={o_1,o_2,…o_T}$,现在我们要求观测序列$O$在模型$\lambda$下出现的条件概率$P(O</td>
+      <td>\lambda)$。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>乍一看，这个问题很简单。因为我们知道所有的隐藏状态之间的转移概率和所有从隐藏状态到观测状态生成概率，那么我们是可以暴力求解的。</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>我们可以列举出所有可能出现的长度为$T$的隐藏序列$I = {i_1,i_2,…,i_T}$,分布求出这些隐藏序列与观测序列$O ={o_1,o_2,…o_T}$的联合概率分布$P(O,I</td>
+      <td>\lambda)$，这样我们就可以很容易的求出边缘分布$P(O</td>
+      <td>\lambda)$了。</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>具体暴力求解的方法是这样的：首先，任意一个隐藏序列$I = {i_1,i_2,…,i_T}$出现的概率是：$$P(I</td>
+      <td>\lambda) = \pi_{i_1} a_{i_1i_2} a_{i_2i_3}… a_{i_{T-1}\;\;i_T}$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>对于固定的状态序列$I = {i_1,i_2,…,i_T}$，我们要求的观察序列$O ={o_1,o_2,…o_T}$出现的概率是：$$P(O</td>
+      <td>I, \lambda) = b_{i_1}(o_1)b_{i_2}(o_2)…b_{i_T}(o_T)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>则$O$和$I$联合出现的概率是：$$P(O,I</td>
+      <td>\lambda) = P(I</td>
+      <td>\lambda)P(O</td>
+      <td>I, \lambda) = \pi_{i_1}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)…a_{i_{T-1}\;\;i_T}b_{i_T}(o_T)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>然后求边缘概率分布，即可得到观测序列$O$在模型$\lambda$下出现的条件概率$P(O</td>
+      <td>\lambda)$：$$P(O</td>
+      <td>\lambda) = \sum\limits_{I}P(O,I</td>
+      <td>\lambda) = \sum\limits_{i_1,i_2,…i_T}\pi_{i_1}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)…a_{i_{T-1}\;\;i_T}b_{i_T}(o_T)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>虽然上述方法有效，但是如果我们的隐藏状态数$N$非常多的那就麻烦了，此时我们预测状态有$N^T$种组合，算法的时间复杂度是$O(TN^T)$阶的。因此对于一些隐藏状态数极少的模型，我们可以用暴力求解法来得到观测序列出现的概率，但是如果隐藏状态多，则上述算法太耗时，我们需要寻找其他简洁的算法。</p>
+
+<p>前向后向算法就是来帮助我们在较低的时间复杂度情况下求解这个问题的。</p>
+
+<h2 id="用前向算法求hmm观测序列的概率">用前向算法求HMM观测序列的概率</h2>
+
+<p>前向后向算法是前向算法和后向算法的统称，这两个算法都可以用来求HMM观测序列的概率。我们先来看看前向算法是如何求解这个问题的。</p>
+
+<p>前向算法本质上属于动态规划的算法，也就是我们要通过找到局部状态递推的公式，这样一步步的从子问题的最优解拓展到整个问题的最优解。</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>在前向算法中，通过定义“前向概率”来定义动态规划的这个局部状态。什么是前向概率呢, 其实定义很简单：定义时刻$t$时隐藏状态为$q_i$, 观测状态的序列为$o_1,o_2,…o_t$的概率为前向概率。记为：$$\alpha_t(i) = P(o_1,o_2,…o_t, i_t =q_i</td>
+      <td>\lambda)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>既然是动态规划，我们就要递推了，现在我们假设我们已经找到了在时刻$t$时各个隐藏状态的前向概率，现在我们需要递推出时刻$t+1$时各个隐藏状态的前向概率。</p>
+
+<p>从下图可以看出，我们可以基于时刻$t$时各个隐藏状态的前向概率，再乘以对应的状态转移概率，即$\alpha_t(j)a_{ji}$就是在时刻$t$观测到$o_1,o_2,…o_t$，并且时刻$t$隐藏状态$q_j$, 时刻$t+1$隐藏状态$q_i$的概率。如果将想下面所有的线对应的概率求和，即$\sum\limits_{j=1}^N\alpha_t(j)a_{ji}$就是在时刻$t$观测到$o_1,o_2,…o_t$，并且时刻$t+1$隐藏状态$q_i$的概率。继续一步，由于观测状态$o_{t+1}$只依赖于$t+1$时刻隐藏状态$q_i$, 这样$[\sum\limits_{j=1}^N\alpha_t(j)a_{ji}]b_i(o_{t+1})$就是在在时刻$t+1$观测到$o_1,o_2,…o_t，o_{t+1}$，并且时刻$t+1$隐藏状态$q_i$的概率。而这个概率，恰恰就是时刻$t+1$对应的隐藏状态$i$的前向概率，这样我们得到了前向概率的递推关系式如下：<script type="math/tex">\alpha_{t+1}(i) = \Big[\sum\limits_{j=1}^N\alpha_t(j)a_{ji}\Big]b_i(o_{t+1})</script></p>
+
+<p><img src="https://images2015.cnblogs.com/blog/1042406/201706/1042406-20170607140245012-63214356.png" alt="" /></p>
+
+<p>我们的动态规划从时刻1开始，到时刻$T$结束，由于$\alpha_T(i)$表示在时刻$T$观测序列为$o_1,o_2,…o_T$，并且时刻$T$隐藏状态$q_i$的概率，我们只要将所有隐藏状态对应的概率相加，即$\sum\limits_{i=1}^N\alpha_T(i)$就得到了在时刻$T$观测序列为$o_1,o_2,…o_T$的概率。</p>
+
+<p>下面总结下前向算法。</p>
+
+<p>输入：HMM模型$\lambda = (A, B, \Pi)$，观测序列$O=(o_1,o_2,…o_T)$</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>输出：观测序列概率$P(O</td>
+      <td>\lambda)$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>1) 计算时刻1的各个隐藏状态前向概率：<script type="math/tex">\alpha_1(i) = \pi_ib_i(o_1),\; i=1,2,...N</script></p>
+
+<p>2) 递推时刻$2,3,…T$时刻的前向概率：<script type="math/tex">\alpha_{t+1}(i) = \Big[\sum\limits_{j=1}^N\alpha_t(j)a_{ji}\Big]b_i(o_{t+1}),\; i=1,2,...N</script></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>3) 计算最终结果：$$P(O</td>
+      <td>\lambda) = \sum\limits_{i=1}^N\alpha_T(i)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>从递推公式可以看出，我们的算法时间复杂度是$O(TN^2)$，比暴力解法的时间复杂度$O(TN^T)$少了几个数量级。</p>
+
+<h2 id="hmm前向算法求解实例">HMM前向算法求解实例</h2>
+
+<p>这里我们用盒子与球的例子来显示前向概率的计算。</p>
+
+<p>我们的观察集合是:<script type="math/tex">V=\{红，白\}，M=2</script></p>
+
+<p>我们的状态集合是：<script type="math/tex">Q =\{盒子1，盒子2，盒子3\}， N=3</script></p>
+
+<p>而观察序列和状态序列的长度为3.</p>
+
+<p>初始状态分布为：<script type="math/tex">\Pi = (0.2,0.4,0.4)^T</script></p>
+
+<p>状态转移概率分布矩阵为：</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+A = \left( \begin{array} {ccc} 0.5 & 0.2 & 0.3 \\ 0.3 & 0.5 & 0.2 \\ 0.2 & 0.3 &0.5 \end{array} \right) %]]></script>
+
+<p>观测状态概率矩阵为：</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+B = \left( \begin{array} {ccc} 0.5 & 0.5 \\ 0.4 & 0.6 \\ 0.7 & 0.3 \end{array} \right) %]]></script>
+
+<p>球的颜色的观测序列:<script type="math/tex">O=\{红，白，红\}</script></p>
+
+<p>按照我们上一节的前向算法。首先计算时刻1三个状态的前向概率：</p>
+
+<p>时刻1是红色球，隐藏状态是盒子1的概率为：<script type="math/tex">\alpha_1(1) = \pi_1b_1(o_1) = 0.2 \times 0.5 = 0.1</script></p>
+
+<p>隐藏状态是盒子2的概率为：<script type="math/tex">\alpha_1(2) = \pi_2b_2(o_1) = 0.4 \times 0.4 = 0.16</script></p>
+
+<p>隐藏状态是盒子3的概率为：<script type="math/tex">\alpha_1(3) = \pi_3b_3(o_1) = 0.4 \times 0.7 = 0.28</script></p>
+
+<p>现在我们可以开始递推了，首先递推时刻2三个状态的前向概率：</p>
+
+<p>时刻2是白色球，隐藏状态是盒子1的概率为：<script type="math/tex">\alpha_2(1) = \Big[\sum\limits_{i=1}^3\alpha_1(i)a_{i1}\Big]b_1(o_2) = [0.1*0.5+0.16*0.3+0.28*0.2 ] \times 0.5 = 0.077</script></p>
+
+<p>隐藏状态是盒子2的概率为：<script type="math/tex">\alpha_2(2) = \Big[\sum\limits_{i=1}^3\alpha_1(i)a_{i2}\Big]b_2(o_2) = [0.1*0.2+0.16*0.5+0.28*0.3 ] \times 0.6 = 0.1104</script></p>
+
+<p>隐藏状态是盒子3的概率为：<script type="math/tex">\alpha_2(3) = \Big[\sum\limits_{i=1}^3\alpha_1(i)a_{i3}\Big]b_3(o_2) = [0.1*0.3+0.16*0.2+0.28*0.5 ] \times 0.3 = 0.0606</script></p>
+
+<p>继续递推，现在我们递推时刻3三个状态的前向概率：</p>
+
+<p>时刻3是红色球，隐藏状态是盒子1的概率为：<script type="math/tex">\alpha_3(1) = \Big[\sum\limits_{i=1}^3\alpha_2(i)a_{i1}\Big]b_1(o_3) = [0.077*0.5+0.1104*0.3+0.0606*0.2 ] \times 0.5 = 0.04187</script></p>
+
+<p>隐藏状态是盒子2的概率为：<script type="math/tex">\alpha_3(2) = \Big[\sum\limits_{i=1}^3\alpha_2(i)a_{i2}\Big]b_2(o_3) = [0.077*0.2+0.1104*0.5+0.0606*0.3 ] \times 0.4 = 0.03551</script></p>
+
+<p>隐藏状态是盒子3的概率为：<script type="math/tex">\alpha_3(3) = \Big[\sum\limits_{i=1}^3\alpha_3(i)a_{i3}\Big]b_3(o_3) = [0.077*0.3+0.1104*0.2+0.0606*0.5 ] \times 0.7 = 0.05284</script></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>最终我们求出观测序列:$O={红，白，红}$的概率为：$$P(O</td>
+      <td>\lambda) = \sum\limits_{i=1}^3\alpha_3(i) = 0.13022 $$</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="用后向算法求hmm观测序列的概率">用后向算法求HMM观测序列的概率</h2>
+
+<p>熟悉了用前向算法求HMM观测序列的概率，现在我们再来看看怎么用后向算法求HMM观测序列的概率。</p>
+
+<p>后向算法和前向算法非常类似，都是用的动态规划，唯一的区别是选择的局部状态不同，后向算法用的是“后向概率”，那么后向概率是如何定义的呢？</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>定义时刻$t$时隐藏状态为$q_i$, 从时刻$t+1$到最后时刻$T$的观测状态的序列为$o_{t+1},o_{t+2},…o_T$的概率为后向概率。记为：$$\beta_t(i) = P(o_{t+1},o_{t+2},…o_T</td>
+      <td>i_t =q_i , \lambda)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>后向概率的动态规划递推公式和前向概率是相反的。现在我们假设我们已经找到了在时刻$t+1$时各个隐藏状态的后向概率$\beta_{t+1}(j)$，现在我们需要递推出时刻$t$时各个隐藏状态的后向概率。如下图，我们可以计算出观测状态的序列为$o_{t+2},o_{t+3},…o_T$， $t$时隐藏状态为$q_i$, 时刻$t+1$隐藏状态为$q_j$的概率为$a_{ij}\beta_{t+1}(j)$, 接着可以得到观测状态的序列为$o_{t+1},o_{t+2},…o_T$， $t$时隐藏状态为$q_i$, 时刻$t+1$隐藏状态为$q_j$的概率为$a_{ij}b_j(o_{t+1})\beta_{t+1}(j)$, 则把下面所有线对应的概率加起来，我们可以得到观测状态的序列为$o_{t+1},o_{t+2},…o_T$， $t$时隐藏状态为$q_i$的概率为$\sum\limits_{j=1}^{N}a_{ij}b_j(o_{t+1})\beta_{t+1}(j)$，这个概率即为时刻$t$的后向概率。</p>
+
+<p><img src="https://images2015.cnblogs.com/blog/1042406/201706/1042406-20170607172032606-996787196.png" alt="" /></p>
+
+<p>这样我们得到了后向概率的递推关系式如下：<script type="math/tex">\beta_{t}(i) = \sum\limits_{j=1}^{N}a_{ij}b_j(o_{t+1})\beta_{t+1}(j)</script></p>
+
+<p>现在我们总结下后向算法的流程,注意下和前向算法的相同点和不同点：</p>
+
+<p>输入：HMM模型$\lambda = (A, B, \Pi)$，观测序列$O=(o_1,o_2,…o_T)$</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>输出：观测序列概率$P(O</td>
+      <td>\lambda)$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>1) 初始化时刻$T$的各个隐藏状态后向概率：<script type="math/tex">\beta_T(i) = 1,\; i=1,2,...N</script></p>
+
+<p>2) 递推时刻$T-1,T-2,…1$时刻的后向概率：<script type="math/tex">\beta_{t}(i) = \sum\limits_{j=1}^{N}a_{ij}b_j(o_{t+1})\beta_{t+1}(j),\; i=1,2,...N</script></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>3) 计算最终结果：$$P(O</td>
+      <td>\lambda) = \sum\limits_{i=1}^N\pi_ib_i(o_1)\beta_1(i)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>此时我们的算法时间复杂度仍然是$O(TN^2)$。</p>
+
+<h2 id="hmm常用概率的计算">HMM常用概率的计算</h2>
+
+<p>利用前向概率和后向概率，我们可以计算出HMM中单个状态和两个状态的概率公式。</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>1）给定模型$\lambda$和观测序列$O$,在时刻$t$处于状态$q_i$的概率记为:$$\gamma_t(i) = P(i_t = q_i</td>
+      <td>O,\lambda) = \frac{P(i_t = q_i ,O</td>
+      <td>\lambda)}{P(O</td>
+      <td>\lambda)} $$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>利用前向概率和后向概率的定义可知：$$P(i_t = q_i ,O</td>
+      <td>\lambda) = \alpha_t(i)\beta_t(i)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>于是我们得到：<script type="math/tex">\gamma_t(i) = \frac{ \alpha_t(i)\beta_t(i)}{\sum\limits_{j=1}^N \alpha_t(j)\beta_t(j)}</script></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>2）给定模型$\lambda$和观测序列$O$,在时刻$t$处于状态$q_i$，且时刻$t+1$处于状态$q_j$的概率记为:$$\xi_t(i,j) = P(i_t = q_i, i_{t+1}=q_j</td>
+      <td>O,\lambda) = \frac{ P(i_t = q_i, i_{t+1}=q_j , O</td>
+      <td>\lambda)}{P(O</td>
+      <td>\lambda)} $$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>而$P(i_t = q_i, i_{t+1}=q_j , O</td>
+      <td>\lambda)$可以由前向后向概率来表示为:$$P(i_t = q_i, i_{t+1}=q_j , O</td>
+      <td>\lambda) = \alpha_t(i)a_{ij}b_j(o_{t+1})\beta_{t+1}(j)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>从而最终我们得到$\xi_t(i,j)$的表达式如下：<script type="math/tex">\xi_t(i,j) = \frac{\alpha_t(i)a_{ij}b_j(o_{t+1})\beta_{t+1}(j)}{\sum\limits_{r=1}^N\sum\limits_{s=1}^N\alpha_t(r)a_{rs}b_s(o_{t+1})\beta_{t+1}(s)}</script></p>
+
+<p>3) 将$\gamma_t(i)$和$\xi_t(i,j)$在各个时刻$t$求和，可以得到：</p>
+
+<p>在观测序列$O$下状态$i$出现的期望值$\sum\limits_{t=1}^T\gamma_t(i)$</p>
+
+<p>在观测序列$O$下由状态$i$转移的期望值$\sum\limits_{t=1}^{T-1}\gamma_t(i)$</p>
+
+<p>在观测序列$O$下由状态$i$转移到状态$j$的期望值$\sum\limits_{t=1}^{T-1}\xi_t(i,j)$</p>
+
+<p>上面这些常用的概率值在求解HMM问题二，即求解HMM模型参数的时候需要用到。我们在这个系列的第三篇来讨论求解HMM参数的问题和解法。</p>
+
+<h1 id="鲍姆-韦尔奇算法求解hmm参数">鲍姆-韦尔奇算法求解HMM参数</h1>
+<p>在本篇我们会讨论HMM模型参数求解的问题，这个问题在HMM三个问题里算是最复杂的。在研究这个问题之前，建议先阅读这个系列的前两篇以熟悉HMM模型和HMM的前向后向算法，以及EM算法原理总结，这些在本篇里会用到。在李航的《统计学习方法》中，这个算法的讲解只考虑了单个观测序列的求解，因此无法用于实际多样本观测序列的模型求解，本文关注于如何使用多个观测序列来求解HMM模型参数。</p>
+
+<h2 id="hmm模型参数求解概述">HMM模型参数求解概述</h2>
+
+<p>HMM模型参数求解根据已知的条件可以分为两种情况。</p>
+
+<p>第一种情况较为简单，就是我们已知$D$个长度为$T$的观测序列和对应的隐藏状态序列，即${(O_1, I_1), (O_2, I_2), …(O_D, I_D)}$是已知的，此时我们可以很容易的用最大似然来求解模型参数。</p>
+
+<p>假设样本从隐藏状态$q_i$转移到$q_j$的频率计数是$A_{ij}$,那么状态转移矩阵求得为：<script type="math/tex">A = \Big[a_{ij}\Big], \;其中a_{ij} = \frac{A_{ij}}{\sum\limits_{s=1}^{N}A_{is}}</script></p>
+
+<p>假设样本隐藏状态为$q_j$且观测状态为$v_k$的频率计数是$B_{jk}$,那么观测状态概率矩阵为：<script type="math/tex">B= \Big[b_{j}(k)\Big], \;其中b_{j}(k) = \frac{B_{jk}}{\sum\limits_{s=1}^{M}B_{js}}</script></p>
+
+<p>假设所有样本中初始隐藏状态为$q_i$的频率计数为$C(i)$,那么初始概率分布为：<script type="math/tex">\Pi = \pi(i) = \frac{C(i)}{\sum\limits_{s=1}^{N}C(s)}</script></p>
+
+<p>可见第一种情况下求解模型还是很简单的。但是在很多时候，我们无法得到HMM样本观察序列对应的隐藏序列，只有$D$个长度为$T$的观测序列，即${(O_1), (O_2), …(O_D)}$是已知的，此时我们能不能求出合适的HMM模型参数呢？这就是我们的第二种情况，也是我们本文要讨论的重点。它的解法最常用的是鲍姆-韦尔奇算法，其实就是基于EM算法的求解，只不过鲍姆-韦尔奇算法出现的时代，EM算法还没有被抽象出来，所以我们本文还是说鲍姆-韦尔奇算法。</p>
+
+<h2 id="鲍姆-韦尔奇算法原理">鲍姆-韦尔奇算法原理</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>鲍姆-韦尔奇算法原理既然使用的就是EM算法的原理，那么我们需要在E步求出联合分布$P(O,I</td>
+      <td>\lambda)$基于条件概率$P(I</td>
+      <td>O,\overline{\lambda})$的期望，其中$\overline{\lambda}$为当前的模型参数，然后再M步最大化这个期望，得到更新的模型参数$\lambda$。接着不停的进行EM迭代，直到模型参数的值收敛为止。</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>首先来看看E步，当前模型参数为$\overline{\lambda}$, 联合分布$P(O,I</td>
+      <td>\lambda)$基于条件概率$P(I</td>
+      <td>O,\overline{\lambda})$的期望表达式为：$$L(\lambda, \overline{\lambda}) = \sum\limits_{I}P(I</td>
+      <td>O,\overline{\lambda})logP(O,I</td>
+      <td>\lambda)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>在M步，我们极大化上式，然后得到更新后的模型参数如下： $$\overline{\lambda} = arg\;\max_{\lambda}\sum\limits_{I}P(I</td>
+      <td>O,\overline{\lambda})logP(O,I</td>
+      <td>\lambda)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>通过不断的E步和M步的迭代，直到$\overline{\lambda}$收敛。下面我们来看看鲍姆-韦尔奇算法的推导过程。</p>
+
+<h2 id="鲍姆-韦尔奇算法的推导">鲍姆-韦尔奇算法的推导</h2>
+
+<p>我们的训练数据为${(O_1, I_1), (O_2, I_2), …(O_D, I_D)}$，其中任意一个观测序列$O_d = {o_1^{(d)}, o_2^{(d)}, … o_T^{(d)}}$,其对应的未知的隐藏状态序列表示为：$I_d = {i_1^{(d)}, i_2^{(d)}, … i_T^{(d)}}$</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>首先看鲍姆-韦尔奇算法的E步，我们需要先计算联合分布$P(O,I</td>
+      <td>\lambda)$的表达式如下：$$P(O,I</td>
+      <td>\lambda) = \prod_{d=1}^D\pi_{i_1^{(d)}}b_{i_1^{(d)}}(o_1^{(d)})a_{i_1^{(d)}i_2^{(d)}}b_{i_2^{(d)}}(o_2^{(d)})…a_{i_{T-1}^{(d)}i_T^{(d)}}b_{i_T^{(d)}}(o_T^{(d)})$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>我们的E步得到的期望表达式为：$$L(\lambda, \overline{\lambda}) = \sum\limits_{I}P(I</td>
+      <td>O,\overline{\lambda})logP(O,I</td>
+      <td>\lambda)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>在M步我们要极大化上式。由于$P(I</td>
+      <td>O,\overline{\lambda}) = P(I,O</td>
+      <td>\overline{\lambda})/P(O</td>
+      <td>\overline{\lambda})$,而$P(O</td>
+      <td>\overline{\lambda})$是常数，因此我们要极大化的式子等价于：$$\overline{\lambda} = arg\;\max_{\lambda}\sum\limits_{I}P(O,I</td>
+      <td>\overline{\lambda})logP(O,I</td>
+      <td>\lambda)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>我们将上面$P(O,I</td>
+      <td>\lambda)$的表达式带入我们的极大化式子，得到的表达式如下：$$\overline{\lambda} = arg\;\max_{\lambda}\sum\limits_{d=1}^D\sum\limits_{I}P(O,I</td>
+      <td>\overline{\lambda})(log\pi_{i_1} + \sum\limits_{t=1}^{T-1}log\;a_{i_t,i_{t+1}} + \sum\limits_{t=1}^Tb_{i_t}(o_t))$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>我们的隐藏模型参数$\lambda =(A,B,\Pi)$,因此下面我们只需要对上式分别对$A,B,\Pi$求导即可得到我们更新的模型参数$\overline{\lambda}$</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>首先我们看看对模型参数$\Pi$的求导。由于$\Pi$只在上式中括号里的第一部分出现，因此我们对于$\Pi$的极大化式子为：$$\overline{\pi_i} = arg\;\max_{\pi_{i_1}} \sum\limits_{d=1}^D\sum\limits_{I}P(O,I</td>
+      <td>\overline{\lambda})log\pi_{i_1} = arg\;\max_{\pi_{i}} \sum\limits_{d=1}^D\sum\limits_{i=1}^NP(O,i_1^{(d)} =i</td>
+      <td>\overline{\lambda})log\pi_{i}$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>由于$\pi_i$还满足$\sum\limits_{i=1}^N\pi_i =1$，因此根据拉格朗日子乘法，我们得到$\pi_i$要极大化的拉格朗日函数为：$$arg\;\max_{\pi_{i}}\sum\limits_{d=1}^D\sum\limits_{i=1}^NP(O,i_1^{(d)} =i</td>
+      <td>\overline{\lambda})log\pi_{i} + \gamma(\sum\limits_{i=1}^N\pi_i -1)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>其中，$\gamma$为拉格朗日系数。上式对$\pi_i$求偏导数并令结果为0， 我们得到：$$\sum\limits_{d=1}^DP(O,i_1^{(d)} =i</td>
+      <td>\overline{\lambda}) + \gamma\pi_i = 0$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>令$i$分别等于从1到$N$，从上式可以得到$N$个式子，对这$N$个式子求和可得：$$\sum\limits_{d=1}^DP(O</td>
+      <td>\overline{\lambda}) + \gamma = 0 $$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>从上两式消去$\gamma$,得到$\pi_i$的表达式为：$$\pi_i =\frac{\sum\limits_{d=1}^DP(O,i_1^{(d)} =i</td>
+      <td>\overline{\lambda})}{\sum\limits_{d=1}^DP(O</td>
+      <td>\overline{\lambda})} = \frac{\sum\limits_{d=1}^DP(O,i_1^{(d)} =i</td>
+      <td>\overline{\lambda})}{DP(O</td>
+      <td>\overline{\lambda})} = \frac{\sum\limits_{d=1}^DP(i_1^{(d)} =i</td>
+      <td>O, \overline{\lambda})}{D} = \frac{\sum\limits_{d=1}^DP(i_1^{(d)} =i</td>
+      <td>O^{(d)}, \overline{\lambda})}{D}$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>利用前向概率的定义可得：$$P(i_1^{(d)} =i</td>
+      <td>O^{(d)}, \overline{\lambda}) = \gamma_1^{(d)}(i)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>因此最终我们在M步$\pi_i$的迭代公式为：<script type="math/tex">\pi_i = \frac{\sum\limits_{d=1}^D\gamma_1^{(d)}(i)}{D}</script></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>现在我们来看看$A$的迭代公式求法。方法和$\Pi$的类似。由于$A$只在最大化函数式中括号里的第二部分出现，而这部分式子可以整理为：$$\sum\limits_{d=1}^D\sum\limits_{I}\sum\limits_{t=1}^{T-1}P(O,I</td>
+      <td>\overline{\lambda})log\;a_{i_t,i_{t+1}} = \sum\limits_{d=1}^D\sum\limits_{i=1}^N\sum\limits_{j=1}^N\sum\limits_{t=1}^{T-1}P(O,i_t^{(d)} = i, i_{t+1}^{(d)} = j</td>
+      <td>\overline{\lambda})log\;a_{ij}$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>由于$a_{ij}$还满足$\sum\limits_{j=1}^Na_{ij} =1$。和求解$\pi_i$类似，我们可以用拉格朗日子乘法并对$a_{ij}$求导，并令结果为0，可以得到$a_{ij}$的迭代表达式为：$$a_{ij} = \frac{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T-1}P(O^{(d)}, i_t^{(d)} = i, i_{t+1}^{(d)} = j</td>
+      <td>\overline{\lambda})}{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T-1}P(O^{(d)}, i_t^{(d)} = i</td>
+      <td>\overline{\lambda})}$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>利用前向概率的定义和$\xi_t(i,j)$的定义可得们在M步$a_{ij}$的迭代公式为：<script type="math/tex">a_{ij} = \frac{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T-1}\xi_t^{(d)}(i,j)}{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T-1}\gamma_t^{(d)}(i)}</script></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>现在我们来看看$B$的迭代公式求法。方法和$\Pi$的类似。由于$B$只在最大化函数式中括号里的第三部分出现，而这部分式子可以整理为：$$\sum\limits_{d=1}^D\sum\limits_{I}\sum\limits_{t=1}^{T}P(O,I</td>
+      <td>\overline{\lambda})log\;b_{i_t}(o_t) = \sum\limits_{d=1}^D\sum\limits_{j=1}^N\sum\limits_{t=1}^{T}P(O,i_t^{(d)} = j</td>
+      <td>\overline{\lambda})log\;b_{j}(o_t)$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <tbody>
+    <tr>
+      <td>由于$b_{j}(o_t)$还满足$\sum\limits_{k=1}^Mb_{j}(o_t =v_k) =1$。和求解$\pi_i$类似，我们可以用拉格朗日子乘法并对$b_{j}(k)$求导，并令结果为0，得到$b_{j}(k)$的迭代表达式为：$$b_{j}(k) = \frac{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T}P(O,i_t^{(d)} = j</td>
+      <td>\overline{\lambda})I(o_t^{(d)}=v_k)}{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T}P(O,i_t^{(d)} = j</td>
+      <td>\overline{\lambda})}$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>其中$I(o_t^{(d)}=v_k)$当且仅当$o_t^{(d)}=v_k$时为1，否则为0. 利用前向概率的定义可得$b_{j}(o_t)$的最终表达式为：<script type="math/tex">b_{j}(k) = \frac{\sum\limits_{d=1}^D\sum\limits_{t=1, o_t^{(d)}=v_k}^{T}\gamma_t^{(d)}(j)}{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T}\gamma_t^{(d)}(j)}</script></p>
+
+<p>有了$\pi_i, a_{ij},b_{j}(k)$的迭代公式，我们就可以迭代求解HMM模型参数了。</p>
+
+<h2 id="鲍姆-韦尔奇算法流程总结">鲍姆-韦尔奇算法流程总结</h2>
+
+<p>这里我们概括总结下鲍姆-韦尔奇算法的流程。</p>
+
+<p>输入： $D$个观测序列样本${(O_1), (O_2), …(O_D)}$</p>
+
+<p>输出：HMM模型参数</p>
+
+<p>1)随机初始化所有的$\pi_i, a_{ij},b_{j}(k)$</p>
+
+<p>2) 对于每个样本$d = 1,2,…D$，用前向后向算法计算$\gamma_t^{(d)}(i)，\xi_t^{(d)}(i,j), t =1,2…T$</p>
+
+<p>3) 更新模型参数：</p>
+
+<script type="math/tex; mode=display">\pi_i = \frac{\sum\limits_{d=1}^D\gamma_1^{(d)}(i)}{D}</script>
+
+<script type="math/tex; mode=display">a_{ij} = \frac{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T-1}\xi_t^{(d)}(i,j)}{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T-1}\gamma_t^{(d)}(i)}</script>
+
+<script type="math/tex; mode=display">b_{j}(k) = \frac{\sum\limits_{d=1}^D\sum\limits_{t=1, o_t^{(d)}=v_k}^{T}\gamma_t^{(d)}(j)}{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T}\gamma_t^{(d)}(j)}</script>
+
+<p>4) 如果$\pi_i, a_{ij},b_{j}(k)$的值已经收敛，则算法结束，否则回到第2）步继续迭代。</p>
+
+<p>以上就是鲍姆-韦尔奇算法的整个过程。</p>
+
+<h1 id="维特比算法解码隐藏状态序列">维特比算法解码隐藏状态序列</h1>
+<p>本章节讲述给定模型和观测序列，求给定观测序列条件下，最可能出现的对应的隐藏状态序列。</p>
+
+<p>HMM模型的解码问题最常用的算法是维特比算法，当然也有其他的算法可以求解这个问题。同时维特比算法是一个通用的求序列最短路径的动态规划算法，也可以用于很多其他问题，比如单独用维特比算法来做分词。</p>
+
+<p>本文关注于用维特比算法来解码HMM的的最可能隐藏状态序列。</p>
+
+<h2 id="最可能隐藏状态序列求解概述">最可能隐藏状态序列求解概述</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>在HMM模型的解码问题中，给定模型$\lambda = (A, B, \Pi)$和观测序列$O ={o_1,o_2,…o_T}$，求给定观测序列O条件下，最可能出现的对应的状态序列$I^<em>= {i_1^</em>,i_2^<em>,…i_T^</em>}$,即$P(I^*</td>
+      <td>O)$要最大化。</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>一个可能的近似解法是求出观测序列$O$在每个时刻$t$最可能的隐藏状态$i_t^<em>$然后得到一个近似的隐藏状态序列$I^</em>= {i_1^<em>,i_2^</em>,…i_T^*}$。要这样近似求解不难，在给定模型$\lambda$和观测序列$O$时，在时刻$t$处于状态$q_i$的概率是$\gamma_t(i)$，这个概率可以通过HMM的前向算法与后向算法计算。这样我们有：<script type="math/tex">i_t^* = arg \max_{1 \leq i \leq N}[\gamma_t(i)], \; t =1,2,...T</script></p>
+
+<p>近似算法很简单，但是却不能保证预测的状态序列是整体是最可能的状态序列，因为预测的状态序列中某些相邻的隐藏状态可能存在转移概率为0的情况。</p>
+
+<p>而维特比算法可以将HMM的状态序列作为一个整体来考虑，避免近似算法的问题，下面我们来看看维特比算法进行HMM解码的方法。</p>
+
+<h2 id="算法概述">算法概述</h2>
+
+<p>维特比算法是一个通用的解码算法，是基于动态规划的求序列最短路径的方法。</p>
+
+<p>既然是动态规划算法，那么就需要找到合适的局部状态，以及局部状态的递推公式。在HMM中，维特比算法定义了两个局部状态用于递推。</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>第一个局部状态是在时刻$t$隐藏状态为$i$所有可能的状态转移路径$i_1,i_2,…i_t$中的概率最大值。记为$\delta_t(i)$:$$\delta_t(i) = \max_{i_1,i_2,…i_{t-1}}\;P(i_t=i, i_1,i_2,…i_{t-1},o_t,o_{t-1},…o_1</td>
+      <td>\lambda),\; i =1,2,…N$$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>由$\delta_t(i)$的定义可以得到$\delta$的递推表达式：
+\begin{align} 
+\delta_{t+1}(i) &amp; = \max_{i_1,i_2,…i_{t}}\;P(i_{t+1}=i, i_1,i_2,…i_{t},o_{t+1},o_{t},…o_1|\lambda) \ &amp; = \max_{1 \leq j \leq N}\;[\delta_t(j)a_{ji}]b_i(o_{t+1})
+\end{align}</p>
+
+<p>第二个局部状态由第一个局部状态递推得到。我们定义在时刻$t$隐藏状态为$i$的所有单个状态转移路径$(i_1,i_2,…,i_{t-1},i)$中概率最大的转移路径中第$t-1$个节点的隐藏状态为$\Psi_t(i)$,其递推表达式可以表示为：<script type="math/tex">\Psi_t(i) = arg \; \max_{1 \leq j \leq N}\;[\delta_{t-1}(j)a_{ji}]</script></p>
+
+<p>有了这两个局部状态，我们就可以从时刻0一直递推到时刻$T$，然后利用$\Psi_t(i)$记录的前一个最可能的状态节点回溯，直到找到最优的隐藏状态序列。</p>
+
+<h2 id="算法流程总结">算法流程总结</h2>
+
+<p>现在我们来总结下维特比算法的流程：</p>
+
+<p>输入：HMM模型$\lambda = (A, B, \Pi)$，观测序列$O=(o_1,o_2,…o_T)$</p>
+
+<p>输出：最有可能的隐藏状态序列$I^<em>= {i_1^</em>,i_2^<em>,…i_T^</em>}$</p>
+
+<p>1）初始化局部状态：<script type="math/tex">\delta_1(i) = \pi_ib_i(o_1),\;i=1,2...N</script><script type="math/tex">\Psi_1(i)=0,\;i=1,2...N</script></p>
+
+<p>2) 进行动态规划递推时刻$t=2,3,…T$时刻的局部状态：<script type="math/tex">\delta_{t}(i) = \max_{1 \leq j \leq N}\;[\delta_{t-1}(j)a_{ji}]b_i(0_{t}),\;i=1,2...N</script><script type="math/tex">\Psi_t(i) = arg \; \max_{1 \leq j \leq N}\;[\delta_{t-1}(j)a_{ji}],\;i=1,2...N</script></p>
+
+<p>3) 计算时刻$T$最大的$\delta_{T}(i)$,即为最可能隐藏状态序列出现的概率。计算时刻$T$最大的$\Psi_t(i)$,即为时刻$T$最可能的隐藏状态。<script type="math/tex">P* = \max_{1 \leq j \leq N}\delta_{T}(i)</script><script type="math/tex">i_T^* = arg \; \max_{1 \leq j \leq N}\;[\delta_{T}(i)]</script></p>
+
+<p>4) 利用局部状态$\Psi(i)$开始回溯。对于$t=T-1,T-2,…,1$：<script type="math/tex">i_t^* = \Psi_{t+1}(i_{t+1}^*)</script></p>
+
+<p>最终得到最有可能的隐藏状态序列$I^<em>= {i_1^</em>,i_2^<em>,…i_T^</em>}$</p>
+
+<h2 id="算法求解实例">算法求解实例</h2>
+
+<p>下面我们仍然用盒子与球的例子来看看HMM维特比算法求解。</p>
+
+<p>我们的观察集合是:<script type="math/tex">V=\{红，白\}，M=2</script></p>
+
+<p>我们的状态集合是：<script type="math/tex">Q =\{盒子1，盒子2，盒子3\}， N=3</script></p>
+
+<p>而观察序列和状态序列的长度为3.</p>
+
+<p>初始状态分布为：<script type="math/tex">\Pi = (0.2,0.4,0.4)^T</script></p>
+
+<p>状态转移概率分布矩阵为：</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+A = \left( \begin{array} {ccc} 0.5 & 0.2 & 0.3 \\ 0.3 & 0.5 & 0.2 \\ 0.2 & 0.3 &0.5 \end{array} \right) %]]></script>
+
+<p>观测状态概率矩阵为：</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+B = \left( \begin{array} {ccc} 0.5 & 0.5 \\ 0.4 & 0.6 \\ 0.7 & 0.3 \end{array} \right) %]]></script>
+
+<p>球的颜色的观测序列:<script type="math/tex">O=\{红，白，红\}</script></p>
+
+<p>按照我们上一节的维特比算法，首先需要得到三个隐藏状态在时刻1时对应的各自两个局部状态，此时观测状态为1：</p>
+
+<script type="math/tex; mode=display">\delta_1(1) = \pi_1b_1(o_1) = 0.2 \times 0.5 = 0.1</script>
+
+<script type="math/tex; mode=display">\delta_1(2) = \pi_2b_2(o_1) = 0.4 \times 0.4 = 0.16</script>
+
+<script type="math/tex; mode=display">\delta_1(3) = \pi_3b_3(o_1) = 0.4 \times 0.7 = 0.28</script>
+
+<script type="math/tex; mode=display">\Psi_1(1)=\Psi_1(2) =\Psi_1(3) =0</script>
+
+<p>现在开始递推三个隐藏状态在时刻2时对应的各自两个局部状态，此时观测状态为2：</p>
+
+<script type="math/tex; mode=display">\delta_2(1) = \max_{1\leq j \leq 3}[\delta_1(j)a_{j1}]b_1(o_2) = \max_{1\leq j \leq 3}[0.1 \times 0.5, 0.16 \times 0.3, 0.28\times 0.2] \times 0.5 = 0.028</script>
+
+<script type="math/tex; mode=display">\Psi_2(1)=3</script>
+
+<script type="math/tex; mode=display">\delta_2(2) = \max_{1\leq j \leq 3}[\delta_1(j)a_{j2}]b_2(o_2) = \max_{1\leq j \leq 3}[0.1 \times 0.2, 0.16 \times 0.5, 0.28\times 0.3] \times 0.6 = 0.0504</script>
+
+<script type="math/tex; mode=display">\Psi_2(2)=3</script>
+
+<script type="math/tex; mode=display">\delta_2(3) = \max_{1\leq j \leq 3}[\delta_1(j)a_{j3}]b_3(o_2) = \max_{1\leq j \leq 3}[0.1 \times 0.3, 0.16 \times 0.2, 0.28\times 0.5] \times 0.3 = 0.042</script>
+
+<script type="math/tex; mode=display">\Psi_2(3)=3</script>
+
+<p>继续递推三个隐藏状态在时刻3时对应的各自两个局部状态，此时观测状态为1：</p>
+
+<script type="math/tex; mode=display">\delta_3(1) = \max_{1\leq j \leq 3}[\delta_2(j)a_{j1}]b_1(o_3) = \max_{1\leq j \leq 3}[0.028 \times 0.5, 0.0504 \times 0.3, 0.042\times 0.2] \times 0.5 = 0.00756</script>
+
+<script type="math/tex; mode=display">\Psi_3(1)=2</script>
+
+<script type="math/tex; mode=display">\delta_3(2) = \max_{1\leq j \leq 3}[\delta_2(j)a_{j2}]b_2(o_3) = \max_{1\leq j \leq 3}[0.028 \times 0.2, 0.0504\times 0.5, 0.042\times 0.3] \times 0.4 = 0.01008</script>
+
+<script type="math/tex; mode=display">\Psi_3(2)=2</script>
+
+<script type="math/tex; mode=display">\delta_3(3) = \max_{1\leq j \leq 3}[\delta_2(j)a_{j3}]b_3(o_3) = \max_{1\leq j \leq 3}[0.028 \times 0.3, 0.0504 \times 0.2, 0.042\times 0.5] \times 0.7 = 0.0147</script>
+
+<script type="math/tex; mode=display">\Psi_3(3)=3</script>
+
+<p>此时已经到最后的时刻，我们开始准备回溯。此时最大概率为$\delta_3(3)$,从而得到$i_3^* =3$</p>
+
+<p>由于$\Psi_3(3)=3$,所以$i_2^* =3$, 而又由于$\Psi_2(3)=3$,所以$i_1^* =3$。从而得到最终的最可能的隐藏状态序列为：$(3,3,3)$</p>
+
+<h2 id="算法总结">算法总结</h2>
+
+<p>如果大家看过文本挖掘的分词原理中的维特比算法，就会发现这两篇之中的维特比算法稍有不同。主要原因是在中文分词时，我们没有观察状态和隐藏状态的区别，只有一种状态。但是维特比算法的核心是定义动态规划的局部状态与局部递推公式，这一点在中文分词维特比算法和HMM的维特比算法是相同的，也是维特比算法的精华所在。</p>
+
+<p>维特比算法也是寻找序列最短路径的一个通用方法，和dijkstra算法有些类似，但是dijkstra算法并没有使用动态规划，而是贪心算法。同时维特比算法仅仅局限于求序列最短路径，而dijkstra算法是通用的求最短路径的方法。</p>
+
+<h1 id="参考文献">参考文献</h1>
+
+<p><a href="http://www.cnblogs.com/pinard/p/6945257.html">隐马尔科夫模型HMM（一）HMM模型基础</a><br />
+<a href="http://www.cnblogs.com/pinard/p/6955871.html">隐马尔科夫模型HMM（二）前向后向算法评估观察序列概率</a><br />
+<a href="http://www.cnblogs.com/pinard/p/6972299.html">隐马尔科夫模型HMM（三）鲍姆-韦尔奇算法求解HMM参数</a><br />
+<a href="http://www.cnblogs.com/pinard/p/6991852.html">隐马尔科夫模型HMM（四）维特比算法解码隐藏状态序列</a></p>
+
+              <nav class="c-page__nav">
+  
+    
+    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98%E9%A2%84%E5%A4%84%E7%90%86%E4%B9%8BTF-IDF">
+      〈 <span class="u-margin-right-tiny"></span> 文本挖掘预处理之TF-IDF
+    </a>
+  
+
+  
+    
+    <a id="js-page__nav__next" class="c-page__nav__next" href="/jupyter-book/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/index">
+      深度学习 <span class="u-margin-right-tiny"></span> 〉
+    </a>
+  
+</nav>
+
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+  </body>
+</html>
