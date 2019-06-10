@@ -33,7 +33,6 @@ site:
 	touch _site/.nojekyll
 
 publish:
-	rm -rf blog/blog2
-	bundle exec jekyll build --destination blog/blog2
+	bundle exec jekyll build --destination blog/blog2 --incremental
 	touch _site/.nojekyll
 	cd blog && sh commit.sh
