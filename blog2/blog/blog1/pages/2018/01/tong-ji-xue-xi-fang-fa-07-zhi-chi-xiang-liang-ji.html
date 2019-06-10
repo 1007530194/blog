@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+    <head>
+<meta charset="utf-8">
+<title>统计学习方法07-支持向量机 &mdash; 魑魅魍魉</title>
+
+<meta name="author" content="niult">
+
+
+
+
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link href="../../../theme/css/main.css" media="screen, projection"
+      rel="stylesheet" type="text/css">
+
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<script src="../../../theme/js/modernizr-2.0.js"></script>
+<script src="../../../theme/js/ender.js"></script>
+<script src="../../../theme/js/octopress.js" type="text/javascript"></script>
+<script src="../../../theme/js/echarts.min.js" type="text/javascript"></script>
+<script src="../../../theme/js/require.min.js" type="text/javascript"></script>
+
+<header role="banner"><hgroup>
+  <h1><a href="../../../">魑魅魍魉</a></h1>
+</hgroup></header>
+<nav role="navigation">    <ul class="subscription" data-subscription="rss">
+    </ul>
+
+
+<ul class="main-navigation">
+            <li >
+                <a href="../../../category/01chang yong gong ju.html">01常用工具</a>
+            </li>
+            <li >
+                <a href="../../../category/02.wo ai du shu.html">02.我爱读书</a>
+            </li>
+            <li >
+                <a href="../../../category/algorithms.html">Algorithms</a>
+            </li>
+            <li >
+                <a href="../../../category/book.html">Book</a>
+            </li>
+            <li >
+                <a href="../../../category/book-pydata.html">Book-pydata</a>
+            </li>
+            <li >
+                <a href="../../../category/deep-learning-with-python.html">Deep-learning-with-python</a>
+            </li>
+            <li >
+                <a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a>
+            </li>
+            <li >
+                <a href="../../../category/ke wai du wu.html">课外读物</a>
+            </li>
+            <li >
+                <a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen du xue xi.html">深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen jing wang luo.html">神经网络</a>
+            </li>
+            <li >
+                <a href="../../../category/shu ju wa jue.html">数据挖掘</a>
+            </li>
+            <li >
+                <a href="../../../category/shu xue ji chu.html">数学基础</a>
+            </li>
+            <li >
+                <a href="../../../category/tf-example.html">Tf-example</a>
+            </li>
+            <li >
+                <a href="../../../category/tool1.html">Tool1</a>
+            </li>
+            <li >
+                <a href="../../../category/tool2.html">Tool2</a>
+            </li>
+            <li class="active">
+                <a href="../../../category/tools.html">Tools</a>
+            </li>
+            <li >
+                <a href="../../../category/tui jian xi tong.html">推荐系统</a>
+            </li>
+            <li >
+                <a href="../../../category/wen ben wa jue.html">文本挖掘</a>
+            </li>
+</ul>
+</nav>
+<div id="main">
+    <div id="content">
+    <div>
+
+        <h4>Contents</h4>
+        
+
+        <article class="hentry" role="article">
+<header>
+        <h1 class="entry-title">统计学习方法07-支持向量机</h1>
+    <p class="meta">
+<time datetime="2018-01-01T00:00:00+08:00" pubdate>2018-01-01 00:00</time>    </p>
+</header>
+
+    <div class="entry-content"><style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style><body>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="第7章-支持向量机">第7章 支持向量机<a class="anchor-link" href="#第7章-支持向量机">¶</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr/>
+<p>分离超平面：$w^Tx+b=0$</p>
+<p>点到直线距离：$r=\frac{|w^Tx+b|}{||w||_2}$</p>
+<p>$||w||_2$为2-范数：$||w||_2=\sqrt[2]{\sum^m_{i=1}w_i^2}$</p>
+<p>直线为超平面，样本可表示为：</p>
+<p>$w^Tx+b\ \geq+1$</p>
+<p>$w^Tx+b\ \leq+1$</p>
+<h4 id="margin：">margin：<a class="anchor-link" href="#margin：">¶</a></h4><p><strong>函数间隔</strong>：$label(w^Tx+b)\ or\ y_i(w^Tx+b)$</p>
+<p><strong>几何间隔</strong>：$r=\frac{label(w^Tx+b)}{||w||_2}$，当数据被正确分类时，几何间隔就是点到超平面的距离</p>
+<p>为了求几何间隔最大，SVM基本问题可以转化为求解:($\frac{r^*}{||w||}$为几何间隔，(${r^*}$为函数间隔)</p>
+<p>$$\max\ \frac{r^*}{||w||}$$</p>
+<p>$$(subject\ to)\ y_i({w^T}x_i+{b})\geq {r^*},\ i=1,2,..,m$$</p>
+<p>分类点几何间隔最大，同时被正确分类。但这个方程并非凸函数求解，所以要先①将方程转化为凸函数，②用拉格朗日乘子法和KKT条件求解对偶问题。</p>
+<p>①转化为凸函数：</p>
+<p>先令${r^*}=1$，方便计算（参照衡量，不影响评价结果）</p>
+<p>$$\max\ \frac{1}{||w||}$$</p>
+<p>$$s.t.\ y_i({w^T}x_i+{b})\geq {1},\ i=1,2,..,m$$</p>
+<p>再将$\max\ \frac{1}{||w||}$转化成$\min\ \frac{1}{2}||w||^2$求解凸函数，1/2是为了求导之后方便计算。</p>
+<p>$$\min\ \frac{1}{2}||w||^2$$</p>
+<p>$$s.t.\ y_i(w^Tx_i+b)\geq 1,\ i=1,2,..,m$$</p>
+<p>②用拉格朗日乘子法和KKT条件求解最优值：</p>
+<p>$$\min\ \frac{1}{2}||w||^2$$</p>
+<p>$$s.t.\ -y_i(w^Tx_i+b)+1\leq 0,\ i=1,2,..,m$$</p>
+<p>整合成：</p>
+<p>$$L(w, b, \alpha) = \frac{1}{2}||w||^2+\sum^m_{i=1}\alpha_i(-y_i(w^Tx_i+b)+1)$$</p>
+<p>推导：$\min\ f(x)=\min \max\ L(w, b, \alpha)\geq \max \min\ L(w, b, \alpha)$</p>
+<p>根据KKT条件：</p>
+<p>$$\frac{\partial }{\partial w}L(w, b, \alpha)=w-\sum\alpha_iy_ix_i=0,\ w=\sum\alpha_iy_ix_i$$</p>
+<p>$$\frac{\partial }{\partial b}L(w, b, \alpha)=\sum\alpha_iy_i=0$$</p>
+<p>带入$ L(w, b, \alpha)$</p>
+<p>$\min\  L(w, b, \alpha)=\frac{1}{2}||w||^2+\sum^m_{i=1}\alpha_i(-y_i(w^Tx_i+b)+1)$</p>
+<p>$\qquad\qquad\qquad=\frac{1}{2}w^Tw-\sum^m_{i=1}\alpha_iy_iw^Tx_i-b\sum^m_{i=1}\alpha_iy_i+\sum^m_{i=1}\alpha_i$</p>
+<p>$\qquad\qquad\qquad=\frac{1}{2}w^T\sum\alpha_iy_ix_i-\sum^m_{i=1}\alpha_iy_iw^Tx_i+\sum^m_{i=1}\alpha_i$</p>
+<p>$\qquad\qquad\qquad=\sum^m_{i=1}\alpha_i-\frac{1}{2}\sum^m_{i=1}\alpha_iy_iw^Tx_i$</p>
+<p>$\qquad\qquad\qquad=\sum^m_{i=1}\alpha_i-\frac{1}{2}\sum^m_{i,j=1}\alpha_i\alpha_jy_iy_j(x_ix_j)$</p>
+<p>再把max问题转成min问题：</p>
+<p>$\max\ \sum^m_{i=1}\alpha_i-\frac{1}{2}\sum^m_{i,j=1}\alpha_i\alpha_jy_iy_j(x_ix_j)=\min \frac{1}{2}\sum^m_{i,j=1}\alpha_i\alpha_jy_iy_j(x_ix_j)-\sum^m_{i=1}\alpha_i$</p>
+<p>$s.t.\ \sum^m_{i=1}\alpha_iy_i=0,$</p>
+<p>$ \alpha_i \geq 0,i=1,2,...,m$</p>
+<p>以上为SVM对偶问题的对偶形式</p>
+<hr/>
+<h4 id="kernel">kernel<a class="anchor-link" href="#kernel">¶</a></h4><p>在低维空间计算获得高维空间的计算结果，也就是说计算结果满足高维（满足高维，才能说明高维下线性可分）。</p>
+<h4 id="soft-margin-&amp;-slack-variable">soft margin &amp; slack variable<a class="anchor-link" href="#soft-margin-&amp;-slack-variable">¶</a></h4><p>引入松弛变量$\xi\geq0$，对应数据点允许偏离的functional margin 的量。</p>
+<p>目标函数：$\min\ \frac{1}{2}||w||^2+C\sum\xi_i\qquad s.t.\ y_i(w^Tx_i+b)\geq1-\xi_i$</p>
+<p>对偶问题：</p>
+<p>$$\max\ \sum^m_{i=1}\alpha_i-\frac{1}{2}\sum^m_{i,j=1}\alpha_i\alpha_jy_iy_j(x_ix_j)=\min \frac{1}{2}\sum^m_{i,j=1}\alpha_i\alpha_jy_iy_j(x_ix_j)-\sum^m_{i=1}\alpha_i$$</p>
+<p>$$s.t.\ C\geq\alpha_i \geq 0,i=1,2,...,m\quad \sum^m_{i=1}\alpha_iy_i=0,$$</p>
+<hr/>
+<h4 id="Sequential-Minimal-Optimization">Sequential Minimal Optimization<a class="anchor-link" href="#Sequential-Minimal-Optimization">¶</a></h4><p>首先定义特征到结果的输出函数：$u=w^Tx+b$.</p>
+<p>因为$w=\sum\alpha_iy_ix_i$</p>
+<p>有$u=\sum y_i\alpha_iK(x_i, x)-b$</p>
+<hr/>
+<p>$\max \sum^m_{i=1}\alpha_i-\frac{1}{2}\sum^m_{i=1}\sum^m_{j=1}\alpha_i\alpha_jy_iy_j&lt;\phi(x_i)^T,\phi(x_j)&gt;$</p>
+<p>$s.t.\ \sum^m_{i=1}\alpha_iy_i=0,$</p>
+<p>$ \alpha_i \geq 0,i=1,2,...,m$</p>
+<hr/>
+<p>参考资料：</p>
+<p>[1] :<a href="http://blog.csdn.net/xianlingmao/article/details/7919597">Lagrange Multiplier and KKT</a></p>
+<p>[2] :<a href="https://my.oschina.net/dfsj66011/blog/517766">推导SVM</a></p>
+<p>[3] :<a href="http://pytlab.org/2017/08/15/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E5%AE%9E%E8%B7%B5-%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA-SVM-%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86/">机器学习算法实践-支持向量机(SVM)算法原理</a></p>
+<p>[4] :<a href="http://blog.csdn.net/wds2006sdo/article/details/53156589">Python实现SVM</a></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_iris</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="k">import</span>  <span class="n">train_test_split</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># data</span>
+<span class="k">def</span> <span class="nf">create_data</span><span class="p">():</span>
+    <span class="n">iris</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">()</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">feature_names</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span> <span class="o">=</span> <span class="n">iris</span><span class="o">.</span><span class="n">target</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'sepal length'</span><span class="p">,</span> <span class="s1">'sepal width'</span><span class="p">,</span> <span class="s1">'petal length'</span><span class="p">,</span> <span class="s1">'petal width'</span><span class="p">,</span> <span class="s1">'label'</span><span class="p">]</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">100</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="c1"># print(data)</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">[:,:</span><span class="mi">2</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">create_data</span><span class="p">()</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">50</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="n">X</span><span class="p">[:</span><span class="mi">50</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">'0'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">50</span><span class="p">:,</span><span class="mi">0</span><span class="p">],</span><span class="n">X</span><span class="p">[</span><span class="mi">50</span><span class="p">:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">'1'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[4]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.legend.Legend at 0x2209922a630&gt;</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_png output_subarea">
+<img src="data:image/png;base64,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
+"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<hr/>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">SVM</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_iter</span> <span class="o">=</span> <span class="n">max_iter</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_kernel</span> <span class="o">=</span> <span class="n">kernel</span>
+    
+    <span class="k">def</span> <span class="nf">init_args</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">features</span><span class="o">.</span><span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Y</span> <span class="o">=</span> <span class="n">labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="mf">0.0</span>
+        
+        <span class="c1"># 将Ei保存在一个列表里</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">E</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_E</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)]</span>
+        <span class="c1"># 松弛变量</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">C</span> <span class="o">=</span> <span class="mf">1.0</span>
+        
+    <span class="k">def</span> <span class="nf">_KKT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="n">y_g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_g</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">y_g</span> <span class="o">&gt;=</span> <span class="mi">1</span>
+        <span class="k">elif</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">y_g</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">y_g</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+    
+    <span class="c1"># g(x)预测值，输入xi（X[i]）</span>
+    <span class="k">def</span> <span class="nf">_g</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">):</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">r</span>
+    
+    <span class="c1"># 核函数</span>
+    <span class="k">def</span> <span class="nf">kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kernel</span> <span class="o">==</span> <span class="s1">'linear'</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">([</span><span class="n">x1</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">x2</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)])</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kernel</span> <span class="o">==</span> <span class="s1">'poly'</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="nb">sum</span><span class="p">([</span><span class="n">x1</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">x2</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)])</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    
+        <span class="k">return</span> <span class="mi">0</span>
+    
+    <span class="c1"># E（x）为g(x)对输入x的预测值和y的差</span>
+    <span class="k">def</span> <span class="nf">_E</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_g</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="nf">_init_alpha</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># 外层循环首先遍历所有满足0&lt;a&lt;C的样本点，检验是否满足KKT</span>
+        <span class="n">index_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="p">]</span>
+        <span class="c1"># 否则遍历整个训练集</span>
+        <span class="n">non_satisfy_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">index_list</span><span class="p">]</span>
+        <span class="n">index_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">non_satisfy_list</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">index_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_KKT</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+                <span class="k">continue</span>
+            
+            <span class="n">E1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="c1"># 如果E2是+，选择最小的；如果E2是负的，选择最大的</span>
+            <span class="k">if</span> <span class="n">E1</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span>
+        
+    <span class="k">def</span> <span class="nf">_compare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_alpha</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">H</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">_alpha</span> <span class="o">&gt;</span> <span class="n">H</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">H</span>
+        <span class="k">elif</span> <span class="n">_alpha</span> <span class="o">&lt;</span> <span class="n">L</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">L</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_alpha</span>      
+    
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_args</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+        
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_iter</span><span class="p">):</span>
+            <span class="c1"># train</span>
+            <span class="n">i1</span><span class="p">,</span> <span class="n">i2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_init_alpha</span><span class="p">()</span>
+            
+            <span class="c1"># 边界</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">i2</span><span class="p">]:</span>
+                <span class="n">L</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i2</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="p">)</span>
+                <span class="n">H</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i2</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">L</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i2</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i1</span><span class="p">])</span>
+                <span class="n">H</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i2</span><span class="p">]</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i1</span><span class="p">])</span>
+                
+            <span class="n">E1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span>
+            <span class="n">E2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="p">[</span><span class="n">i2</span><span class="p">]</span>
+            <span class="c1"># eta=K11+K22-2K12</span>
+            <span class="n">eta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i1</span><span class="p">])</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i2</span><span class="p">])</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i2</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">eta</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># print('eta &lt;= 0')</span>
+                <span class="k">continue</span>
+                
+            <span class="n">alpha2_new_unc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i2</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">i2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">E2</span> <span class="o">-</span> <span class="n">E1</span><span class="p">)</span> <span class="o">/</span> <span class="n">eta</span>
+            <span class="n">alpha2_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compare</span><span class="p">(</span><span class="n">alpha2_new_unc</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">H</span><span class="p">)</span>
+            
+            <span class="n">alpha1_new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">i2</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i2</span><span class="p">]</span> <span class="o">-</span> <span class="n">alpha2_new</span><span class="p">)</span>
+            
+            <span class="n">b1_new</span> <span class="o">=</span> <span class="o">-</span><span class="n">E1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i1</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">alpha1_new</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i1</span><span class="p">])</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">i2</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i1</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">alpha2_new</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i2</span><span class="p">])</span><span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> 
+            <span class="n">b2_new</span> <span class="o">=</span> <span class="o">-</span><span class="n">E2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i2</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">alpha1_new</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i1</span><span class="p">])</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">i2</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i2</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">alpha2_new</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i2</span><span class="p">])</span><span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span> 
+            
+            <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">alpha1_new</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="p">:</span>
+                <span class="n">b_new</span> <span class="o">=</span> <span class="n">b1_new</span>
+            <span class="k">elif</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">alpha2_new</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">C</span><span class="p">:</span>
+                <span class="n">b_new</span> <span class="o">=</span> <span class="n">b2_new</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># 选择中点</span>
+                <span class="n">b_new</span> <span class="o">=</span> <span class="p">(</span><span class="n">b1_new</span> <span class="o">+</span> <span class="n">b2_new</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+                
+            <span class="c1"># 更新参数</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha1_new</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i2</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha2_new</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">b_new</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="p">[</span><span class="n">i1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_E</span><span class="p">(</span><span class="n">i1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">E</span><span class="p">[</span><span class="n">i2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_E</span><span class="p">(</span><span class="n">i2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">'train done!'</span>
+            
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">):</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            
+        <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">r</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+    
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">):</span>
+        <span class="n">right_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">)):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="n">y_test</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">right_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">right_count</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># linear model</span>
+        <span class="n">yx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">yx</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">w</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">svm</span> <span class="o">=</span> <span class="n">SVM</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">svm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[7]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>'train done!'</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">svm</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[8]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>0.92</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="sklearn.svm.SVC">sklearn.svm.SVC<a class="anchor-link" href="#sklearn.svm.SVC">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">SVC</span>
+<span class="n">clf</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">()</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[9]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
+  decision_function_shape='ovr', degree=3, gamma='auto', kernel='rbf',
+  max_iter=-1, probability=False, random_state=None, shrinking=True,
+  tol=0.001, verbose=False)</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[10]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>0.96</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="sklearn.svm.SVC">sklearn.svm.SVC<a class="anchor-link" href="#sklearn.svm.SVC">¶</a></h3><p><em>(C=1.0, kernel='rbf', degree=3, gamma='auto', coef0=0.0, shrinking=True, probability=False,tol=0.001, cache_size=200, class_weight=None, verbose=False, max_iter=-1, decision_function_shape=None,random_state=None)</em></p>
+<p>参数：</p>
+<ul>
+<li>C：C-SVC的惩罚参数C?默认值是1.0</li>
+</ul>
+<p>C越大，相当于惩罚松弛变量，希望松弛变量接近0，即对误分类的惩罚增大，趋向于对训练集全分对的情况，这样对训练集测试时准确率很高，但泛化能力弱。C值小，对误分类的惩罚减小，允许容错，将他们当成噪声点，泛化能力较强。</p>
+<ul>
+<li><p>kernel ：核函数，默认是rbf，可以是‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’</p>
+<p>– 线性：u'v</p>
+<p>– 多项式：(gamma<em>u'</em>v + coef0)^degree</p>
+<p>– RBF函数：exp(-gamma|u-v|^2)</p>
+<p>– sigmoid：tanh(gamma<em>u'</em>v + coef0)</p>
+</li>
+</ul>
+<ul>
+<li>degree ：多项式poly函数的维度，默认是3，选择其他核函数时会被忽略。</li>
+</ul>
+<ul>
+<li>gamma ： ‘rbf’,‘poly’ 和‘sigmoid’的核函数参数。默认是’auto’，则会选择1/n_features</li>
+</ul>
+<ul>
+<li>coef0 ：核函数的常数项。对于‘poly’和 ‘sigmoid’有用。</li>
+</ul>
+<ul>
+<li>probability ：是否采用概率估计？.默认为False</li>
+</ul>
+<ul>
+<li>shrinking ：是否采用shrinking heuristic方法，默认为true</li>
+</ul>
+<ul>
+<li>tol ：停止训练的误差值大小，默认为1e-3</li>
+</ul>
+<ul>
+<li>cache_size ：核函数cache缓存大小，默认为200</li>
+</ul>
+<ul>
+<li>class_weight ：类别的权重，字典形式传递。设置第几类的参数C为weight*C(C-SVC中的C)</li>
+</ul>
+<ul>
+<li>verbose ：允许冗余输出？</li>
+</ul>
+<ul>
+<li>max_iter ：最大迭代次数。-1为无限制。</li>
+</ul>
+<ul>
+<li>decision_function_shape ：‘ovo’, ‘ovr’ or None, default=None3</li>
+</ul>
+<ul>
+<li>random_state ：数据洗牌时的种子值，int值</li>
+</ul>
+<p>主要调节的参数有：C、kernel、degree、gamma、coef0。</p>
+</div>
+</div>
+</div>
+</body>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+</div>
+
+
+            <footer>
+<span class="byline author vcard">
+    Posted by
+    <span class="fn">
+            niult
+    </span>
+</span><time datetime="2018-01-01T00:00:00+08:00" pubdate>2018-01-01 00:00</time><span class="categories">
+        <a href="../../../category/tools.html">tools</a>
+</span>
+
+    <span class="categories">
+            <a class="category" href="../../../tag/python.html">python</a>, 
+            <a class="category" href="../../../tag/numpy.html">numpy</a>
+    </span>
+
+<div class="sharing">
+</div>            </footer>
+        </article>
+
+    </div>
+<aside class="sidebar">
+    <section>
+        <h1>Recent Posts</h1>
+        <ul id="recent_posts">
+                <li class="post">
+                    <a href="../../../pages/2019/01/21-a-first-look-at-a-neural-network.html">2.1-a-first-look-at-a-neural-network</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/35-classifying-movie-reviews.html">3.5-classifying-movie-reviews</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/36-classifying-newswires.html">3.6-classifying-newswires</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/37-predicting-house-prices.html">3.7-predicting-house-prices</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/44-overfitting-and-underfitting.html">4.4-overfitting-and-underfitting</a>
+                </li>
+        </ul>
+    </section>
+        <section>
+
+            <h1>Categories</h1>
+            <ul id="recent_posts">
+                    <li><a href="../../../category/01chang yong gong ju.html">01常用工具</a></li>
+                    <li><a href="../../../category/02.wo ai du shu.html">02.我爱读书</a></li>
+                    <li><a href="../../../category/algorithms.html">algorithms</a></li>
+                    <li><a href="../../../category/book.html">book</a></li>
+                    <li><a href="../../../category/book-pydata.html">book-pydata</a></li>
+                    <li><a href="../../../category/deep-learning-with-python.html">deep-learning-with-python</a></li>
+                    <li><a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a></li>
+                    <li><a href="../../../category/ke wai du wu.html">课外读物</a></li>
+                    <li><a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a></li>
+                    <li><a href="../../../category/shen du xue xi.html">深度学习</a></li>
+                    <li><a href="../../../category/shen jing wang luo.html">神经网络</a></li>
+                    <li><a href="../../../category/shu ju wa jue.html">数据挖掘</a></li>
+                    <li><a href="../../../category/shu xue ji chu.html">数学基础</a></li>
+                    <li><a href="../../../category/tf-example.html">tf-example</a></li>
+                    <li><a href="../../../category/tool1.html">tool1</a></li>
+                    <li><a href="../../../category/tool2.html">tool2</a></li>
+                    <li><a href="../../../category/tools.html">tools</a></li>
+                    <li><a href="../../../category/tui jian xi tong.html">推荐系统</a></li>
+                    <li><a href="../../../category/wen ben wa jue.html">文本挖掘</a></li>
+            </ul>
+        </section>
+
+
+    <section>
+        <h1>Tags</h1>
+            <a href="../../../tag/python.html">python</a>, 
+            <a href="../../../tag/numpy.html">numpy</a>, 
+            <a href="../../../tag/deep-learning.html">deep-learning</a>, 
+            <a href="../../../tag/algorithms.html">algorithms</a>, 
+            <a href="../../../tag/wen-ben-wa-jue.html">文本挖掘</a>, 
+            <a href="../../../tag/shen-jing-wang-luo.html">神经网络</a>, 
+            <a href="../../../tag/shu-xue-ji-chu.html">数学基础</a>, 
+            <a href="../../../tag/nlp.html">nlp</a>, 
+            <a href="../../../tag/tf-example.html">tf-example</a>, 
+            <a href="../../../tag/tui-jian-xi-tong.html">推荐系统</a>, 
+            <a href="../../../tag/tf.html">tf</a>, 
+            <a href="../../../tag/ji-huo-han-shu.html">激活函数</a>, 
+            <a href="../../../tag/mapreduce.html">mapreduce</a>, 
+            <a href="../../../tag/spark.html">spark</a>, 
+            <a href="../../../tag/handbook.html">handbook</a>, 
+            <a href="../../../tag/matplotlib.html">matplotlib</a>, 
+            <a href="../../../tag/scikit-learn.html">scikit-learn</a>, 
+            <a href="../../../tag/latex.html">latex</a>, 
+            <a href="../../../tag/pandas.html">pandas</a>, 
+            <a href="../../../tag/jupyter.html">jupyter</a>, 
+            <a href="../../../tag/plot.html">plot</a>, 
+            <a href="../../../tag/pip.html">pip</a>, 
+            <a href="../../../tag/geng-xin-suo-you-mo-kuai.html">更新所有模块</a>, 
+            <a href="../../../tag/shen-du-xue-xi.html">深度学习</a>, 
+            <a href="../../../tag/xun-huan-shen-jing-wang-luo.html">循环神经网络</a>, 
+            <a href="../../../tag/pangrank.html">PangRank</a>, 
+            <a href="../../../tag/book.html">book</a>, 
+            <a href="../../../tag/pydata.html">pydata</a>, 
+            <a href="../../../tag/shell.html">shell</a>, 
+            <a href="../../../tag/pyhton.html">pyhton</a>
+    </section>
+
+
+
+    <section>
+        <h1>GitHub Repos</h1>
+            <a href="https://github.com/1007530194">@1007530194</a> on GitHub
+    </section>
+
+</aside>    </div>
+</div>
+<footer role="contentinfo"><p>
+        活到老，学到老，玩到老
+    <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-132396898-1', 'auto');
+
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    </script>
+</body>
+</html>

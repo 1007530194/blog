@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+    <head>
+<meta charset="utf-8">
+<title>DNN-深度神经网络 &mdash; 魑魅魍魉</title>
+
+<meta name="author" content="niult">
+
+
+
+
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link href="../../../theme/css/main.css" media="screen, projection"
+      rel="stylesheet" type="text/css">
+
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<script src="../../../theme/js/modernizr-2.0.js"></script>
+<script src="../../../theme/js/ender.js"></script>
+<script src="../../../theme/js/octopress.js" type="text/javascript"></script>
+<script src="../../../theme/js/echarts.min.js" type="text/javascript"></script>
+<script src="../../../theme/js/require.min.js" type="text/javascript"></script>
+
+<header role="banner"><hgroup>
+  <h1><a href="../../../">魑魅魍魉</a></h1>
+</hgroup></header>
+<nav role="navigation">    <ul class="subscription" data-subscription="rss">
+    </ul>
+
+
+<ul class="main-navigation">
+            <li >
+                <a href="../../../category/01chang yong gong ju.html">01常用工具</a>
+            </li>
+            <li >
+                <a href="../../../category/02.wo ai du shu.html">02.我爱读书</a>
+            </li>
+            <li >
+                <a href="../../../category/algorithms.html">Algorithms</a>
+            </li>
+            <li >
+                <a href="../../../category/book.html">Book</a>
+            </li>
+            <li >
+                <a href="../../../category/book-pydata.html">Book-pydata</a>
+            </li>
+            <li >
+                <a href="../../../category/deep-learning-with-python.html">Deep-learning-with-python</a>
+            </li>
+            <li >
+                <a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a>
+            </li>
+            <li >
+                <a href="../../../category/ke wai du wu.html">课外读物</a>
+            </li>
+            <li >
+                <a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen du xue xi.html">深度学习</a>
+            </li>
+            <li class="active">
+                <a href="../../../category/shen jing wang luo.html">神经网络</a>
+            </li>
+            <li >
+                <a href="../../../category/shu ju wa jue.html">数据挖掘</a>
+            </li>
+            <li >
+                <a href="../../../category/shu xue ji chu.html">数学基础</a>
+            </li>
+            <li >
+                <a href="../../../category/tf-example.html">Tf-example</a>
+            </li>
+            <li >
+                <a href="../../../category/tool1.html">Tool1</a>
+            </li>
+            <li >
+                <a href="../../../category/tool2.html">Tool2</a>
+            </li>
+            <li >
+                <a href="../../../category/tools.html">Tools</a>
+            </li>
+            <li >
+                <a href="../../../category/tui jian xi tong.html">推荐系统</a>
+            </li>
+            <li >
+                <a href="../../../category/wen ben wa jue.html">文本挖掘</a>
+            </li>
+</ul>
+</nav>
+<div id="main">
+    <div id="content">
+    <div>
+
+        <h4>Contents</h4>
+        
+
+        <article class="hentry" role="article">
+<header>
+        <h1 class="entry-title">DNN-深度神经网络</h1>
+    <p class="meta">
+<time datetime="2019-01-16T00:00:00+08:00" pubdate>2019-01-16 00:00</time>    </p>
+</header>
+
+    <div class="entry-content"><style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style><body>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="简介">简介<a class="anchor-link" href="#简介">¶</a></h1><p>深度神经网络（Deep Neural Networks， 以下简称DNN）是深度学习的基础，而要理解DNN，首先我们要理解DNN模型，下面我们就对DNN的模型与前向传播算法做一个总结。</p>
+<h1 id="从感知机到神经网络">从感知机到神经网络<a class="anchor-link" href="#从感知机到神经网络">¶</a></h1><p>在<a href="http://www.cnblogs.com/pinard/p/6042320.html">感知机原理小结</a>中，我们介绍过感知机的模型，它是一个有若干输入和一个输出的模型，如下图:</p>
+<p><img alt="" src="https://images2015.cnblogs.com/blog/1042406/201702/1042406-20170220110637351-839081092.png"/></p>
+<p>输出和输入之间学习到一个线性关系，得到中间输出结果：$$z=\sum\limits_{i=1}^mw_ix_i + b$$</p>
+<p>接着是一个神经元激活函数:</p>
+<p>$$sign(z)=
+\begin{cases}
+-1&amp; {z&lt;0}\\
+1&amp; {z\geq 0}
+\end{cases}$$</p>
+<p>从而得到我们想要的输出结果1或者-1。</p>
+<p>这个模型只能用于二元分类，且无法学习比较复杂的非线性模型，因此在工业界无法使用。</p>
+<p>而神经网络则在感知机的模型上做了扩展，总结下主要有三点：</p>
+<p>1）加入了隐藏层，隐藏层可以有多层，增强模型的表达能力，如下图实例，当然增加了这么多隐藏层模型的复杂度也增加了好多。</p>
+<p><img alt="" src="https://images2015.cnblogs.com/blog/1042406/201702/1042406-20170220111519210-2096738104.png"/></p>
+<p>2）输出层的神经元也可以不止一个输出，可以有多个输出，这样模型可以灵活的应用于分类回归，以及其他的机器学习领域比如降维和聚类等。多个神经元输出的输出层对应的一个实例如下图，输出层现在有4个神经元了。</p>
+<p><img alt="" src="https://images2015.cnblogs.com/blog/1042406/201702/1042406-20170220122136538-2002639053.png"/></p>
+<p>3） 对激活函数做扩展，感知机的激活函数是$sign(z)$,虽然简单但是处理能力有限，因此神经网络中一般使用的其他的激活函数，比如我们在逻辑回归里面使用过的Sigmoid函数，即：$$f(z)=\frac{1}{1+e^{-z}}$$</p>
+<p>还有后来出现的tanx, softmax,和ReLU等。通过使用不同的激活函数，神经网络的表达能力进一步增强。对于各种常用的激活函数，我们在后面再专门讲。</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="DNN的基本结构">DNN的基本结构<a class="anchor-link" href="#DNN的基本结构">¶</a></h1><p>上一节我们了解了神经网络基于感知机的扩展，而DNN可以理解为有很多隐藏层的神经网络。这个很多其实也没有什么度量标准, 多层神经网络和深度神经网络DNN其实也是指的一个东西，当然，DNN有时也叫做多层感知机（Multi-Layer perceptron,MLP）, 名字实在是多。后面我们讲到的神经网络都默认为DNN。</p>
+<p>从DNN按不同层的位置划分，DNN内部的神经网络层可以分为三类，输入层，隐藏层和输出层,如下图示例，一般来说第一层是输入层，最后一层是输出层，而中间的层数都是隐藏层。</p>
+<p><img alt="" src="https://images2015.cnblogs.com/blog/1042406/201702/1042406-20170220122323148-1704308672.png"/></p>
+<p>层与层之间是全连接的，也就是说，第i层的任意一个神经元一定与第i+1层的任意一个神经元相连。虽然DNN看起来很复杂，但是从小的局部模型来说，还是和感知机一样，即一个线性关系$z=\sum\limits w_ix_i + b$加上一个激活函数$\sigma(z)$。</p>
+<p>由于DNN层数多，则我们的线性关系系数$w$和偏倚$b$的数量也就是很多了。具体的参数在DNN是如何定义的呢？</p>
+<p>首先我们来看看线性关系系数$w$的定义。以下图一个三层的DNN为例，第二层的第4个神经元到第三层的第2个神经元的线性系数定义为$w_{24}^3$。上标3代表线性系数$w$所在的层数，而下标对应的是输出的第三层索引2和输入的第二层索引4。你也许会问，为什么不是$w_{42}^3$, 而是$w_{24}^3$呢？这主要是为了便于模型用于矩阵表示运算，如果是$w_{42}^3$而每次进行矩阵运算是$w^Tx+b$，需要进行转置。将输出的索引放在前面的话，则线性运算不用转置,即直接为$wx+b$。总结下，第$l-1$层的第k个神经元到第$l$层的第j个神经元的线性系数定义为$w_{jk}^l$。注意，输入层是没有$w$参数的。</p>
+<p><img alt="" src="https://images2015.cnblogs.com/blog/1042406/201702/1042406-20170220134346179-1092973493.png"/></p>
+<p>再来看看偏倚$b$的定义。还是以这个三层的DNN为例，第二层的第三个神经元对应的偏倚定义为$b_3^{2}$。其中，上标2代表所在的层数，下标3代表偏倚所在的神经元的索引。同样的道理，第三个的第一个神经元的偏倚应该表示为$b_1^{3}$。同样的，输入层是没有偏倚参数$b$的。</p>
+<p><img alt="" src="https://images2015.cnblogs.com/blog/1042406/201702/1042406-20170220135433710-1242346730.png"/></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="前向传播算法">前向传播算法<a class="anchor-link" href="#前向传播算法">¶</a></h1><h2 id="数学原理">数学原理<a class="anchor-link" href="#数学原理">¶</a></h2><p>在上一节，我们已经介绍了DNN各层线性关系系数$w$,偏倚$b$的定义。假设我们选择的激活函数是$\sigma(z)$，隐藏层和输出层的输出值为$a$，则对于下图的三层DNN,利用和感知机一样的思路，我们可以利用上一层的输出计算下一层的输出，也就是所谓的DNN前向传播算法。</p>
+<p><img alt="" src="quiver-image-url/72C7151619EBDAECF8A6E0C0AD23ADE9.png"/></p>
+<p>对于第二层的的输出$a_1^2,a_2^2,a_3^2$，我们有：</p>
+<p>$$a_1^2=\sigma(z_1^2) = \sigma(w_{11}^2x_1 + w_{12}^2x_2 + w_{13}^2x_3 + b_1^{2})$$</p>
+<p>$$a_2^2=\sigma(z_2^2) = \sigma(w_{21}^2x_1 + w_{22}^2x_2 + w_{23}^2x_3 + b_2^{2})$$</p>
+<p>$$a_3^2=\sigma(z_3^2) = \sigma(w_{31}^2x_1 + w_{32}^2x_2 + w_{33}^2x_3 + b_3^{2})$$</p>
+<p>对于第三层的的输出$a_1^3$，我们有：</p>
+<p>$$a_1^3=\sigma(z_1^3) = \sigma(w_{11}^3a_1^2 + w_{12}^3a_2^2 + w_{13}^3a_3^2 + b_1^{3})$$</p>
+<p>将上面的例子一般化，假设第$l-1$层共有m个神经元，则对于第$l$层的第j个神经元的输出$a_j^l$，我们有：</p>
+<p>$$a_j^l = \sigma(z_j^l) = \sigma(\sum\limits_{k=1}^mw_{jk}^la_k^{l-1} + b_j^l)$$</p>
+<p>其中，如果$l=2$,则对于的$a_k^1$即为输入层的$x_k$。</p>
+<p>从上面可以看出，使用代数法一个个的表示输出比较复杂，而如果使用矩阵法则比较的简洁。假设第$l-1$层共有m个神经元，而第$l$层共有n个神经元，则第$l$层的线性系数$w$组成了一个$n \times m$的矩阵$W^l$, 第$l$层的偏倚$b$组成了一个$n \times 1$的向量$b^l$ , 第$l-1$层的的输出$a$组成了一个$m \times 1$的向量$a^{l-1}$，第$l$层的的未激活前线性输出$z$组成了一个$n \times 1$的向量$z^{l}$, 第$l$层的的输出$a$组成了一个$n \times 1$的向量$a^{l}$。则用矩阵法表示，第l层的输出为：</p>
+<p>$$a^l = \sigma(z^l) = \sigma(W^la^{l-1} + b^l)$$</p>
+<p>这个表示方法简洁漂亮，后面我们的讨论都会基于上面的这个矩阵法表示来。</p>
+<h2 id="前向传播算法">前向传播算法<a class="anchor-link" href="#前向传播算法">¶</a></h2><p>有了上一节的数学推导，DNN的前向传播算法也就不难了。所谓的DNN的前向传播算法也就是利用我们的若干个权重系数矩阵$W$,偏倚向量$b$来和输入值向量$x$进行一系列线性运算和激活运算，从输入层开始，一层层的向后计算，一直到运算到输出层，得到输出结果为值。</p>
+<p>输入: 总层数L，所有隐藏层和输出层对应的矩阵$W$,偏倚向量$b$，输入值向量$x$</p>
+<p>输出：输出层的输出$a^L$</p>
+<p>1） 初始化$a^1 = x $</p>
+<p>2) for $l = 2$ to $L$, 计算：$$a^l = \sigma(z^l) = \sigma(W^la^{l-1} + b^l)$$</p>
+<p>最后的结果即为输出$a^L$。</p>
+<h2 id="前向传播算法小结">前向传播算法小结<a class="anchor-link" href="#前向传播算法小结">¶</a></h2><p>单独看DNN前向传播算法，似乎没有什么大用处，而且这一大堆的矩阵$W$,偏倚向量$b$对应的参数怎么获得呢？怎么得到最优的矩阵$W$,偏倚向量$b$呢？这个我们在讲DNN的反向传播算法时再讲。而理解反向传播算法的前提就是理解DNN的模型与前向传播算法。这也是我们这一篇先讲的原因。</p>
+<p>在<a href="http://www.cnblogs.com/pinard/p/6418668.html">深度神经网络（DNN）模型与前向传播算法</a>中，我们对DNN的模型和前向传播算法做了总结，这里我们更进一步，对DNN的反向传播算法（Back Propagation，BP）做一个总结。</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="反向传播算法">反向传播算法<a class="anchor-link" href="#反向传播算法">¶</a></h1><p>在了解DNN的反向传播算法前，我们先要知道DNN反向传播算法要解决的问题，也就是说，什么时候我们需要这个反向传播算法？</p>
+<p>回到我们监督学习的一般问题，假设我们有m个训练样本：$\{(x_1,y_1), (x_2,y_2), ..., (x_m,y_m)\}$,其中$x$为输入向量，特征维度为$n\_in$,而$y$为输出向量，特征维度为$n\_out$。我们需要利用这m个样本训练出一个模型，当有一个新的测试样本$(x_{test},?)$来到时, 我们可以预测$y_{test}$向量的输出。</p>
+<p>如果我们采用DNN的模型，即我们使输入层有$n\_in$个神经元，而输出层有$n\_out$个神经元。再加上一些含有若干神经元的隐藏层。此时我们需要找到合适的所有隐藏层和输出层对应的线性系数矩阵$W$,偏倚向量$b$,让所有的训练样本输入计算出的输出尽可能的等于或很接近样本输出。怎么找到合适的参数呢？</p>
+<p>如果大家对传统的机器学习的算法优化过程熟悉的话，这里就很容易联想到我们可以用一个合适的损失函数来度量训练样本的输出损失，接着对这个损失函数进行优化求最小化的极值，对应的一系列线性系数矩阵$W$,偏倚向量$b$即为我们的最终结果。在DNN中，损失函数优化极值求解的过程最常见的一般是通过梯度下降法来一步步迭代完成的，当然也可以是其他的迭代方法比如牛顿法与拟牛顿法。如果大家对梯度下降法不熟悉，建议先阅读我之前写的<a href="http://www.cnblogs.com/pinard/p/5970503.html">梯度下降（Gradient Descent）小结</a>。</p>
+<p>对DNN的损失函数用梯度下降法进行迭代优化求极小值的过程即为我们的反向传播算法。</p>
+<h2 id="反向传播算法的基本思路">反向传播算法的基本思路<a class="anchor-link" href="#反向传播算法的基本思路">¶</a></h2><p>在进行DNN反向传播算法前，我们需要选择一个损失函数，来度量训练样本计算出的输出和真实的训练样本输出之间的损失。你也许会问：训练样本计算出的输出是怎么得来的？这 个输出是随机选择一系列$W,b$,用我们上一节的前向传播算法计算出来的。即通过一系列的计算：$a^l = \sigma(z^l) = \sigma(W^la^{l-1} + b^l)$。计算到输出层第$L$层对应的$a^L$即为前向传播算法计算出来的输出。</p>
+<p>回到损失函数，DNN可选择的损失函数有不少，为了专注算法，这里我们使用最常见的均方差来度量损失。即对于每个样本，我们期望最小化下式：</p>
+<p>$$J(W,b,x,y) = \frac{1}{2}||a^L-y||_2^2$$</p>
+<p>其中，$a^L$和$y$为特征维度为$n\_out$的向量,而$||S||_2$为S的L2范数。</p>
+<p>损失函数有了，现在我们开始用梯度下降法迭代求解每一层的$W,b$。</p>
+<p>首先是输出层第$L$层。注意到输出层的$W,b$满足下式：</p>
+<p>$$a^L = \sigma(z^L) = \sigma(W^La^{L-1} + b^L)$$</p>
+<p>这样对于输出层的参数，我们的损失函数变为：</p>
+<p>$$J(W,b,x,y) = \frac{1}{2}||a^L-y||_2^2 = \frac{1}{2}|| \sigma(W^La^{L-1} + b^L)-y||_2^2$$</p>
+<p>这样求解$W,b$的梯度就简单了：</p>
+<p>$$\frac{\partial J(W,b,x,y)}{\partial W^L} = \frac{\partial J(W,b,x,y)}{\partial z^L}\frac{\partial z^L}{\partial W^L} =(a^L-y) \odot \sigma^{'}(z^L)(a^{L-1})^T$$</p>
+<p>$$\frac{\partial J(W,b,x,y)}{\partial b^L} = \frac{\partial J(W,b,x,y)}{\partial z^L}\frac{\partial z^L}{\partial b^L} =(a^L-y)\odot \sigma^{'}(z^L)$$</p>
+<p>注意上式中有一个符号$\odot$,它代表Hadamard积，对于两个维度相同的向量$A（a_1,a_2,...a_n）^T$和$B（b_1,b_2,...b_n）^T$,则$A \odot B = (a_1b_1, a_2b_2,...a_nb_n)^T$。</p>
+<p>我们注意到在求解输出层的$W,b$的时候，有公共的部分$\frac{\partial J(W,b,x,y)}{\partial z^L}$，因此我们可以把公共的部分即对$z^L$先算出来，记为：</p>
+<p>$$\delta^L = \frac{\partial J(W,b,x,y)}{\partial z^L} = (a^L-y)\odot \sigma^{'}(z^L)$$</p>
+<p>现在我们终于把输出层的梯度算出来了，那么如何计算上一层$L-1$层的梯度，上上层$L-2$层的梯度呢？这里我们需要一步步的递推，注意到对于第$l$层的未激活输出$z^l$，它的梯度可以表示为:</p>
+<p>$$\delta^l =\frac{\partial J(W,b,x,y)}{\partial z^l} = \frac{\partial J(W,b,x,y)}{\partial z^L}\frac{\partial z^L}{\partial z^{L-1}}\frac{\partial z^{L-1}}{\partial z^{L-2}}...\frac{\partial z^{l+1}}{\partial z^{l}}$$</p>
+<p>如果我们可以依次计算出第$l$层的$\delta^l$,则该层的$W^l,b^l$很容易计算？为什么呢？注意到根据前向传播算法，我们有：$$z^l= W^la^{l-1} + b^l$$</p>
+<p>所以根据上式我们可以很方便的计算出第l层的$W^l,b^l$的梯度如下：</p>
+<p>$$\frac{\partial J(W,b,x,y)}{\partial W^l} = \frac{\partial J(W,b,x,y)}{\partial z^l} \frac{\partial z^l}{\partial W^l} = \delta^{l}(a^{l-1})^T$$$$\frac{\partial J(W,b,x,y)}{\partial b^l} = \frac{\partial J(W,b,x,y)}{\partial z^l} \frac{\partial z^l}{\partial b^l} = \delta^{l}$$</p>
+<p>那么现在问题的关键就是要求出$ \delta^{l}$了。这里我们用数学归纳法，第$L$层的$\delta^{L}$上面我们已经求出， 假设第$l+1$层的$\delta^{l+1}$已经求出来了，那么我们如何求出第$l$层的$\delta^{l}$呢？我们注意到：</p>
+<p>$$\delta^{l} = \frac{\partial J(W,b,x,y)}{\partial z^l} = \frac{\partial J(W,b,x,y)}{\partial z^{l+1}}\frac{\partial z^{l+1}}{\partial z^{l}} = \delta^{l+1}\frac{\partial z^{l+1}}{\partial z^{l}}$$</p>
+<p>可见，用归纳法递推$\delta^{l+1}$和$\delta^{l}$的关键在于求解$\frac{\partial z^{l+1}}{\partial z^{l}}$。</p>
+<p>而$z^{l+1}$和$z^{l}$的关系其实很容易找出：</p>
+<p>$$z^{l+1}= W^{l+1}a^{l} + b^{l+1} = W^{l+1}\sigma(z^l) + b^{l+1} $$</p>
+<p>这样很容易求出：</p>
+<p>$$\frac{\partial z^{l+1}}{\partial z^{l}} = (W^{l+1})^T\odot \underbrace{(\sigma^{'}(z^l),..,\sigma^{'}(z^l))}_{n_{l+1}}$$</p>
+<p>将上式带入上面$\delta^{l+1}$和$\delta^{l}$关系式我们得到：</p>
+<p>$$\delta^{l} = \delta^{l+1}\frac{\partial z^{l+1}}{\partial z^{l}} = (W^{l+1})^T\delta^{l+1}\odot \sigma^{'}(z^l)$$</p>
+<p>现在我们得到了$\delta^{l}$的递推关系式，只要求出了某一层的$\delta^{l}$，求解$W^l,b^l$的对应梯度就很简单的。</p>
+<h2 id="反向传播算法过程">反向传播算法过程<a class="anchor-link" href="#反向传播算法过程">¶</a></h2><p>现在我们总结下DNN反向传播算法的过程。由于梯度下降法有批量（Batch），小批量(mini-Batch)，随机三个变种，为了简化描述，这里我们以最基本的批量梯度下降法为例来描述反向传播算法。实际上在业界使用最多的是mini-Batch的梯度下降法。不过区别仅仅在于迭代时训练样本的选择而已。</p>
+<p>输入: 总层数L，以及各隐藏层与输出层的神经元个数，激活函数，损失函数，迭代步长$\alpha$,最大迭代次数MAX与停止迭代阈值$\epsilon$，输入的m个训练样本$\{(x_1,y_1), (x_2,y_2), ..., (x_m,y_m)\}$</p>
+<p>输出：各隐藏层与输出层的线性关系系数矩阵$W$和偏倚向量$b$</p>
+<p>1) 初始化各隐藏层与输出层的线性关系系数矩阵$W$和偏倚向量$b$的值为一个随机值。</p>
+<p>2）for iter to 1 to MAX：</p>
+<p>2-1) for i =1 to m：</p>
+<p>a) 将DNN输入$a^1$设置为$x_i$</p>
+<p>b) for $l$=2 to L，进行前向传播算法计算$a^{i,l} = \sigma(z^{i,l}) = \sigma(W^la^{i,l-1} + b^l)$</p>
+<p>c) 通过损失函数计算输出层的$\delta^{i,L}$</p>
+<p>d) for $l$= L-1 to 2, 进行反向传播算法计算$\delta^{i,l} = (W^{l+1})^T\delta^{i,l+1}\odot \sigma^{'}(z^{i,l})$</p>
+<p>2-2) for $l$ = 2 to L，更新第$l$层的$W^l,b^l$:</p>
+<p>$$W^l = W^l -\alpha \sum\limits_{i=1}^m \delta^{i,l}(a^{i, l-1})^T $$</p>
+<p>$$b^l = b^l -\alpha \sum\limits_{i=1}^m \delta^{i,l}$$</p>
+<p>2-3) 如果所有$W，b$的变化值都小于停止迭代阈值$\epsilon$，则跳出迭代循环到步骤3。</p>
+<p>3） 输出各隐藏层与输出层的线性关系系数矩阵$W$和偏倚向量$b$。</p>
+<h2 id="反向传播算法小结">反向传播算法小结<a class="anchor-link" href="#反向传播算法小结">¶</a></h2><p>有了DNN反向传播算法，我们就可以很方便的用DNN的模型去解决第一节里面提到了各种监督学习的分类回归问题。当然DNN的参数众多，矩阵运算量也很大，直接使用会有各种各样的问题。有哪些问题以及如何尝试解决这些问题并优化DNN模型与算法，我们在下一篇讲。</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="参考文献">参考文献<a class="anchor-link" href="#参考文献">¶</a></h1><p><a href="https://www.cnblogs.com/pinard/p/6418668.html">深度神经网络（DNN）模型与前向传播算法</a><br/>
+<a href="https://www.cnblogs.com/pinard/p/6422831.html">深度神经网络（DNN）反向传播算法(BP)</a></p>
+</div>
+</div>
+</div>
+</body>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+</div>
+
+
+            <footer>
+<span class="byline author vcard">
+    Posted by
+    <span class="fn">
+            niult
+    </span>
+</span><time datetime="2019-01-16T00:00:00+08:00" pubdate>2019-01-16 00:00</time><span class="categories">
+        <a href="../../../category/shen jing wang luo.html">神经网络</a>
+</span>
+
+    <span class="categories">
+            <a class="category" href="../../../tag/python.html">python</a>, 
+            <a class="category" href="../../../tag/numpy.html">numpy</a>, 
+            <a class="category" href="../../../tag/shen-jing-wang-luo.html">神经网络</a>
+    </span>
+
+<div class="sharing">
+</div>            </footer>
+        </article>
+
+    </div>
+<aside class="sidebar">
+    <section>
+        <h1>Recent Posts</h1>
+        <ul id="recent_posts">
+                <li class="post">
+                    <a href="../../../pages/2019/01/21-a-first-look-at-a-neural-network.html">2.1-a-first-look-at-a-neural-network</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/35-classifying-movie-reviews.html">3.5-classifying-movie-reviews</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/36-classifying-newswires.html">3.6-classifying-newswires</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/37-predicting-house-prices.html">3.7-predicting-house-prices</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/44-overfitting-and-underfitting.html">4.4-overfitting-and-underfitting</a>
+                </li>
+        </ul>
+    </section>
+        <section>
+
+            <h1>Categories</h1>
+            <ul id="recent_posts">
+                    <li><a href="../../../category/01chang yong gong ju.html">01常用工具</a></li>
+                    <li><a href="../../../category/02.wo ai du shu.html">02.我爱读书</a></li>
+                    <li><a href="../../../category/algorithms.html">algorithms</a></li>
+                    <li><a href="../../../category/book.html">book</a></li>
+                    <li><a href="../../../category/book-pydata.html">book-pydata</a></li>
+                    <li><a href="../../../category/deep-learning-with-python.html">deep-learning-with-python</a></li>
+                    <li><a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a></li>
+                    <li><a href="../../../category/ke wai du wu.html">课外读物</a></li>
+                    <li><a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a></li>
+                    <li><a href="../../../category/shen du xue xi.html">深度学习</a></li>
+                    <li><a href="../../../category/shen jing wang luo.html">神经网络</a></li>
+                    <li><a href="../../../category/shu ju wa jue.html">数据挖掘</a></li>
+                    <li><a href="../../../category/shu xue ji chu.html">数学基础</a></li>
+                    <li><a href="../../../category/tf-example.html">tf-example</a></li>
+                    <li><a href="../../../category/tool1.html">tool1</a></li>
+                    <li><a href="../../../category/tool2.html">tool2</a></li>
+                    <li><a href="../../../category/tools.html">tools</a></li>
+                    <li><a href="../../../category/tui jian xi tong.html">推荐系统</a></li>
+                    <li><a href="../../../category/wen ben wa jue.html">文本挖掘</a></li>
+            </ul>
+        </section>
+
+
+    <section>
+        <h1>Tags</h1>
+            <a href="../../../tag/python.html">python</a>, 
+            <a href="../../../tag/numpy.html">numpy</a>, 
+            <a href="../../../tag/deep-learning.html">deep-learning</a>, 
+            <a href="../../../tag/algorithms.html">algorithms</a>, 
+            <a href="../../../tag/wen-ben-wa-jue.html">文本挖掘</a>, 
+            <a href="../../../tag/shen-jing-wang-luo.html">神经网络</a>, 
+            <a href="../../../tag/shu-xue-ji-chu.html">数学基础</a>, 
+            <a href="../../../tag/nlp.html">nlp</a>, 
+            <a href="../../../tag/tf-example.html">tf-example</a>, 
+            <a href="../../../tag/tui-jian-xi-tong.html">推荐系统</a>, 
+            <a href="../../../tag/tf.html">tf</a>, 
+            <a href="../../../tag/ji-huo-han-shu.html">激活函数</a>, 
+            <a href="../../../tag/mapreduce.html">mapreduce</a>, 
+            <a href="../../../tag/spark.html">spark</a>, 
+            <a href="../../../tag/handbook.html">handbook</a>, 
+            <a href="../../../tag/matplotlib.html">matplotlib</a>, 
+            <a href="../../../tag/scikit-learn.html">scikit-learn</a>, 
+            <a href="../../../tag/latex.html">latex</a>, 
+            <a href="../../../tag/pandas.html">pandas</a>, 
+            <a href="../../../tag/jupyter.html">jupyter</a>, 
+            <a href="../../../tag/plot.html">plot</a>, 
+            <a href="../../../tag/pip.html">pip</a>, 
+            <a href="../../../tag/geng-xin-suo-you-mo-kuai.html">更新所有模块</a>, 
+            <a href="../../../tag/shen-du-xue-xi.html">深度学习</a>, 
+            <a href="../../../tag/xun-huan-shen-jing-wang-luo.html">循环神经网络</a>, 
+            <a href="../../../tag/pangrank.html">PangRank</a>, 
+            <a href="../../../tag/book.html">book</a>, 
+            <a href="../../../tag/pydata.html">pydata</a>, 
+            <a href="../../../tag/shell.html">shell</a>, 
+            <a href="../../../tag/pyhton.html">pyhton</a>
+    </section>
+
+
+
+    <section>
+        <h1>GitHub Repos</h1>
+            <a href="https://github.com/1007530194">@1007530194</a> on GitHub
+    </section>
+
+</aside>    </div>
+</div>
+<footer role="contentinfo"><p>
+        活到老，学到老，玩到老
+    <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-132396898-1', 'auto');
+
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    </script>
+</body>
+</html>

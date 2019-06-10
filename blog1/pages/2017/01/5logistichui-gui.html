@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+    <head>
+<meta charset="utf-8">
+<title>5.Logistic回归 &mdash; 魑魅魍魉</title>
+
+<meta name="author" content="niult">
+
+
+
+
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link href="../../../theme/css/main.css" media="screen, projection"
+      rel="stylesheet" type="text/css">
+
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<script src="../../../theme/js/modernizr-2.0.js"></script>
+<script src="../../../theme/js/ender.js"></script>
+<script src="../../../theme/js/octopress.js" type="text/javascript"></script>
+<script src="../../../theme/js/echarts.min.js" type="text/javascript"></script>
+<script src="../../../theme/js/require.min.js" type="text/javascript"></script>
+
+<header role="banner"><hgroup>
+  <h1><a href="../../../">魑魅魍魉</a></h1>
+</hgroup></header>
+<nav role="navigation">    <ul class="subscription" data-subscription="rss">
+    </ul>
+
+
+<ul class="main-navigation">
+            <li >
+                <a href="../../../category/01chang yong gong ju.html">01常用工具</a>
+            </li>
+            <li >
+                <a href="../../../category/02.wo ai du shu.html">02.我爱读书</a>
+            </li>
+            <li >
+                <a href="../../../category/algorithms.html">Algorithms</a>
+            </li>
+            <li >
+                <a href="../../../category/book.html">Book</a>
+            </li>
+            <li >
+                <a href="../../../category/book-pydata.html">Book-pydata</a>
+            </li>
+            <li >
+                <a href="../../../category/deep-learning-with-python.html">Deep-learning-with-python</a>
+            </li>
+            <li class="active">
+                <a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a>
+            </li>
+            <li >
+                <a href="../../../category/ke wai du wu.html">课外读物</a>
+            </li>
+            <li >
+                <a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen du xue xi.html">深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen jing wang luo.html">神经网络</a>
+            </li>
+            <li >
+                <a href="../../../category/shu ju wa jue.html">数据挖掘</a>
+            </li>
+            <li >
+                <a href="../../../category/shu xue ji chu.html">数学基础</a>
+            </li>
+            <li >
+                <a href="../../../category/tf-example.html">Tf-example</a>
+            </li>
+            <li >
+                <a href="../../../category/tool1.html">Tool1</a>
+            </li>
+            <li >
+                <a href="../../../category/tool2.html">Tool2</a>
+            </li>
+            <li >
+                <a href="../../../category/tools.html">Tools</a>
+            </li>
+            <li >
+                <a href="../../../category/tui jian xi tong.html">推荐系统</a>
+            </li>
+            <li >
+                <a href="../../../category/wen ben wa jue.html">文本挖掘</a>
+            </li>
+</ul>
+</nav>
+<div id="main">
+    <div id="content">
+    <div>
+
+        <h4>Contents</h4>
+        
+
+        <article class="hentry" role="article">
+<header>
+        <h1 class="entry-title">5.Logistic回归</h1>
+    <p class="meta">
+<time datetime="2017-01-01T00:00:00+08:00" pubdate>2017-01-01 00:00</time>    </p>
+</header>
+
+    <div class="entry-content"><h1>第5章 Logistic回归</h1>
+<p><script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default" type="text/javascript"></script></p>
+<h2>Logistic 回归 概述</h2>
+<p><code>Logistic 回归 或者叫逻辑回归 虽然名字有回归，但是它是用来做分类的。其主要思想是: 根据现有数据对分类边界线(Decision Boundary)建立回归公式，以此进行分类。</code></p>
+<h2>须知概念</h2>
+<h3>Sigmoid 函数</h3>
+<h4>回归 概念</h4>
+<p>假设现在有一些数据点，我们用一条直线对这些点进行拟合（这条直线称为最佳拟合直线），这个拟合的过程就叫做回归。进而可以得到对这些点的拟合直线方程，那么我们根据这个回归方程，怎么进行分类呢？请看下面。</p>
+<h4>二值型输出分类函数</h4>
+<p>我们想要的函数应该是: 能接受所有的输入然后预测出类别。例如，在两个类的情况下，上述函数输出 0 或 1.或许你之前接触过具有这种性质的函数，该函数称为 <code>海维塞得阶跃函数(Heaviside step function)</code>，或者直接称为 <code>单位阶跃函数</code>。然而，海维塞得阶跃函数的问题在于: 该函数在跳跃点上从 0 瞬间跳跃到 1，这个瞬间跳跃过程有时很难处理。幸好，另一个函数也有类似的性质（可以输出 0 或者 1 的性质），且数学上更易处理，这就是 Sigmoid 函数。 Sigmoid 函数具体的计算公式如下: </p>
+<p><img alt="Sigmoid 函数计算公式" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/LR_1.png"/></p>
+<p>下图给出了 Sigmoid 函数在不同坐标尺度下的两条曲线图。当 x 为 0 时，Sigmoid 函数值为 0.5 。随着 x 的增大，对应的 Sigmoid 值将逼近于 1 ; 而随着 x 的减小， Sigmoid 值将逼近于 0 。如果横坐标刻度足够大， Sigmoid 函数看起来很像一个阶跃函数。</p>
+<p><img alt="Sigmoid 函数在不同坐标下的图片" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/LR_3.png"/></p>
+<p>因此，为了实现 Logistic 回归分类器，我们可以在每个特征上都乘以一个回归系数（如下公式所示），然后把所有结果值相加，将这个总和代入 Sigmoid 函数中，进而得到一个范围在 0~1 之间的数值。任何大于 0.5 的数据被分入 1 类，小于 0.5 即被归入 0 类。所以，Logistic 回归也是一种概率估计，比如这里Sigmoid 函数得出的值为0.5，可以理解为给定数据和参数，数据被分入 1 类的概率为0.5。想对Sigmoid 函数有更多了解，可以点开<a href="https://www.desmos.com/calculator/bgontvxotm">此链接</a>跟此函数互动。</p>
+<h3>基于最优化方法的回归系数确定</h3>
+<p>Sigmoid 函数的输入记为 z ，由下面公式得到: </p>
+<p><img alt="Sigmoid 函数计算公式" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/LR_2.png"/></p>
+<p>如果采用向量的写法，上述公式可以写成 <img alt="Sigmoid 函数计算公式向量形式" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/LR_4.png"/> ，它表示将这两个数值向量对应元素相乘然后全部加起来即得到 z 值。其中的向量 x 是分类器的输入数据，向量 w 也就是我们要找到的最佳参数（系数），从而使得分类器尽可能地精确。为了寻找该最佳参数，需要用到最优化理论的一些知识。我们这里使用的是——梯度上升法（Gradient Ascent）。</p>
+<h3>梯度上升法</h3>
+<h4>梯度的介绍</h4>
+<p>需要一点点向量方面的数学知识</p>
+<div class="highlight"><pre><span></span>向量 = 值 + 方向  
+梯度 = 向量
+梯度 = 梯度值 + 梯度方向
+</pre></div>
+<h4>梯度上升法的思想</h4>
+<p>要找到某函数的最大值，最好的方法是沿着该函数的梯度方向探寻。如果梯度记为 ▽ ，则函数 f(x, y) 的梯度由下式表示: </p>
+<p><img alt="梯度上升计算公式" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/LR_5.png"/></p>
+<p>这个梯度意味着要沿 x 的方向移动 <img alt="f(x, y)对x求偏导" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/LR_6.png"/> ，沿 y 的方向移动 <img alt="f(x, y)对y求偏导" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/LR_7.png"/> 。其中，函数f(x, y) 必须要在待计算的点上有定义并且可微。下图是一个具体的例子。</p>
+<p><img alt="梯度上升" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/LR_8.png"/></p>
+<p>上图展示的，梯度上升算法到达每个点后都会重新估计移动的方向。从 P0 开始，计算完该点的梯度，函数就根据梯度移动到下一点 P1。在 P1 点，梯度再次被重新计算，并沿着新的梯度方向移动到 P2 。如此循环迭代，直到满足停止条件。迭代过程中，梯度算子总是保证我们能选取到最佳的移动方向。</p>
+<p>上图中的梯度上升算法沿梯度方向移动了一步。可以看到，梯度算子总是指向函数值增长最快的方向。这里所说的是移动方向，而未提到移动量的大小。该量值称为步长，记作 α 。用向量来表示的话，梯度上升算法的迭代公式如下: </p>
+<p><img alt="梯度上升迭代公式" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/LR_9.png"/></p>
+<p>该公式将一直被迭代执行，直至达到某个停止条件为止，比如迭代次数达到某个指定值或者算法达到某个可以允许的误差范围。</p>
+<p>介绍一下几个相关的概念：</p>
+<div class="highlight"><pre><span></span>例如：y =w0 + w1x1 + w2x2 + ... + wnxn
+梯度：参考上图的例子，二维图像，x方向代表第一个系数，也就是 w1，y方向代表第二个系数也就是 w2，这样的向量就是梯度。
+α：上面的梯度算法的迭代公式中的阿尔法，这个代表的是移动步长（step length）。移动步长会影响最终结果的拟合程度，最好的方法就是随着迭代次数更改移动步长。
+步长通俗的理解，100米，如果我一步走10米，我需要走10步；如果一步走20米，我只需要走5步。这里的一步走多少米就是步长的意思。
+▽f(w)：代表沿着梯度变化的方向。
+</pre></div>
+<p><strong>Note:</strong></p>
+<p>问：有人会好奇为什么有些书籍上说的是梯度下降法（Gradient Decent）?
+    答： 其实这个两个方法在此情况下本质上是相同的。关键在于误差函数或者叫目标函数（objective function）。如果目标函数是损失函数，那就是最小化损失函数来求函数的最小值，就用梯度下降。 如果目标函数是似然函数（Likelihood function），就是要最大化似然函数来求函数的最大值，那就用梯度上升。在逻辑回归中， 损失函数和似然函数无非就是互为正负关系。
+    只需要在迭代公式中的加法变成减法。因此，对应的公式可以写成</p>
+<p><img alt="梯度下降迭代公式" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/LR_10.png"/></p>
+<p><strong>局部最优现象 （Local Optima）</strong></p>
+<p><img alt="梯度下降图_4" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/LR_20.png"/></p>
+<p>上图表示参数 θ 与误差函数 J(θ) 的关系图 (这里的误差函数是损失函数，所以我们要最小化损失函数)，红色的部分是表示 J(θ) 有着比较高的取值，我们需要的是，能够让 J(θ) 的值尽量的低。也就是深蓝色的部分。θ0，θ1 表示 θ 向量的两个维度（此处的θ0，θ1是x0和x1的系数，也对应的是上文w0和w1）。</p>
+<p>可能梯度下降的最终点并非是全局最小点，可能是一个局部最小点，如我们上图中的右边的梯度下降曲线，描述的是最终到达一个局部最小点，这是我们重新选择了一个初始点得到的。</p>
+<p>看来我们这个算法将会在很大的程度上被初始点的选择影响而陷入局部最小点。</p>
+<h2>Logistic 回归 原理</h2>
+<h3>Logistic 回归 工作原理</h3>
+<div class="highlight"><pre><span></span>每个回归系数初始化为 1
+重复 R 次:
+    计算整个数据集的梯度
+    使用 步长 x 梯度 更新回归系数的向量
+返回回归系数
+</pre></div>
+<h3>Logistic 回归 开发流程</h3>
+<div class="highlight"><pre><span></span><span class="err">收集数据</span><span class="o">:</span> <span class="err">采用任意方法收集数据</span>
+<span class="err">准备数据</span><span class="o">:</span> <span class="err">由于需要进行距离计算，因此要求数据类型为数值型。另外，结构化数据格式则最佳。</span>
+<span class="err">分析数据</span><span class="o">:</span> <span class="err">采用任意方法对数据进行分析。</span>
+<span class="err">训练算法</span><span class="o">:</span> <span class="err">大部分时间将用于训练，训练的目的是为了找到最佳的分类回归系数。</span>
+<span class="err">测试算法</span><span class="o">:</span> <span class="err">一旦训练步骤完成，分类将会很快。</span>
+<span class="err">使用算法</span><span class="o">:</span> <span class="err">首先，我们需要输入一些数据，并将其转换成对应的结构化数值；接着，基于训练好的回归系数就可以对这些数值进行简单的回归计算，判定它们属于哪个类别；在这之后，我们就可以在输出的类别上做一些其他分析工作。</span>
+</pre></div>
+<h3>Logistic 回归 算法特点</h3>
+<div class="highlight"><pre><span></span><span class="err">优点</span><span class="o">:</span> <span class="err">计算代价不高，易于理解和实现。</span>
+<span class="err">缺点</span><span class="o">:</span> <span class="err">容易欠拟合，分类精度可能不高。</span>
+<span class="err">适用数据类型</span><span class="o">:</span> <span class="err">数值型和标称型数据。</span>
+</pre></div>
+<h3>附加 方向导数与梯度</h3>
+<p><img alt="方向导数与梯度" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/方向导数和梯度.png"/></p>
+<h2>Logistic 回归 项目案例</h2>
+<h3>项目案例1: 使用 Logistic 回归在简单数据集上的分类</h3>
+<p><a href="https://github.com/apachecn/MachineLearning/blob/python-2.7/src/python/5.Logistic/logistic.py">完整代码地址</a>: <a href="https://github.com/apachecn/MachineLearning/blob/master/src/python/5.Logistic/logistic.py">https://github.com/apachecn/MachineLearning/blob/master/src/python/5.Logistic/logistic.py</a></p>
+<h4>项目概述</h4>
+<p>在一个简单的数据集上，采用梯度上升法找到 Logistic 回归分类器在此数据集上的最佳回归系数</p>
+<h4>开发流程</h4>
+<div class="highlight"><pre><span></span><span class="err">收集数据</span><span class="o">:</span> <span class="err">可以使用任何方法</span>
+<span class="err">准备数据</span><span class="o">:</span> <span class="err">由于需要进行距离计算，因此要求数据类型为数值型。另外，结构化数据格式则最佳</span>
+<span class="err">分析数据</span><span class="o">:</span> <span class="err">画出决策边界</span>
+<span class="err">训练算法</span><span class="o">:</span> <span class="err">使用梯度上升找到最佳参数</span>
+<span class="err">测试算法</span><span class="o">:</span> <span class="err">使用</span> <span class="n">Logistic</span> <span class="err">回归进行分类</span>
+<span class="err">使用算法</span><span class="o">:</span> <span class="err">对简单数据集中数据进行分类</span>
+</pre></div>
+<blockquote>
+<p>收集数据: 可以使用任何方法</p>
+</blockquote>
+<p>我们采用存储在 TestSet.txt 文本文件中的数据，存储格式如下: </p>
+<div class="highlight"><pre><span></span>-0.017612   14.053064   0
+-1.395634   4.662541    1
+-0.752157   6.538620    0
+-1.322371   7.152853    0
+0.423363    11.054677   0
+</pre></div>
+<p>绘制在图中，如下图所示: </p>
+<p><img alt="简单数据集绘制在图上" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/LR_11.png"/></p>
+<blockquote>
+<p>准备数据: 由于需要进行距离计算，因此要求数据类型为数值型。另外，结构化数据格式则最佳</p>
+<p>分析数据: 画出决策边界</p>
+</blockquote>
+<p>画出数据集和 Logistic 回归最佳拟合直线的函数</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plotBestFit</span><span class="p">(</span><span class="n">dataArr</span><span class="p">,</span> <span class="n">labelMat</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">        Desc:</span>
+<span class="sd">            将我们得到的数据可视化展示出来</span>
+<span class="sd">        Args:</span>
+<span class="sd">            dataArr:样本数据的特征</span>
+<span class="sd">            labelMat:样本数据的类别标签，即目标变量</span>
+<span class="sd">            weights:回归系数</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            None</span>
+<span class="sd">    '''</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">shape</span><span class="p">(</span><span class="n">dataArr</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">xcord1</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">ycord1</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">xcord2</span> <span class="o">=</span> <span class="p">[];</span> <span class="n">ycord2</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">labelMat</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">xcord1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dataArr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]);</span> <span class="n">ycord1</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dataArr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">xcord2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dataArr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]);</span> <span class="n">ycord2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dataArr</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xcord1</span><span class="p">,</span> <span class="n">ycord1</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'s'</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xcord2</span><span class="p">,</span> <span class="n">ycord2</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'green'</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+    <span class="sd">"""</span>
+<span class="sd">    y的由来，卧槽，是不是没看懂？</span>
+<span class="sd">    首先理论上是这个样子的。</span>
+<span class="sd">    dataMat.append([1.0, float(lineArr[0]), float(lineArr[1])])</span>
+<span class="sd">    w0*x0+w1*x1+w2*x2=f(x)</span>
+<span class="sd">    x0最开始就设置为1叻， x2就是我们画图的y值，而f(x)被我们磨合误差给算到w0,w1,w2身上去了</span>
+<span class="sd">    所以： w0+w1*x+w2*y=0 =&gt; y = (-w0-w1*x)/w2   </span>
+<span class="sd">    """</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">weights</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">/</span><span class="n">weights</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">'X'</span><span class="p">);</span> <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">'Y'</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<blockquote>
+<p>训练算法: 使用梯度上升找到最佳参数</p>
+</blockquote>
+<p>Logistic 回归梯度上升优化算法</p>
+<div class="highlight"><pre><span></span><span class="c1"># 正常的处理方案</span>
+<span class="c1"># 两个参数：第一个参数==&gt; dataMatIn 是一个2维NumPy数组，每列分别代表每个不同的特征，每行则代表每个训练样本。</span>
+<span class="c1"># 第二个参数==&gt; classLabels 是类别标签，它是一个 1*100 的行向量。为了便于矩阵计算，需要将该行向量转换为列向量，做法是将原向量转置，再将它赋值给labelMat。</span>
+<span class="k">def</span> <span class="nf">gradAscent</span><span class="p">(</span><span class="n">dataMatIn</span><span class="p">,</span> <span class="n">classLabels</span><span class="p">):</span>
+    <span class="c1"># 转化为矩阵[[1,1,2],[1,1,2]....]</span>
+    <span class="n">dataMatrix</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="n">dataMatIn</span><span class="p">)</span>             <span class="c1"># 转换为 NumPy 矩阵</span>
+    <span class="c1"># 转化为矩阵[[0,1,0,1,0,1.....]]，并转制[[0],[1],[0].....]</span>
+    <span class="c1"># transpose() 行列转置函数</span>
+    <span class="c1"># 将行向量转化为列向量   =&gt;  矩阵的转置</span>
+    <span class="n">labelMat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="n">classLabels</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="c1"># 首先将数组转换为 NumPy 矩阵，然后再将行向量转置为列向量</span>
+    <span class="c1"># m-&gt;数据量，样本数 n-&gt;特征数</span>
+    <span class="n">m</span><span class="p">,</span><span class="n">n</span> <span class="o">=</span> <span class="n">shape</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">)</span>
+    <span class="c1"># print m, n, '__'*10, shape(dataMatrix.transpose()), '__'*100</span>
+    <span class="c1"># alpha代表向目标移动的步长</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.001</span>
+    <span class="c1"># 迭代次数</span>
+    <span class="n">maxCycles</span> <span class="o">=</span> <span class="mi">500</span>
+    <span class="c1"># 生成一个长度和特征数相同的矩阵，此处n为3 -&gt; [[1],[1],[1]]</span>
+    <span class="c1"># weights 代表回归系数， 此处的 ones((n,1)) 创建一个长度和特征数相同的矩阵，其中的数全部都是 1</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxCycles</span><span class="p">):</span>              <span class="c1">#heavy on matrix operations</span>
+        <span class="c1"># m*3 的矩阵 * 3*1 的矩阵 ＝ m*1的矩阵</span>
+        <span class="c1"># 那么乘上矩阵的意义，就代表：通过公式得到的理论值</span>
+        <span class="c1"># 参考地址： 矩阵乘法的本质是什么？ https://www.zhihu.com/question/21351965/answer/31050145</span>
+        <span class="c1"># print 'dataMatrix====', dataMatrix </span>
+        <span class="c1"># print 'weights====', weights</span>
+        <span class="c1"># n*3   *  3*1  = n*1</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">dataMatrix</span><span class="o">*</span><span class="n">weights</span><span class="p">)</span>     <span class="c1"># 矩阵乘法</span>
+        <span class="c1"># print 'hhhhhhh====', h</span>
+        <span class="c1"># labelMat是实际值</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="n">labelMat</span> <span class="o">-</span> <span class="n">h</span><span class="p">)</span>              <span class="c1"># 向量相减</span>
+        <span class="c1"># 0.001* (3*m)*(m*1) 表示在每一个列上的一个误差情况，最后得出 x1,x2,xn的系数的偏移量</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">dataMatrix</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">*</span> <span class="n">error</span> <span class="c1"># 矩阵乘法，最后得到回归系数</span>
+    <span class="k">return</span> <span class="n">array</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+</pre></div>
+<p>大家看到这儿可能会有一些疑惑，就是，我们在迭代中更新我们的回归系数，后边的部分是怎么计算出来的？为什么会是 alpha * dataMatrix.transpose() * error ?因为这就是我们所求的梯度，也就是对 f(w) 对 w 求一阶导数。具体推导如下:</p>
+<p><img alt="f(w)对w求一阶导数" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/LR_21.png"/>
+可参考http://blog.csdn.net/achuo/article/details/51160101</p>
+<blockquote>
+<p>测试算法: 使用 Logistic 回归进行分类</p>
+</blockquote>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">testLR</span><span class="p">():</span>
+    <span class="c1"># 1.收集并准备数据</span>
+    <span class="n">dataMat</span><span class="p">,</span> <span class="n">labelMat</span> <span class="o">=</span> <span class="n">loadDataSet</span><span class="p">(</span><span class="s2">"input/5.Logistic/TestSet.txt"</span><span class="p">)</span>
+
+    <span class="c1"># print dataMat, '---\n', labelMat</span>
+    <span class="c1"># 2.训练模型，  f(x)=a1*x1+b2*x2+..+nn*xn中 (a1,b2, .., nn).T的矩阵值</span>
+    <span class="c1"># 因为数组没有是复制n份， array的乘法就是乘法</span>
+    <span class="n">dataArr</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">dataMat</span><span class="p">)</span>
+    <span class="c1"># print dataArr</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">gradAscent</span><span class="p">(</span><span class="n">dataArr</span><span class="p">,</span> <span class="n">labelMat</span><span class="p">)</span>
+    <span class="c1"># weights = stocGradAscent0(dataArr, labelMat)</span>
+    <span class="c1"># weights = stocGradAscent1(dataArr, labelMat)</span>
+    <span class="c1"># print '*'*30, weights</span>
+
+    <span class="c1"># 数据可视化</span>
+    <span class="n">plotBestFit</span><span class="p">(</span><span class="n">dataArr</span><span class="p">,</span> <span class="n">labelMat</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
+</pre></div>
+<blockquote>
+<p>使用算法: 对简单数据集中数据进行分类</p>
+</blockquote>
+<h4>注意</h4>
+<p>梯度上升算法在每次更新回归系数时都需要遍历整个数据集，该方法在处理 100 个左右的数据集时尚可，但如果有数十亿样本和成千上万的特征，那么该方法的计算复杂度就太高了。一种改进方法是一次仅用一个样本点来更新回归系数，该方法称为 <code>随机梯度上升算法</code>。由于可以在新样本到来时对分类器进行增量式更新，因而随机梯度上升算法是一个在线学习(online learning)算法。与 “在线学习” 相对应，一次处理所有数据被称作是 “批处理” （batch） 。</p>
+<p>随机梯度上升算法可以写成如下的伪代码: </p>
+<div class="highlight"><pre><span></span>所有回归系数初始化为 1
+对数据集中每个样本
+    计算该样本的梯度
+    使用 alpha x gradient 更新回归系数值
+返回回归系数值
+</pre></div>
+<p>以下是随机梯度上升算法的实现代码: </p>
+<div class="highlight"><pre><span></span><span class="c1"># 随机梯度上升</span>
+<span class="c1"># 梯度上升优化算法在每次更新数据集时都需要遍历整个数据集，计算复杂都较高</span>
+<span class="c1"># 随机梯度上升一次只用一个样本点来更新回归系数</span>
+<span class="k">def</span> <span class="nf">stocGradAscent0</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">,</span> <span class="n">classLabels</span><span class="p">):</span>
+    <span class="n">m</span><span class="p">,</span><span class="n">n</span> <span class="o">=</span> <span class="n">shape</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="c1"># n*1的矩阵</span>
+    <span class="c1"># 函数ones创建一个全1的数组</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>   <span class="c1"># 初始化长度为n的数组，元素全部为 1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="c1"># sum(dataMatrix[i]*weights)为了求 f(x)的值， f(x)=a1*x1+b2*x2+..+nn*xn,此处求出的 h 是一个具体的数值，而不是一个矩阵</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">weights</span><span class="p">))</span>
+        <span class="c1"># print 'dataMatrix[i]===', dataMatrix[i]</span>
+        <span class="c1"># 计算真实类别与预测类别之间的差值，然后按照该差值调整回归系数</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">classLabels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">h</span>
+        <span class="c1"># 0.01*(1*1)*(1*n)</span>
+        <span class="k">print</span> <span class="n">weights</span><span class="p">,</span> <span class="s2">"*"</span><span class="o">*</span><span class="mi">10</span> <span class="p">,</span> <span class="n">dataMatrix</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">"*"</span><span class="o">*</span><span class="mi">10</span> <span class="p">,</span> <span class="n">error</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">error</span> <span class="o">*</span> <span class="n">dataMatrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">weights</span>
+</pre></div>
+<p>可以看到，随机梯度上升算法与梯度上升算法在代码上很相似，但也有一些区别: 第一，后者的变量 h 和误差 error 都是向量，而前者则全是数值；第二，前者没有矩阵的转换过程，所有变量的数据类型都是 NumPy 数组。</p>
+<p>判断优化算法优劣的可靠方法是看它是否收敛，也就是说参数是否达到了稳定值，是否还会不断地变化？下图展示了随机梯度上升算法在 200 次迭代过程中回归系数的变化情况。其中的系数2，也就是 X2 只经过了 50 次迭代就达到了稳定值，但系数 1 和 0 则需要更多次的迭代。如下图所示: </p>
+<p><img alt="回归系数与迭代次数的关系图" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/LR_12.png"/></p>
+<p>针对这个问题，我们改进了之前的随机梯度上升算法，如下: </p>
+<div class="highlight"><pre><span></span><span class="c1"># 随机梯度上升算法（随机化）</span>
+<span class="k">def</span> <span class="nf">stocGradAscent1</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">,</span> <span class="n">classLabels</span><span class="p">,</span> <span class="n">numIter</span><span class="o">=</span><span class="mi">150</span><span class="p">):</span>
+    <span class="n">m</span><span class="p">,</span><span class="n">n</span> <span class="o">=</span> <span class="n">shape</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>   <span class="c1"># 创建与列数相同的矩阵的系数矩阵，所有的元素都是1</span>
+    <span class="c1"># 随机梯度, 循环150,观察是否收敛</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numIter</span><span class="p">):</span>
+        <span class="c1"># [0, 1, 2 .. m-1]</span>
+        <span class="n">dataIndex</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="c1"># i和j的不断增大，导致alpha的值不断减少，但是不为0</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="mi">4</span><span class="o">/</span><span class="p">(</span><span class="mf">1.0</span><span class="o">+</span><span class="n">j</span><span class="o">+</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="mf">0.0001</span>    <span class="c1"># alpha 会随着迭代不断减小，但永远不会减小到0，因为后边还有一个常数项0.0001</span>
+            <span class="c1"># 随机产生一个 0～len()之间的一个值</span>
+            <span class="c1"># random.uniform(x, y) 方法将随机生成下一个实数，它在[x,y]范围内,x是这个范围内的最小值，y是这个范围内的最大值。</span>
+            <span class="n">randIndex</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">dataIndex</span><span class="p">)))</span>
+            <span class="c1"># sum(dataMatrix[i]*weights)为了求 f(x)的值， f(x)=a1*x1+b2*x2+..+nn*xn</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">[</span><span class="n">randIndex</span><span class="p">]</span><span class="o">*</span><span class="n">weights</span><span class="p">))</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">classLabels</span><span class="p">[</span><span class="n">randIndex</span><span class="p">]</span> <span class="o">-</span> <span class="n">h</span>
+            <span class="c1"># print weights, '__h=%s' % h, '__'*20, alpha, '__'*20, error, '__'*20, dataMatrix[randIndex]</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">error</span> <span class="o">*</span> <span class="n">dataMatrix</span><span class="p">[</span><span class="n">randIndex</span><span class="p">]</span>
+            <span class="k">del</span><span class="p">(</span><span class="n">dataIndex</span><span class="p">[</span><span class="n">randIndex</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">weights</span>
+</pre></div>
+<p>上面的改进版随机梯度上升算法，我们修改了两处代码。</p>
+<p>第一处改进为 alpha 的值。alpha 在每次迭代的时候都会调整，这回缓解上面波动图的数据波动或者高频波动。另外，虽然 alpha 会随着迭代次数不断减少，但永远不会减小到 0，因为我们在计算公式中添加了一个常数项。</p>
+<p>第二处修改为 randIndex 更新，这里通过随机选取样本拉来更新回归系数。这种方法将减少周期性的波动。这种方法每次随机从列表中选出一个值，然后从列表中删掉该值（再进行下一次迭代）。</p>
+<p>程序运行之后能看到类似于下图的结果图。</p>
+<p><img alt="改进随机梯度下降结果图" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/5.Logistic/LR_13.png"/></p>
+<h3>项目案例2: 从疝气病症预测病马的死亡率</h3>
+<p><a href="https://github.com/apachecn/MachineLearning/blob/python-2.7/src/python/5.Logistic/logistic.py">完整代码地址</a>: <a href="https://github.com/apachecn/MachineLearning/blob/master/src/python/5.Logistic/logistic.py">https://github.com/apachecn/MachineLearning/blob/master/src/python/5.Logistic/logistic.py</a></p>
+<h4>项目概述</h4>
+<p>使用 Logistic 回归来预测患有疝病的马的存活问题。疝病是描述马胃肠痛的术语。然而，这种病不一定源自马的胃肠问题，其他问题也可能引发马疝病。这个数据集中包含了医院检测马疝病的一些指标，有的指标比较主观，有的指标难以测量，例如马的疼痛级别。</p>
+<h4>开发流程</h4>
+<div class="highlight"><pre><span></span><span class="err">收集数据</span><span class="o">:</span> <span class="err">给定数据文件</span>
+<span class="err">准备数据</span><span class="o">:</span> <span class="err">用</span> <span class="n">Python</span> <span class="err">解析文本文件并填充缺失值</span>
+<span class="err">分析数据</span><span class="o">:</span> <span class="err">可视化并观察数据</span>
+<span class="err">训练算法</span><span class="o">:</span> <span class="err">使用优化算法，找到最佳的系数</span>
+<span class="err">测试算法</span><span class="o">:</span> <span class="err">为了量化回归的效果，需要观察错误率。根据错误率决定是否回退到训练阶段，</span>
+         <span class="err">通过改变迭代的次数和步长的参数来得到更好的回归系数</span>
+<span class="err">使用算法</span><span class="o">:</span> <span class="err">实现一个简单的命令行程序来手机马的症状并输出预测结果并非难事，</span>
+         <span class="err">这可以作为留给大家的一道习题</span>
+</pre></div>
+<blockquote>
+<p>收集数据: 给定数据文件</p>
+</blockquote>
+<p>病马的训练数据已经给出来了，如下形式存储在文本文件中:</p>
+<div class="highlight"><pre><span></span>1.000000    1.000000    39.200000   88.000000   20.000000   0.000000    0.000000    4.000000    1.000000    3.000000    4.000000    2.000000    0.000000    0.000000    0.000000    4.000000    2.000000    50.000000   85.000000   2.000000    2.000000    0.000000
+2.000000    1.000000    38.300000   40.000000   24.000000   1.000000    1.000000    3.000000    1.000000    3.000000    3.000000    1.000000    0.000000    0.000000    0.000000    1.000000    1.000000    33.000000   6.700000    0.000000    0.000000    1.000000
+</pre></div>
+<blockquote>
+<p>准备数据: 用 Python 解析文本文件并填充缺失值</p>
+</blockquote>
+<p>处理数据中的缺失值</p>
+<p>假设有100个样本和20个特征，这些数据都是机器收集回来的。若机器上的某个传感器损坏导致一个特征无效时该怎么办？此时是否要扔掉整个数据？这种情况下，另外19个特征怎么办？
+它们是否还可以用？答案是肯定的。因为有时候数据相当昂贵，扔掉和重新获取都是不可取的，所以必须采用一些方法来解决这个问题。</p>
+<p>下面给出了一些可选的做法：
+<em> 使用可用特征的均值来填补缺失值；
+</em> 使用特殊值来填补缺失值，如 -1；
+<em> 忽略有缺失值的样本；
+</em> 使用有相似样本的均值添补缺失值；
+* 使用另外的机器学习算法预测缺失值。</p>
+<p>现在，我们对下一节要用的数据集进行预处理，使其可以顺利地使用分类算法。在预处理需要做两件事: 
+* 所有的缺失值必须用一个实数值来替换，因为我们使用的 NumPy 数据类型不允许包含缺失值。我们这里选择实数 0 来替换所有缺失值，恰好能适用于 Logistic 回归。这样做的直觉在于，我们需要的是一个在更新时不会影响系数的值。回归系数的更新公式如下:</p>
+<div class="highlight"><pre><span></span>weights = weights + alpha * error * dataMatrix[randIndex]
+
+如果 dataMatrix 的某个特征对应值为 0，那么该特征的系数将不做更新，即:
+
+weights = weights
+
+另外，由于 Sigmoid(0) = 0.5 ，即它对结果的预测不具有任何倾向性，因此我们上述做法也不会对误差造成任何影响。基于上述原因，将缺失值用 0 代替既可以保留现有数据，也不需要对优化算法进行修改。此外，该数据集中的特征取值一般不为 0，因此在某种意义上说它也满足 “特殊值” 这个要求。
+</pre></div>
+<ul>
+<li>如果在测试数据集中发现了一条数据的类别标签已经缺失，那么我们的简单做法是将该条数据丢弃。这是因为类别标签与特征不同，很难确定采用某个合适的值来替换。采用 Logistic 回归进行分类时这种做法是合理的，而如果采用类似 kNN 的方法就保留该条数据显得更加合理。</li>
+</ul>
+<p>原始的数据集经过预处理后，保存成两个文件: horseColicTest.txt 和 horseColicTraining.txt 。 </p>
+<blockquote>
+<p>分析数据: 可视化并观察数据</p>
+</blockquote>
+<p>将数据使用 MatPlotlib 打印出来，观察数据是否是我们想要的格式</p>
+<blockquote>
+<p>训练算法: 使用优化算法，找到最佳的系数</p>
+</blockquote>
+<p>下面给出 原始的梯度上升算法，随机梯度上升算法，改进版随机梯度上升算法 的代码: </p>
+<div class="highlight"><pre><span></span><span class="c1"># 正常的处理方案</span>
+<span class="c1"># 两个参数：第一个参数==&gt; dataMatIn 是一个2维NumPy数组，每列分别代表每个不同的特征，每行则代表每个训练样本。</span>
+<span class="c1"># 第二个参数==&gt; classLabels 是类别标签，它是一个 1*100 的行向量。为了便于矩阵计算，需要将该行向量转换为列向量，做法是将原向量转置，再将它赋值给labelMat。</span>
+<span class="k">def</span> <span class="nf">gradAscent</span><span class="p">(</span><span class="n">dataMatIn</span><span class="p">,</span> <span class="n">classLabels</span><span class="p">):</span>
+    <span class="c1"># 转化为矩阵[[1,1,2],[1,1,2]....]</span>
+    <span class="n">dataMatrix</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="n">dataMatIn</span><span class="p">)</span>             <span class="c1"># 转换为 NumPy 矩阵</span>
+    <span class="c1"># 转化为矩阵[[0,1,0,1,0,1.....]]，并转制[[0],[1],[0].....]</span>
+    <span class="c1"># transpose() 行列转置函数</span>
+    <span class="c1"># 将行向量转化为列向量   =&gt;  矩阵的转置</span>
+    <span class="n">labelMat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">(</span><span class="n">classLabels</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="c1"># 首先将数组转换为 NumPy 矩阵，然后再将行向量转置为列向量</span>
+    <span class="c1"># m-&gt;数据量，样本数 n-&gt;特征数</span>
+    <span class="n">m</span><span class="p">,</span><span class="n">n</span> <span class="o">=</span> <span class="n">shape</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">)</span>
+    <span class="c1"># print m, n, '__'*10, shape(dataMatrix.transpose()), '__'*100</span>
+    <span class="c1"># alpha代表向目标移动的步长</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.001</span>
+    <span class="c1"># 迭代次数</span>
+    <span class="n">maxCycles</span> <span class="o">=</span> <span class="mi">500</span>
+    <span class="c1"># 生成一个长度和特征数相同的矩阵，此处n为3 -&gt; [[1],[1],[1]]</span>
+    <span class="c1"># weights 代表回归系数， 此处的 ones((n,1)) 创建一个长度和特征数相同的矩阵，其中的数全部都是 1</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">ones</span><span class="p">((</span><span class="n">n</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">maxCycles</span><span class="p">):</span>              <span class="c1">#heavy on matrix operations</span>
+        <span class="c1"># m*3 的矩阵 * 3*1 的单位矩阵 ＝ m*1的矩阵</span>
+        <span class="c1"># 那么乘上单位矩阵的意义，就代表：通过公式得到的理论值</span>
+        <span class="c1"># 参考地址： 矩阵乘法的本质是什么？ https://www.zhihu.com/question/21351965/answer/31050145</span>
+        <span class="c1"># print 'dataMatrix====', dataMatrix </span>
+        <span class="c1"># print 'weights====', weights</span>
+        <span class="c1"># n*3   *  3*1  = n*1</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">dataMatrix</span><span class="o">*</span><span class="n">weights</span><span class="p">)</span>     <span class="c1"># 矩阵乘法</span>
+        <span class="c1"># print 'hhhhhhh====', h</span>
+        <span class="c1"># labelMat是实际值</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="p">(</span><span class="n">labelMat</span> <span class="o">-</span> <span class="n">h</span><span class="p">)</span>              <span class="c1"># 向量相减</span>
+        <span class="c1"># 0.001* (3*m)*(m*1) 表示在每一个列上的一个误差情况，最后得出 x1,x2,xn的系数的偏移量</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">dataMatrix</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span> <span class="o">*</span> <span class="n">error</span> <span class="c1"># 矩阵乘法，最后得到回归系数</span>
+    <span class="k">return</span> <span class="n">array</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+
+
+<span class="c1"># 随机梯度上升</span>
+<span class="c1"># 梯度上升优化算法在每次更新数据集时都需要遍历整个数据集，计算复杂都较高</span>
+<span class="c1"># 随机梯度上升一次只用一个样本点来更新回归系数</span>
+<span class="k">def</span> <span class="nf">stocGradAscent0</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">,</span> <span class="n">classLabels</span><span class="p">):</span>
+    <span class="n">m</span><span class="p">,</span><span class="n">n</span> <span class="o">=</span> <span class="n">shape</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">)</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="c1"># n*1的矩阵</span>
+    <span class="c1"># 函数ones创建一个全1的数组</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>   <span class="c1"># 初始化长度为n的数组，元素全部为 1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="c1"># sum(dataMatrix[i]*weights)为了求 f(x)的值， f(x)=a1*x1+b2*x2+..+nn*xn,此处求出的 h 是一个具体的数值，而不是一个矩阵</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">weights</span><span class="p">))</span>
+        <span class="c1"># print 'dataMatrix[i]===', dataMatrix[i]</span>
+        <span class="c1"># 计算真实类别与预测类别之间的差值，然后按照该差值调整回归系数</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">classLabels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">h</span>
+        <span class="c1"># 0.01*(1*1)*(1*n)</span>
+        <span class="k">print</span> <span class="n">weights</span><span class="p">,</span> <span class="s2">"*"</span><span class="o">*</span><span class="mi">10</span> <span class="p">,</span> <span class="n">dataMatrix</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">"*"</span><span class="o">*</span><span class="mi">10</span> <span class="p">,</span> <span class="n">error</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">error</span> <span class="o">*</span> <span class="n">dataMatrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">weights</span>
+
+
+<span class="c1"># 随机梯度上升算法（随机化）</span>
+<span class="k">def</span> <span class="nf">stocGradAscent1</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">,</span> <span class="n">classLabels</span><span class="p">,</span> <span class="n">numIter</span><span class="o">=</span><span class="mi">150</span><span class="p">):</span>
+    <span class="n">m</span><span class="p">,</span><span class="n">n</span> <span class="o">=</span> <span class="n">shape</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">)</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>   <span class="c1"># 创建与列数相同的矩阵的系数矩阵，所有的元素都是1</span>
+    <span class="c1"># 随机梯度, 循环150,观察是否收敛</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numIter</span><span class="p">):</span>
+        <span class="c1"># [0, 1, 2 .. m-1]</span>
+        <span class="n">dataIndex</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="c1"># i和j的不断增大，导致alpha的值不断减少，但是不为0</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="mi">4</span><span class="o">/</span><span class="p">(</span><span class="mf">1.0</span><span class="o">+</span><span class="n">j</span><span class="o">+</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="mf">0.0001</span>    <span class="c1"># alpha 会随着迭代不断减小，但永远不会减小到0，因为后边还有一个常数项0.0001</span>
+            <span class="c1"># 随机产生一个 0～len()之间的一个值</span>
+            <span class="c1"># random.uniform(x, y) 方法将随机生成下一个实数，它在[x,y]范围内,x是这个范围内的最小值，y是这个范围内的最大值。</span>
+            <span class="n">randIndex</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">dataIndex</span><span class="p">)))</span>
+            <span class="c1"># sum(dataMatrix[i]*weights)为了求 f(x)的值， f(x)=a1*x1+b2*x2+..+nn*xn</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">dataMatrix</span><span class="p">[</span><span class="n">randIndex</span><span class="p">]</span><span class="o">*</span><span class="n">weights</span><span class="p">))</span>
+            <span class="n">error</span> <span class="o">=</span> <span class="n">classLabels</span><span class="p">[</span><span class="n">randIndex</span><span class="p">]</span> <span class="o">-</span> <span class="n">h</span>
+            <span class="c1"># print weights, '__h=%s' % h, '__'*20, alpha, '__'*20, error, '__'*20, dataMatrix[randIndex]</span>
+            <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">error</span> <span class="o">*</span> <span class="n">dataMatrix</span><span class="p">[</span><span class="n">randIndex</span><span class="p">]</span>
+            <span class="k">del</span><span class="p">(</span><span class="n">dataIndex</span><span class="p">[</span><span class="n">randIndex</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">weights</span>
+</pre></div>
+<blockquote>
+<p>测试算法: 为了量化回归的效果，需要观察错误率。根据错误率决定是否回退到训练阶段，通过改变迭代的次数和步长的参数来得到更好的回归系数</p>
+</blockquote>
+<p>Logistic 回归分类函数</p>
+<div class="highlight"><pre><span></span><span class="c1"># 分类函数，根据回归系数和特征向量来计算 Sigmoid的值</span>
+<span class="k">def</span> <span class="nf">classifyVector</span><span class="p">(</span><span class="n">inX</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="sd">'''</span>
+<span class="sd">    Desc: </span>
+<span class="sd">        最终的分类函数，根据回归系数和特征向量来计算 Sigmoid 的值，大于0.5函数返回1，否则返回0</span>
+<span class="sd">    Args:</span>
+<span class="sd">        inX -- 特征向量，features</span>
+<span class="sd">        weights -- 根据梯度下降/随机梯度下降 计算得到的回归系数</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        如果 prob 计算大于 0.5 函数返回 1</span>
+<span class="sd">        否则返回 0</span>
+<span class="sd">    '''</span>
+    <span class="n">prob</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">inX</span><span class="o">*</span><span class="n">weights</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">prob</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">:</span> <span class="k">return</span> <span class="mf">1.0</span>
+    <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="mf">0.0</span>
+
+<span class="c1"># 打开测试集和训练集,并对数据进行格式化处理</span>
+<span class="k">def</span> <span class="nf">colicTest</span><span class="p">():</span>
+    <span class="sd">'''</span>
+<span class="sd">    Desc:</span>
+<span class="sd">        打开测试集和训练集，并对数据进行格式化处理</span>
+<span class="sd">    Args:</span>
+<span class="sd">        None</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        errorRate -- 分类错误率</span>
+<span class="sd">    '''</span>
+    <span class="n">frTrain</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'input/5.Logistic/horseColicTraining.txt'</span><span class="p">)</span>
+    <span class="n">frTest</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'input/5.Logistic/horseColicTest.txt'</span><span class="p">)</span>
+    <span class="n">trainingSet</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">trainingLabels</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1"># 解析训练数据集中的数据特征和Labels</span>
+    <span class="c1"># trainingSet 中存储训练数据集的特征，trainingLabels 存储训练数据集的样本对应的分类标签</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">frTrain</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+        <span class="n">currLine</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">)</span>
+        <span class="n">lineArr</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">21</span><span class="p">):</span>
+            <span class="n">lineArr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">currLine</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+        <span class="n">trainingSet</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lineArr</span><span class="p">)</span>
+        <span class="n">trainingLabels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">currLine</span><span class="p">[</span><span class="mi">21</span><span class="p">]))</span>
+    <span class="c1"># 使用 改进后的 随机梯度下降算法 求得在此数据集上的最佳回归系数 trainWeights</span>
+    <span class="n">trainWeights</span> <span class="o">=</span> <span class="n">stocGradAscent1</span><span class="p">(</span><span class="n">array</span><span class="p">(</span><span class="n">trainingSet</span><span class="p">),</span> <span class="n">trainingLabels</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+    <span class="n">errorCount</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">numTestVec</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="c1"># 读取 测试数据集 进行测试，计算分类错误的样本条数和最终的错误率</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">frTest</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+        <span class="n">numTestVec</span> <span class="o">+=</span> <span class="mf">1.0</span>
+        <span class="n">currLine</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">)</span>
+        <span class="n">lineArr</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">21</span><span class="p">):</span>
+            <span class="n">lineArr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">currLine</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+        <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">classifyVector</span><span class="p">(</span><span class="n">array</span><span class="p">(</span><span class="n">lineArr</span><span class="p">),</span> <span class="n">trainWeights</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">(</span><span class="n">currLine</span><span class="p">[</span><span class="mi">21</span><span class="p">]):</span>
+            <span class="n">errorCount</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">errorRate</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">errorCount</span><span class="p">)</span> <span class="o">/</span> <span class="n">numTestVec</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s2">"the error rate of this test is: </span><span class="si">%f</span><span class="s2">"</span> <span class="o">%</span> <span class="n">errorRate</span>
+    <span class="k">return</span> <span class="n">errorRate</span>
+
+
+<span class="c1"># 调用 colicTest() 10次并求结果的平均值</span>
+<span class="k">def</span> <span class="nf">multiTest</span><span class="p">():</span>
+    <span class="n">numTests</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="n">errorSum</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numTests</span><span class="p">):</span>
+        <span class="n">errorSum</span> <span class="o">+=</span> <span class="n">colicTest</span><span class="p">()</span>
+    <span class="k">print</span> <span class="s2">"after </span><span class="si">%d</span><span class="s2"> iterations the average error rate is: </span><span class="si">%f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">numTests</span><span class="p">,</span> <span class="n">errorSum</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">numTests</span><span class="p">))</span> 
+</pre></div>
+<blockquote>
+<p>使用算法: 实现一个简单的命令行程序来手机马的症状并输出预测结果并非难事，这可以作为留给大家的一道习题</p>
+</blockquote>
+<h1>额外内容(可选读)</h1>
+<p>在上文中，当Sigmoid函数大于 0.5 的数据被分入 1 类，小于 0.5 即被归入 0 类。其实0.5也是可以改动的。 比如大于 0.9 的数据被分入 1 类，小于 0.9 即被归入 0 类。</p>
+<h2>其他算法</h2>
+<p>除了梯度下降，随机梯度下降，还有Conjugate Gradient，BFGS，L-BFGS，他们不需要指定alpha值（步长），而且比梯度下降更快，在现实中应用的也比较多。 当然这些算法相比随机梯度要复杂。</p>
+<p>综上这些算法都有一个共通的缺点就是他们都是不断去逼近真实值，永远只是一个真实值的近似值而已。</p>
+<h2>多标签分类</h2>
+<p>逻辑回归也可以用作于多标签分类。 思路如下：</p>
+<p>假设我们标签A中有a0,a1,a2....an个标签，对于每个标签 ai (ai 是标签A之一)，我们训练一个逻辑回归分类器。</p>
+<p>即，训练该标签的逻辑回归分类器的时候，将ai看作一类标签，非ai的所有标签看作一类标签。那么相当于整个数据集里面只有两类标签：ai 和其他。</p>
+<p>剩下步骤就跟我们训练正常的逻辑回归分类器一样了。</p>
+<p>测试数据的时候，将查询点套用在每个逻辑回归分类器中的Sigmoid 函数，取值最高的对应标签为查询点的标签。</p>
+<hr/>
+<ul>
+<li><strong>作者：<a href="http://cwiki.apachecn.org/display/~xuxin">羊三</a> <a href="http://cwiki.apachecn.org/display/~chenyao">小瑶</a></strong></li>
+<li><a href="https://github.com/apachecn/MachineLearning">GitHub地址</a>: <a href="https://github.com/apachecn/MachineLearning">https://github.com/apachecn/MachineLearning</a></li>
+<li><strong>版权声明：欢迎转载学习 =&gt; 请标注信息来源于 <a href="http://www.apachecn.org/">ApacheCN</a></strong></li>
+</ul></div>
+
+
+            <footer>
+<span class="byline author vcard">
+    Posted by
+    <span class="fn">
+            niult
+    </span>
+</span><time datetime="2017-01-01T00:00:00+08:00" pubdate>2017-01-01 00:00</time><span class="categories">
+        <a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a>
+</span>
+
+
+<div class="sharing">
+</div>            </footer>
+        </article>
+
+    </div>
+<aside class="sidebar">
+    <section>
+        <h1>Recent Posts</h1>
+        <ul id="recent_posts">
+                <li class="post">
+                    <a href="../../../pages/2019/01/21-a-first-look-at-a-neural-network.html">2.1-a-first-look-at-a-neural-network</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/35-classifying-movie-reviews.html">3.5-classifying-movie-reviews</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/36-classifying-newswires.html">3.6-classifying-newswires</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/37-predicting-house-prices.html">3.7-predicting-house-prices</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/44-overfitting-and-underfitting.html">4.4-overfitting-and-underfitting</a>
+                </li>
+        </ul>
+    </section>
+        <section>
+
+            <h1>Categories</h1>
+            <ul id="recent_posts">
+                    <li><a href="../../../category/01chang yong gong ju.html">01常用工具</a></li>
+                    <li><a href="../../../category/02.wo ai du shu.html">02.我爱读书</a></li>
+                    <li><a href="../../../category/algorithms.html">algorithms</a></li>
+                    <li><a href="../../../category/book.html">book</a></li>
+                    <li><a href="../../../category/book-pydata.html">book-pydata</a></li>
+                    <li><a href="../../../category/deep-learning-with-python.html">deep-learning-with-python</a></li>
+                    <li><a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a></li>
+                    <li><a href="../../../category/ke wai du wu.html">课外读物</a></li>
+                    <li><a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a></li>
+                    <li><a href="../../../category/shen du xue xi.html">深度学习</a></li>
+                    <li><a href="../../../category/shen jing wang luo.html">神经网络</a></li>
+                    <li><a href="../../../category/shu ju wa jue.html">数据挖掘</a></li>
+                    <li><a href="../../../category/shu xue ji chu.html">数学基础</a></li>
+                    <li><a href="../../../category/tf-example.html">tf-example</a></li>
+                    <li><a href="../../../category/tool1.html">tool1</a></li>
+                    <li><a href="../../../category/tool2.html">tool2</a></li>
+                    <li><a href="../../../category/tools.html">tools</a></li>
+                    <li><a href="../../../category/tui jian xi tong.html">推荐系统</a></li>
+                    <li><a href="../../../category/wen ben wa jue.html">文本挖掘</a></li>
+            </ul>
+        </section>
+
+
+    <section>
+        <h1>Tags</h1>
+            <a href="../../../tag/python.html">python</a>, 
+            <a href="../../../tag/numpy.html">numpy</a>, 
+            <a href="../../../tag/deep-learning.html">deep-learning</a>, 
+            <a href="../../../tag/algorithms.html">algorithms</a>, 
+            <a href="../../../tag/wen-ben-wa-jue.html">文本挖掘</a>, 
+            <a href="../../../tag/shen-jing-wang-luo.html">神经网络</a>, 
+            <a href="../../../tag/shu-xue-ji-chu.html">数学基础</a>, 
+            <a href="../../../tag/nlp.html">nlp</a>, 
+            <a href="../../../tag/tf-example.html">tf-example</a>, 
+            <a href="../../../tag/tui-jian-xi-tong.html">推荐系统</a>, 
+            <a href="../../../tag/tf.html">tf</a>, 
+            <a href="../../../tag/ji-huo-han-shu.html">激活函数</a>, 
+            <a href="../../../tag/mapreduce.html">mapreduce</a>, 
+            <a href="../../../tag/spark.html">spark</a>, 
+            <a href="../../../tag/handbook.html">handbook</a>, 
+            <a href="../../../tag/matplotlib.html">matplotlib</a>, 
+            <a href="../../../tag/scikit-learn.html">scikit-learn</a>, 
+            <a href="../../../tag/latex.html">latex</a>, 
+            <a href="../../../tag/pandas.html">pandas</a>, 
+            <a href="../../../tag/jupyter.html">jupyter</a>, 
+            <a href="../../../tag/plot.html">plot</a>, 
+            <a href="../../../tag/pip.html">pip</a>, 
+            <a href="../../../tag/geng-xin-suo-you-mo-kuai.html">更新所有模块</a>, 
+            <a href="../../../tag/shen-du-xue-xi.html">深度学习</a>, 
+            <a href="../../../tag/xun-huan-shen-jing-wang-luo.html">循环神经网络</a>, 
+            <a href="../../../tag/pangrank.html">PangRank</a>, 
+            <a href="../../../tag/book.html">book</a>, 
+            <a href="../../../tag/pydata.html">pydata</a>, 
+            <a href="../../../tag/shell.html">shell</a>, 
+            <a href="../../../tag/pyhton.html">pyhton</a>
+    </section>
+
+
+
+    <section>
+        <h1>GitHub Repos</h1>
+            <a href="https://github.com/1007530194">@1007530194</a> on GitHub
+    </section>
+
+</aside>    </div>
+</div>
+<footer role="contentinfo"><p>
+        活到老，学到老，玩到老
+    <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-132396898-1', 'auto');
+
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    </script>
+</body>
+</html>

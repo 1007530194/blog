@@ -1,0 +1,2981 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+    <head>
+<meta charset="utf-8">
+<title>spark-python &mdash; 魑魅魍魉</title>
+
+<meta name="author" content="niult">
+
+
+
+
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link href="../../../theme/css/main.css" media="screen, projection"
+      rel="stylesheet" type="text/css">
+
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<script src="../../../theme/js/modernizr-2.0.js"></script>
+<script src="../../../theme/js/ender.js"></script>
+<script src="../../../theme/js/octopress.js" type="text/javascript"></script>
+<script src="../../../theme/js/echarts.min.js" type="text/javascript"></script>
+<script src="../../../theme/js/require.min.js" type="text/javascript"></script>
+
+<header role="banner"><hgroup>
+  <h1><a href="../../../">魑魅魍魉</a></h1>
+</hgroup></header>
+<nav role="navigation">    <ul class="subscription" data-subscription="rss">
+    </ul>
+
+
+<ul class="main-navigation">
+            <li >
+                <a href="../../../category/01chang yong gong ju.html">01常用工具</a>
+            </li>
+            <li >
+                <a href="../../../category/02.wo ai du shu.html">02.我爱读书</a>
+            </li>
+            <li >
+                <a href="../../../category/algorithms.html">Algorithms</a>
+            </li>
+            <li >
+                <a href="../../../category/book.html">Book</a>
+            </li>
+            <li >
+                <a href="../../../category/book-pydata.html">Book-pydata</a>
+            </li>
+            <li >
+                <a href="../../../category/deep-learning-with-python.html">Deep-learning-with-python</a>
+            </li>
+            <li >
+                <a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a>
+            </li>
+            <li >
+                <a href="../../../category/ke wai du wu.html">课外读物</a>
+            </li>
+            <li >
+                <a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen du xue xi.html">深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen jing wang luo.html">神经网络</a>
+            </li>
+            <li >
+                <a href="../../../category/shu ju wa jue.html">数据挖掘</a>
+            </li>
+            <li >
+                <a href="../../../category/shu xue ji chu.html">数学基础</a>
+            </li>
+            <li >
+                <a href="../../../category/tf-example.html">Tf-example</a>
+            </li>
+            <li >
+                <a href="../../../category/tool1.html">Tool1</a>
+            </li>
+            <li >
+                <a href="../../../category/tool2.html">Tool2</a>
+            </li>
+            <li class="active">
+                <a href="../../../category/tools.html">Tools</a>
+            </li>
+            <li >
+                <a href="../../../category/tui jian xi tong.html">推荐系统</a>
+            </li>
+            <li >
+                <a href="../../../category/wen ben wa jue.html">文本挖掘</a>
+            </li>
+</ul>
+</nav>
+<div id="main">
+    <div id="content">
+    <div>
+
+        <h4>Contents</h4>
+        
+
+        <article class="hentry" role="article">
+<header>
+        <h1 class="entry-title">spark-python</h1>
+    <p class="meta">
+<time datetime="2019-01-15T00:00:00+08:00" pubdate>2019-01-15 00:00</time>    </p>
+</header>
+
+    <div class="entry-content"><style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style><body>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Spark">Spark<a class="anchor-link" href="#Spark">¶</a></h1><h2 id="IPython-Notebook-Setup">IPython Notebook Setup<a class="anchor-link" href="#IPython-Notebook-Setup">¶</a></h2><p>The <a href="https://github.com/donnemartin/dev-setup">dev-setup</a> repo contains scripts to install Spark and to automate the its integration with IPython Notebook through the <a href="https://github.com/donnemartin/dev-setup/blob/master/aws.sh">pydata.sh script</a>.</p>
+<p>You can also follow the instructions provided <a href="http://ramhiser.com/2015/02/01/configuring-ipython-notebook-support-for-pyspark/">here</a> to configure IPython Notebook Support for PySpark with Python 2.</p>
+<p>To run Python 3 with Spark 1.4+, check out the following posts on <a href="http://stackoverflow.com/questions/30279783/apache-spark-how-to-use-pyspark-with-python-3">Stack Overflow</a> or <a href="http://www.reddit.com/r/datascience/comments/3ar1bd/continually_updated_data_science_python_notebooks/">Reddit</a>.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Python-Shell">Python Shell<a class="anchor-link" href="#Python-Shell">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Start the pyspark shell (REPL):</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>pyspark
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Python 3.6.4 |Anaconda, Inc.| (default, Jan 16 2018, 12:04:33) 
+[GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+19/01/16 14:17:18 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+19/01/16 14:17:27 WARN ObjectStore: Version information not found in metastore. hive.metastore.schema.verification is not enabled so recording the schema version 1.2.0
+19/01/16 14:17:27 WARN ObjectStore: Failed to get database default, returning NoSuchObjectException
+19/01/16 14:17:28 WARN ObjectStore: Failed to get database global_temp, returning NoSuchObjectException
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /__ / .__/\_,_/_/ /_/\_\   version 2.2.0
+      /_/
+
+Using Python version 3.6.4 (default, Jan 16 2018 12:04:33)
+SparkSession available as 'spark'.
+&gt;&gt;&gt; 
+Traceback (most recent call last):
+  File "/usr/local/Cellar/apache-spark/2.2.0/libexec/python/pyspark/context.py", line 237, in signal_handler
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+&gt;&gt;&gt; 
+&gt;&gt;&gt; </pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>View the spark context, the main entry point to the Spark API:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sc</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[10]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>''</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="DataFrames">DataFrames<a class="anchor-link" href="#DataFrames">¶</a></h2><p>From the following <a href="https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html">reference</a>:</p>
+<p>A DataFrame is a distributed collection of data organized into named columns. It is conceptually equivalent to a table in a relational database or a data frame in R/Python, but with richer optimizations under the hood.</p>
+<p>Given the Spark Context, create a SQLContext:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [14]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">pyspark.sql</span> <span class="k">import</span> <span class="n">SQLContext</span>
+<span class="kn">from</span> <span class="nn">pyspark</span> <span class="k">import</span> <span class="n">SparkContext</span>
+
+<span class="n">sc</span><span class="o">=</span><span class="n">SparkContext</span><span class="p">(</span><span class="n">appName</span><span class="o">=</span><span class="s2">"myword"</span><span class="p">)</span>
+<span class="n">sqlContext</span> <span class="o">=</span> <span class="n">SQLContext</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Create a DataFrame based on the content of a file:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [17]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">sqlContext</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">json</span><span class="p">(</span><span class="s2">"/Users/weidian/Documents/MyDiary/tmp/datas/paper/atrank/reviews_Electronics_5.json"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Display the content of the DataFrame:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [18]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>+----------+--------+-------+--------------------+-----------+--------------+--------------------+--------------------+--------------+
+|      asin| helpful|overall|          reviewText| reviewTime|    reviewerID|        reviewerName|             summary|unixReviewTime|
++----------+--------+-------+--------------------+-----------+--------------+--------------------+--------------------+--------------+
+|0528881469|  [0, 0]|    5.0|We got this GPS f...| 06 2, 2013| AO94DHGC771SJ|             amazdnu|     Gotta have GPS!|    1370131200|
+|0528881469|[12, 15]|    1.0|I'm a professiona...|11 25, 2010| AMO214LNFCEI4|     Amazon Customer|   Very Disappointed|    1290643200|
+|0528881469|[43, 45]|    3.0|Well, what can I ...| 09 9, 2010|A3N7T0DY83Y4IG|       C. A. Freeman|      1st impression|    1283990400|
+|0528881469| [9, 10]|    2.0|Not going to writ...|11 24, 2010|A1H8PY3QHMQQA0|Dave M. Shaw "mac...|Great grafics, PO...|    1290556800|
+|0528881469|  [0, 0]|    1.0|I've had mine for...|09 29, 2011|A24EV6RXELQZ63|         Wayne Smith|Major issues, onl...|    1317254400|
+|0594451647|  [3, 3]|    5.0|I am using this w...| 01 3, 2014|A2JXAZZI9PHK9Z|Billy G. Noland "...|HDMI Nook adapter...|    1388707200|
+|0594451647|  [0, 0]|    2.0|The cable is very...|04 27, 2014|A2P5U7BDKKT7FW|           Christian|Cheap proprietary...|    1398556800|
+|0594451647|  [0, 0]|    5.0|This adaptor is r...| 05 4, 2014| AAZ084UMH8VZ2|D. L. Brown "A Kn...|A Perfdect Nook H...|    1399161600|
+|0594451647|  [0, 0]|    4.0|This adapter easi...|07 11, 2014| AEZ3CR6BKIROJ|        Mark Dietter|A nice easy to us...|    1405036800|
+|0594451647|  [3, 3]|    5.0|This product real...|01 20, 2014|A3BY5KCNQZXV5U|             Matenai|This works great ...|    1390176000|
+|0594481813|  [2, 2]|    4.0|This item is just...|04 16, 2014| A7S2B0I67WNWB|              AllyMG|         As expected|    1397606400|
+|0594481813|  [0, 0]|    5.0|bought for a spar...| 05 5, 2014|A3HICVLF4PFFMN|     Amazon Customer|           great fit|    1399248000|
+|0594481813|  [1, 1]|    5.0|My son crewed my ...|06 24, 2013| ANSKSPEEAKY7S|                Gena|         Works Great|    1372032000|
+|0594481813|  [0, 1]|    3.0|This is a good be...|05 25, 2013|A2QBZA4S1ROX9Q|                Jake|            It Works|    1369440000|
+|0594481813|  [2, 2]|    5.0|I lost my B&amp;N ori...| 03 9, 2014| ANY6JUFM0GH8U|          J. Clement|Great replacement...|    1394323200|
+|0594481813|  [0, 0]|    3.0|It does 2A and ch...|08 31, 2013| AT09WGFUM934H|                John|This is the oem c...|    1377907200|
+|0594481813|  [3, 5]|    3.0|Go to Target or B...|09 18, 2013| AGAKHE014LQFU|           Nicodimus|$45 for a power c...|    1379462400|
+|0594481813|  [2, 2]|    4.0|Works well, a lit...|06 27, 2013|A1S6B5QFWGVL5U|          T. Vaughan|    Good replacement|    1372291200|
+|0972683275|  [0, 0]|    5.0|This is a great b...|07 12, 2014|A20XXTXWF2TCPY|                null|Excelant mount fo...|    1405123200|
+|0972683275|  [1, 1]|    5.0|This mount is jus...|04 30, 2013|A2IDCSC6NVONIZ|             2Cents!|             Perfect|    1367280000|
++----------+--------+-------+--------------------+-----------+--------------+--------------------+--------------------+--------------+
+only showing top 20 rows
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Print the schema:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [19]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">printSchema</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>root
+ |-- asin: string (nullable = true)
+ |-- helpful: array (nullable = true)
+ |    |-- element: long (containsNull = true)
+ |-- overall: double (nullable = true)
+ |-- reviewText: string (nullable = true)
+ |-- reviewTime: string (nullable = true)
+ |-- reviewerID: string (nullable = true)
+ |-- reviewerName: string (nullable = true)
+ |-- summary: string (nullable = true)
+ |-- unixReviewTime: long (nullable = true)
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Select a column:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [22]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"reviewTime"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[22]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>DataFrame[reviewTime: string]</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Create a DataFrame with rows matching a given filter:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [23]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">reviewText</span><span class="o">&gt;</span><span class="s2">"10"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[23]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>DataFrame[asin: string, helpful: array&lt;bigint&gt;, overall: double, reviewText: string, reviewTime: string, reviewerID: string, reviewerName: string, summary: string, unixReviewTime: bigint]</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Aggregate the results and count:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [25]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">groupBy</span><span class="p">(</span><span class="s2">"reviewText"</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[25]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>DataFrame[reviewText: string, count: bigint]</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="RDDs">RDDs<a class="anchor-link" href="#RDDs">¶</a></h2><p>Note: RDDs are included for completeness.  In Spark 1.3, DataFrames were introduced which are recommended over RDDs.  Check out the <a href="https://databricks.com/blog/2015/02/17/introducing-dataframes-in-spark-for-large-scale-data-science.html">DataFrames announcement</a> for more info.</p>
+<p>Resilient Distributed Datasets (RDDs) are the fundamental unit of data in Spark.  RDDs can be created from a file, from data in memory, or from another RDD.  RDDs are immutable.</p>
+<p>There are two types of RDD operations:</p>
+<ul>
+<li>Actions: Returns values, data is not processed in an RDD until an action is preformed</li>
+<li>Transformations: Defines a new RDD based on the current</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Create an RDD from the contents of a directory:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [31]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">my_data</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s2">"/Users/weidian/Documents/MyDiary/tmp/datas/paper/atrank/reviews_Electronics_5.json"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>ERROR:root:Exception while sending command.
+Traceback (most recent call last):
+  File "/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/py4j/java_gateway.py", line 1152, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+  File "/Applications/Anaconda/anaconda3/lib/python3.6/socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+ConnectionResetError: [Errno 54] Connection reset by peer
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/py4j/java_gateway.py", line 985, in send_command
+    response = connection.send_command(command)
+  File "/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/py4j/java_gateway.py", line 1164, in send_command
+    "Error while receiving", e, proto.ERROR_ON_RECEIVE)
+py4j.protocol.Py4JNetworkError: Error while receiving
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">Py4JError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-31-d7de5ddb2a48&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>my_data <span class="ansi-blue-fg">=</span> sc<span class="ansi-blue-fg">.</span>textFile<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">"/Users/weidian/Documents/MyDiary/tmp/datas/paper/atrank/reviews_Electronics_5.json"</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/pyspark/context.py</span> in <span class="ansi-cyan-fg">textFile</span><span class="ansi-blue-fg">(self, name, minPartitions, use_unicode)</span>
+<span class="ansi-green-intense-fg ansi-bold">    578</span>         <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">u'Hello world!'</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-intense-fg ansi-bold">    579</span>         """
+<span class="ansi-green-fg">--&gt; 580</span><span class="ansi-red-fg">         </span>minPartitions <span class="ansi-blue-fg">=</span> minPartitions <span class="ansi-green-fg">or</span> min<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">.</span>defaultParallelism<span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    581</span>         return RDD(self._jsc.textFile(name, minPartitions), self,
+<span class="ansi-green-intense-fg ansi-bold">    582</span>                    UTF8Deserializer(use_unicode))
+
+<span class="ansi-green-fg">/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/pyspark/context.py</span> in <span class="ansi-cyan-fg">defaultParallelism</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">    404</span>         reduce tasks)
+<span class="ansi-green-intense-fg ansi-bold">    405</span>         """
+<span class="ansi-green-fg">--&gt; 406</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_jsc<span class="ansi-blue-fg">.</span>sc<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>defaultParallelism<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    407</span> 
+<span class="ansi-green-intense-fg ansi-bold">    408</span>     <span class="ansi-blue-fg">@</span>property
+
+<span class="ansi-green-fg">/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/py4j/java_gateway.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, *args)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1255</span>         answer <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>gateway_client<span class="ansi-blue-fg">.</span>send_command<span class="ansi-blue-fg">(</span>command<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1256</span>         return_value = get_return_value(
+<span class="ansi-green-fg">-&gt; 1257</span><span class="ansi-red-fg">             answer, self.gateway_client, self.target_id, self.name)
+</span><span class="ansi-green-intense-fg ansi-bold">   1258</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1259</span>         <span class="ansi-green-fg">for</span> temp_arg <span class="ansi-green-fg">in</span> temp_args<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/pyspark/sql/utils.py</span> in <span class="ansi-cyan-fg">deco</span><span class="ansi-blue-fg">(*a, **kw)</span>
+<span class="ansi-green-intense-fg ansi-bold">     61</span>     <span class="ansi-green-fg">def</span> deco<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>a<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kw<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     62</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 63</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> f<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>a<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kw<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     64</span>         <span class="ansi-green-fg">except</span> py4j<span class="ansi-blue-fg">.</span>protocol<span class="ansi-blue-fg">.</span>Py4JJavaError <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     65</span>             s <span class="ansi-blue-fg">=</span> e<span class="ansi-blue-fg">.</span>java_exception<span class="ansi-blue-fg">.</span>toString<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/py4j/protocol.py</span> in <span class="ansi-cyan-fg">get_return_value</span><span class="ansi-blue-fg">(answer, gateway_client, target_id, name)</span>
+<span class="ansi-green-intense-fg ansi-bold">    334</span>             raise Py4JError(
+<span class="ansi-green-intense-fg ansi-bold">    335</span>                 <span class="ansi-blue-fg">"An error occurred while calling {0}{1}{2}"</span><span class="ansi-blue-fg">.</span>
+<span class="ansi-green-fg">--&gt; 336</span><span class="ansi-red-fg">                 format(target_id, ".", name))
+</span><span class="ansi-green-intense-fg ansi-bold">    337</span>     <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    338</span>         type <span class="ansi-blue-fg">=</span> answer<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
+
+<span class="ansi-red-fg">Py4JError</span>: An error occurred while calling o11.sc</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Count the number of lines in the data:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [28]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">my_data</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[28]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>1689188</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Return the first 10 lines in the data:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [30]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">my_data</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>ERROR:root:Exception while sending command.
+Traceback (most recent call last):
+  File "/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/py4j/java_gateway.py", line 1152, in send_command
+    answer = smart_decode(self.stream.readline()[:-1])
+  File "/Applications/Anaconda/anaconda3/lib/python3.6/socket.py", line 586, in readinto
+    return self._sock.recv_into(b)
+ConnectionResetError: [Errno 54] Connection reset by peer
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/py4j/java_gateway.py", line 985, in send_command
+    response = connection.send_command(command)
+  File "/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/py4j/java_gateway.py", line 1164, in send_command
+    "Error while receiving", e, proto.ERROR_ON_RECEIVE)
+py4j.protocol.Py4JNetworkError: Error while receiving
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_text output_error">
+<pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">Py4JError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-30-496e682011a4&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
+<span class="ansi-green-fg">----&gt; 1</span><span class="ansi-red-fg"> </span>my_data<span class="ansi-blue-fg">.</span>take<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">10</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/pyspark/rdd.py</span> in <span class="ansi-cyan-fg">take</span><span class="ansi-blue-fg">(self, num)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1325</span>         """
+<span class="ansi-green-intense-fg ansi-bold">   1326</span>         items <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">]</span>
+<span class="ansi-green-fg">-&gt; 1327</span><span class="ansi-red-fg">         </span>totalParts <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>getNumPartitions<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1328</span>         partsScanned <span class="ansi-blue-fg">=</span> <span class="ansi-cyan-fg">0</span>
+<span class="ansi-green-intense-fg ansi-bold">   1329</span> 
+
+<span class="ansi-green-fg">/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/pyspark/rdd.py</span> in <span class="ansi-cyan-fg">getNumPartitions</span><span class="ansi-blue-fg">(self)</span>
+<span class="ansi-green-intense-fg ansi-bold">    389</span>         <span class="ansi-cyan-fg">2</span>
+<span class="ansi-green-intense-fg ansi-bold">    390</span>         """
+<span class="ansi-green-fg">--&gt; 391</span><span class="ansi-red-fg">         </span><span class="ansi-green-fg">return</span> self<span class="ansi-blue-fg">.</span>_jrdd<span class="ansi-blue-fg">.</span>partitions<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>size<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">    392</span> 
+<span class="ansi-green-intense-fg ansi-bold">    393</span>     <span class="ansi-green-fg">def</span> filter<span class="ansi-blue-fg">(</span>self<span class="ansi-blue-fg">,</span> f<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/py4j/java_gateway.py</span> in <span class="ansi-cyan-fg">__call__</span><span class="ansi-blue-fg">(self, *args)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1255</span>         answer <span class="ansi-blue-fg">=</span> self<span class="ansi-blue-fg">.</span>gateway_client<span class="ansi-blue-fg">.</span>send_command<span class="ansi-blue-fg">(</span>command<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">   1256</span>         return_value = get_return_value(
+<span class="ansi-green-fg">-&gt; 1257</span><span class="ansi-red-fg">             answer, self.gateway_client, self.target_id, self.name)
+</span><span class="ansi-green-intense-fg ansi-bold">   1258</span> 
+<span class="ansi-green-intense-fg ansi-bold">   1259</span>         <span class="ansi-green-fg">for</span> temp_arg <span class="ansi-green-fg">in</span> temp_args<span class="ansi-blue-fg">:</span>
+
+<span class="ansi-green-fg">/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/pyspark/sql/utils.py</span> in <span class="ansi-cyan-fg">deco</span><span class="ansi-blue-fg">(*a, **kw)</span>
+<span class="ansi-green-intense-fg ansi-bold">     61</span>     <span class="ansi-green-fg">def</span> deco<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>a<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kw<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     62</span>         <span class="ansi-green-fg">try</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-fg">---&gt; 63</span><span class="ansi-red-fg">             </span><span class="ansi-green-fg">return</span> f<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">*</span>a<span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kw<span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">     64</span>         <span class="ansi-green-fg">except</span> py4j<span class="ansi-blue-fg">.</span>protocol<span class="ansi-blue-fg">.</span>Py4JJavaError <span class="ansi-green-fg">as</span> e<span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">     65</span>             s <span class="ansi-blue-fg">=</span> e<span class="ansi-blue-fg">.</span>java_exception<span class="ansi-blue-fg">.</span>toString<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
+
+<span class="ansi-green-fg">/Applications/Anaconda/anaconda3/lib/python3.6/site-packages/py4j/protocol.py</span> in <span class="ansi-cyan-fg">get_return_value</span><span class="ansi-blue-fg">(answer, gateway_client, target_id, name)</span>
+<span class="ansi-green-intense-fg ansi-bold">    334</span>             raise Py4JError(
+<span class="ansi-green-intense-fg ansi-bold">    335</span>                 <span class="ansi-blue-fg">"An error occurred while calling {0}{1}{2}"</span><span class="ansi-blue-fg">.</span>
+<span class="ansi-green-fg">--&gt; 336</span><span class="ansi-red-fg">                 format(target_id, ".", name))
+</span><span class="ansi-green-intense-fg ansi-bold">    337</span>     <span class="ansi-green-fg">else</span><span class="ansi-blue-fg">:</span>
+<span class="ansi-green-intense-fg ansi-bold">    338</span>         type <span class="ansi-blue-fg">=</span> answer<span class="ansi-blue-fg">[</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span>
+
+<span class="ansi-red-fg">Py4JError</span>: An error occurred while calling o184.partitions</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Create an RDD with lines matching the given filter:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">my_data</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="s2">".txt"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Chain a series of commands:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s2">"file:/path/file.txt"</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="s2">".txt"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">count</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Create a new RDD mapping each line to an array of words, taking only the first word of each array:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">first_words</span> <span class="o">=</span> <span class="n">my_data</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Output each word in first_words:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">first_words</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="nb">print</span> <span class="n">word</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Save the first words to a text file:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">first_words</span><span class="o">.</span><span class="n">saveAsTextFile</span><span class="p">(</span><span class="s2">"file:/path/file"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Pair-RDDs">Pair RDDs<a class="anchor-link" href="#Pair-RDDs">¶</a></h2><p>Pair RDDs contain elements that are key-value pairs.  Keys and values can be any type.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Given a log file with the following space deilmited format: [date_time, user_id, ip_address, action], map each request to (user_id, 1):</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">DATE_TIME</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">USER_ID</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">IP_ADDRESS</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">ACTION</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="n">log_data</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s2">"file:/path/*"</span><span class="p">)</span>
+
+<span class="n">user_actions</span> <span class="o">=</span> <span class="n">log_data</span> \
+    <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> \
+    <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">words</span><span class="p">:</span> <span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">USER_ID</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>  \
+    <span class="o">.</span><span class="n">reduceByKey</span><span class="p">(</span><span class="k">lambda</span> <span class="n">count1</span><span class="p">,</span> <span class="n">count2</span><span class="p">:</span> <span class="n">count1</span> <span class="o">+</span> <span class="n">count2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Show the top 5 users by count, sorted in descending order:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">user_actions</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">pair</span><span class="p">:</span> <span class="p">(</span><span class="n">pair</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pair</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span><span class="o">.</span><span class="n">sortyByKey</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Group IP addresses by user id:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">user_ips</span> <span class="o">=</span> <span class="n">log_data</span> \
+    <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> \
+    <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">words</span><span class="p">:</span> <span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="n">IP_ADDRESS</span><span class="p">],</span><span class="n">words</span><span class="p">[</span><span class="n">USER_ID</span><span class="p">]))</span> \
+    <span class="o">.</span><span class="n">groupByKey</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Given a user table with the following csv format: [user_id, user_info0, user_info1, ...], map each line to (user_id, [user_info...]):</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">user_data</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s2">"file:/path/*"</span><span class="p">)</span>
+
+<span class="n">user_profile</span> <span class="o">=</span> <span class="n">user_data</span> \
+    <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">','</span><span class="p">))</span> \
+    <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">words</span><span class="p">:</span> <span class="p">(</span><span class="n">words</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">words</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Inner join the user_actions and user_profile RDDs:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">user_actions_with_profile</span> <span class="o">=</span> <span class="n">user_actions</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">user_profile</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Show the joined table:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="p">(</span><span class="n">user_info</span><span class="p">,</span> <span class="n">count</span><span class="p">))</span> <span class="ow">in</span> <span class="n">user_actions_with_profiles</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="nb">print</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">user_info</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Running-Spark-on-a-Cluster">Running Spark on a Cluster<a class="anchor-link" href="#Running-Spark-on-a-Cluster">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Start the standalone cluster's Master and Worker daemons:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>sudo service spark-master start
+<span class="o">!</span>sudo service spark-worker start
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Stop the standalone cluster's Master and Worker daemons:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>sudo service spark-master stop
+<span class="o">!</span>sudo service spark-worker stop
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Restart the standalone cluster's Master and Worker daemons:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>sudo service spark-master stop
+<span class="o">!</span>sudo service spark-worker stop
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>View the Spark standalone cluster UI:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">18080</span><span class="o">//</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Start the Spark shell and connect to the cluster:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span><span class="nv">MASTER</span><span class="o">=</span>spark://localhost:7077 pyspark
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Confirm you are connected to the correct master:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">master</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Viewing-the-Spark-Application-UI">Viewing the Spark Application UI<a class="anchor-link" href="#Viewing-the-Spark-Application-UI">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>From the following <a href="http://spark.apache.org/docs/1.2.0/monitoring.html">reference</a>:</p>
+<p>Every SparkContext launches a web UI, by default on port 4040, that displays useful information about the application. This includes:</p>
+<p>A list of scheduler stages and tasks
+A summary of RDD sizes and memory usage
+Environmental information.
+Information about the running executors</p>
+<p>You can access this interface by simply opening http://<driver-node>:4040 in a web browser. If multiple SparkContexts are running on the same host, they will bind to successive ports beginning with 4040 (4041, 4042, etc).</driver-node></p>
+<p>Note that this information is only available for the duration of the application by default. To view the web UI after the fact, set spark.eventLog.enabled to true before starting the application. This configures Spark to log Spark events that encode the information displayed in the UI to persisted storage.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">4040</span><span class="o">/</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Working-with-Partitions">Working with Partitions<a class="anchor-link" href="#Working-with-Partitions">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>From the following <a href="http://blog.cloudera.com/blog/2014/09/how-to-translate-from-mapreduce-to-apache-spark/">reference</a>:</p>
+<p>The Spark map() and flatMap() methods only operate on one input at a time, and provide no means to execute code before or after transforming a batch of values. It looks possible to simply put the setup and cleanup code before and after a call to map() in Spark:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">val</span> <span class="n">dbConnection</span> <span class="o">=</span> <span class="o">...</span>
+<span class="n">lines</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="o">...</span> <span class="n">dbConnection</span><span class="o">.</span><span class="n">createStatement</span><span class="p">(</span><span class="o">...</span><span class="p">)</span> <span class="o">...</span><span class="p">)</span>
+<span class="n">dbConnection</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="o">//</span> <span class="n">Wrong</span><span class="err">!</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>However, this fails for several reasons:</p>
+<ul>
+<li>It puts the object dbConnection into the map function’s closure, which requires that it be serializable (for example, by implementing java.io.Serializable). An object like a database connection is generally not serializable.</li>
+<li>map() is a transformation, rather than an operation, and is lazily evaluated. The connection can’t be closed immediately here.</li>
+<li>Even so, it would only close the connection on the driver, not necessarily freeing resources allocated by serialized copies.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In fact, neither map() nor flatMap() is the closest counterpart to a Mapper in Spark — it’s the important mapPartitions() method. This method does not map just one value to one other value, but rather maps an Iterator of values to an Iterator of other values. It’s like a “bulk map” method. This means that the mapPartitions() function can allocate resources locally at its start, and release them when done mapping many values.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">count_txt</span><span class="p">(</span><span class="n">partIter</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">partIter</span><span class="p">:</span> 
+        <span class="k">if</span> <span class="s2">".txt"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span> <span class="n">txt_count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">yield</span> <span class="p">(</span><span class="n">txt_count</span><span class="p">)</span>
+
+<span class="n">my_data</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="s2">"file:/path/*"</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">mapPartitions</span><span class="p">(</span><span class="n">count_txt</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+    
+<span class="c1"># Show the partitioning </span>
+<span class="nb">print</span> <span class="s2">"Data partitions: "</span><span class="p">,</span> <span class="n">my_data</span><span class="o">.</span><span class="n">toDebugString</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Caching-RDDs">Caching RDDs<a class="anchor-link" href="#Caching-RDDs">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Caching an RDD saves the data in memory.  Caching is a suggestion to Spark as it is memory dependent.</p>
+<p>By default, every RDD operation executes the entire lineage.  Caching can boost performance for datasets that are likely to be used by saving this expensive recomputation and is ideal for iterative algorithms or machine learning.</p>
+<ul>
+<li>cache() stores data in memory</li>
+<li>persist() stores data in MEMORY_ONLY, MEMORY_AND_DISK (spill to disk), and  DISK_ONLY</li>
+</ul>
+<p>Disk memory is stored on the node, not on HDFS.</p>
+<p>Replication is possible by using MEMORY_ONLY_2, MEMORY_AND_DISK_2, etc.  If a cached partition becomes unavailable, Spark recomputes the partition through the lineage.</p>
+<p>Serialization is possible with MEMORY_ONLY_SER and MEMORY_AND_DISK_SER.  This is more space efficient but less time efficient, as it uses Java serialization by default.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Cache RDD to memory</span>
+<span class="n">my_data</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span>
+
+<span class="c1"># Persist RDD to both memory and disk (if memory is not enough), with replication of 2</span>
+<span class="n">my_data</span><span class="o">.</span><span class="n">persist</span><span class="p">(</span><span class="n">MEMORY_AND_DISK_2</span><span class="p">)</span>
+
+<span class="c1"># Unpersist RDD, removing it from memory and disk</span>
+<span class="n">my_data</span><span class="o">.</span><span class="n">unpersist</span><span class="p">()</span>
+
+<span class="c1"># Change the persistence level after unpersist</span>
+<span class="n">my_data</span><span class="o">.</span><span class="n">persist</span><span class="p">(</span><span class="n">MEMORY_AND_DISK</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Checkpointing-RDDs">Checkpointing RDDs<a class="anchor-link" href="#Checkpointing-RDDs">¶</a></h2><p>Caching maintains RDD lineage, providing resilience.  If the lineage is very long, it is possible to get a stack overflow.</p>
+<p>Checkpointing saves the data to HDFS, which provide fault tolerant storage across nodes.  HDFS is not as fast as local storage for both reading and writing.  Checkpointing is good for long lineages and for very large data sets that might not fit on local storage.  Checkpointing removes lineage.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Create a checkpoint and perform an action by calling count() to materialize the checkpoint and save it to the checkpoint file:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Enable checkpointing by setting the checkpoint directory, </span>
+<span class="c1"># which will contain all checkpoints for the given data:</span>
+<span class="n">sc</span><span class="o">.</span><span class="n">setCheckpointDir</span><span class="p">(</span><span class="s2">"checkpoints"</span><span class="p">)</span>
+
+<span class="n">my_data</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">parallelize</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+
+<span class="c1"># Long loop that may cause a stack overflow</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="n">my_data</span> <span class="o">=</span> <span class="n">mydata</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">myInt</span><span class="p">:</span> <span class="n">myInt</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> 
+        <span class="n">my_data</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">()</span>
+        <span class="n">my_data</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+<span class="n">my_data</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+     
+<span class="c1"># Display the lineage</span>
+<span class="k">for</span> <span class="n">rddstring</span> <span class="ow">in</span> <span class="n">my_data</span><span class="o">.</span><span class="n">toDebugString</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\n</span><span class="s1">'</span><span class="p">):</span> 
+    <span class="nb">print</span> <span class="n">rddstring</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Writing-and-Running-a-Spark-Application">Writing and Running a Spark Application<a class="anchor-link" href="#Writing-and-Running-a-Spark-Application">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Create a Spark application to count the number of text files:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">pyspark</span> <span class="k">import</span> <span class="n">SparkContext</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="o">&gt;&gt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s2">"Usage: App Name &lt;file&gt;"</span>
+        <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        
+    <span class="n">count_text_files</span><span class="p">()</span>
+    
+<span class="k">def</span> <span class="nf">count_text_files</span><span class="p">():</span>
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">SparkContext</span><span class="p">()</span>
+    <span class="n">logfile</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">text_files_count</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="n">logfile</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="s1">'.txt'</span> <span class="ow">in</span> <span class="n">line</span><span class="p">)</span>
+    <span class="n">text_files_count</span><span class="o">.</span><span class="n">cache</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Number of text files: "</span><span class="p">,</span> <span class="n">text_files_count</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Submit the script to Spark for processing:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>spark-submit --properties-file dir/myspark.conf script.py data/*
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Configuring-Spark-Applications">Configuring Spark Applications<a class="anchor-link" href="#Configuring-Spark-Applications">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Run a Spark app and set the configuration options in the command line:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>spark-submit --master spark//localhost:7077 --name <span class="s1">'App Name'</span> script.py data/*
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Configure spark.conf:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">name</span>  <span class="n">App</span> <span class="n">Name</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">ui</span><span class="o">.</span><span class="n">port</span>   <span class="mi">4141</span>
+<span class="n">spark</span><span class="o">.</span><span class="n">master</span>    <span class="n">spark</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">7077</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Run a Spark app and set the configuration options through spark.conf:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>spark-submit --properties-file spark.conf script.py data/*
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Set the config options programmatically:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sconf</span> <span class="o">=</span> <span class="n">SparkConf</span><span class="p">()</span> \
+    <span class="o">.</span><span class="n">setAppName</span><span class="p">(</span><span class="s2">"Word Count"</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">"spark.ui.port"</span><span class="p">,</span><span class="s2">"4141"</span><span class="p">)</span>
+<span class="n">sc</span> <span class="o">=</span> <span class="n">SparkContext</span><span class="p">(</span><span class="n">conf</span><span class="o">=</span><span class="n">sconf</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Set logging levels located in the following file, or place a copy in your pwd:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="err">$</span><span class="n">SPARK_HOME</span><span class="o">/</span><span class="n">conf</span><span class="o">/</span><span class="n">log4j</span><span class="o">.</span><span class="n">properties</span><span class="o">.</span><span class="n">template</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Streaming">Streaming<a class="anchor-link" href="#Streaming">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Start the Spark Shell locally with at least two threads (need a minimum of two threads for streaming, one for receiving, one for processing):</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">!</span>spark-shell --master local<span class="o">[</span><span class="m">2</span><span class="o">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Create a StreamingContext (similar to SparkContext in core Spark) with a batch duration of 1 second:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">val</span> <span class="n">ssc</span> <span class="o">=</span> <span class="n">new</span> <span class="n">StreamingContext</span><span class="p">(</span><span class="n">new</span> <span class="n">SparkConf</span><span class="p">(),</span> <span class="n">Seconds</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> 
+<span class="n">val</span> <span class="n">my_stream</span> <span class="o">=</span> <span class="n">ssc</span><span class="o">.</span><span class="n">socketTextStream</span><span class="p">(</span><span class="n">hostname</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Get a DStream from a streaming data source (text from a socket):</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">val</span> <span class="n">logs</span> <span class="o">=</span> <span class="n">ssc</span><span class="o">.</span><span class="n">socketTextStream</span><span class="p">(</span><span class="n">hostname</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>DStreams support regular transformations such as map, flatMap, and filter, and pair transformations such as reduceByKey, groupByKey, and joinByKey.</p>
+<p>Apply a DStream operation to each batch of RDDs (count up requests by user id, reduce by key to get the count):</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">val</span> <span class="n">requests</span> <span class="o">=</span> <span class="n">my_stream</span>
+    <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">line</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">" "</span><span class="p">)(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">reduceByKey</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The transform(function) method creates a new DStream by executing the input function on the RDDs.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">val</span> <span class="n">sorted_requests</span> <span class="o">=</span> <span class="n">requests</span>
+    <span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">pair</span> <span class="o">=&gt;</span> <span class="n">pair</span><span class="o">.</span><span class="n">swap</span><span class="p">)</span>
+    <span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">rdd</span> <span class="o">=&gt;</span> <span class="n">rdd</span><span class="o">.</span><span class="n">sortByKey</span><span class="p">(</span><span class="n">false</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>foreachRDD(function) performs a function on each RDD in the DStream (map is like a shortcut not requiring you to get the RDD first before doing an operation):</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">sorted_requests</span><span class="o">.</span><span class="n">foreachRDD</span><span class="p">((</span><span class="n">rdd</span><span class="p">,</span> <span class="n">time</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="n">println</span><span class="p">(</span><span class="s2">"Top users @ "</span> <span class="o">+</span> <span class="n">time</span><span class="p">)</span>
+    <span class="n">rdd</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">foreach</span><span class="p">(</span>
+    <span class="n">pair</span> <span class="o">=&gt;</span> <span class="n">printf</span><span class="p">(</span><span class="s2">"User: </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%s</span><span class="s2">)</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">pair</span><span class="o">.</span><span class="n">_2</span><span class="p">,</span> <span class="n">pair</span><span class="o">.</span><span class="n">_1</span><span class="p">))</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Save the DStream result part files with the given folder prefix, the actual folder will be /dir/requests-timestamp0/:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">requests</span><span class="o">.</span><span class="n">saveAsTextFiles</span><span class="p">(</span><span class="s2">"/dir/requests"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Start the execution of all DStreams:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">ssc</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Wait for all background threads to complete before ending the main thread:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">ssc</span><span class="o">.</span><span class="n">awaitTermination</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Streaming-with-States">Streaming with States<a class="anchor-link" href="#Streaming-with-States">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Enable checkpointing to prevent infinite lineages:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">ssc</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">(</span><span class="s2">"dir"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Compute a DStream based on the previous states plus the current state:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">updateCount</span> <span class="o">=</span> <span class="p">(</span><span class="n">newCounts</span><span class="p">:</span> <span class="n">Seq</span><span class="p">[</span><span class="n">Int</span><span class="p">],</span> <span class="n">state</span><span class="p">:</span> <span class="n">Option</span><span class="p">[</span><span class="n">Int</span><span class="p">])</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="n">val</span> <span class="n">newCount</span> <span class="o">=</span> <span class="n">newCounts</span><span class="o">.</span><span class="n">foldLeft</span><span class="p">(</span><span class="mi">0</span><span class="p">)(</span><span class="n">_</span> <span class="o">+</span> <span class="n">_</span><span class="p">)</span>
+    <span class="n">val</span> <span class="n">previousCount</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">getOrElse</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">Some</span><span class="p">(</span><span class="n">newCount</span> <span class="o">+</span> <span class="n">previousCount</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">val</span> <span class="n">totalUserreqs</span> <span class="o">=</span> <span class="n">userreqs</span><span class="o">.</span><span class="n">updateStateByKey</span><span class="p">(</span><span class="n">updateCount</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Compute a DStream based Sliding window, every 30 seconds, count requests by user over the last 5 minutes:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">val</span> <span class="n">reqcountsByWindow</span> <span class="o">=</span> <span class="n">logs</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">line</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">' '</span><span class="p">)(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="o">.</span><span class="n">reduceByKeyAndWindow</span><span class="p">((</span><span class="n">x</span><span class="p">:</span> <span class="n">Int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Int</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">,</span> <span class="n">Minutes</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">Seconds</span><span class="p">(</span><span class="mi">30</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Collect statistics with the StreamingListener API:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">//</span> <span class="n">define</span> <span class="n">listener</span>
+<span class="k">class</span> <span class="nc">MyListener</span> <span class="n">extends</span> <span class="n">StreamingListener</span> <span class="p">{</span>
+  <span class="n">override</span> <span class="k">def</span> <span class="nf">onReceiverStopped</span><span class="p">(</span><span class="o">...</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">streamingContext</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span> 
+
+<span class="o">//</span> <span class="n">attach</span> <span class="n">listener</span>
+<span class="n">streamingContext</span><span class="o">.</span> <span class="n">addStreamingListener</span><span class="p">(</span><span class="n">new</span> <span class="n">MyListener</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Broadcast-Variables">Broadcast Variables<a class="anchor-link" href="#Broadcast-Variables">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Read in list of items to broadcast from a local file:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">broadcast_file</span> <span class="o">=</span> <span class="s2">"broadcast.txt"</span>
+<span class="n">broadcast_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="nb">open</span><span class="p">(</span><span class="n">broadcast_file</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Broadcast the target list to all workers:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">broadcast_list_sc</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">broadcast_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Filter based on the broadcast list:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">log_file</span> <span class="o">=</span> <span class="s2">"hdfs://localhost/user/logs/*"</span>
+<span class="n">filtered_data</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="n">log_file</span><span class="p">)</span>\
+    <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="nb">any</span><span class="p">(</span><span class="n">item</span> <span class="ow">in</span> <span class="n">line</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">broadcast_list_sc</span><span class="o">.</span><span class="n">value</span><span class="p">))</span>
+
+<span class="n">filtered_data</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Accumulators">Accumulators<a class="anchor-link" href="#Accumulators">¶</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Create an accumulator:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">txt_count</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">accumulator</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Count the number of txt files in the RDD:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">my_data</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="n">filePath</span><span class="p">)</span>
+<span class="n">my_data</span><span class="o">.</span><span class="n">foreach</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="k">if</span> <span class="s1">'.txt'</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span> <span class="n">txt_count</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Count the number of file types encountered:</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">jpg_count</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">accumulator</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">html_count</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">accumulator</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">css_count</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">accumulator</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">countFileType</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s1">'.jpg'</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span> <span class="n">jpg_count</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s1">'.html'</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span> <span class="n">html_count</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s1">'.css'</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span> <span class="n">css_count</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">filename</span><span class="o">=</span><span class="s2">"hdfs://logs/*"</span>
+
+<span class="n">logs</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">textFile</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="n">logs</span><span class="o">.</span><span class="n">foreach</span><span class="p">(</span><span class="k">lambda</span> <span class="n">line</span><span class="p">:</span> <span class="n">countFileType</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+
+<span class="nb">print</span>  <span class="s1">'File Type Totals:'</span>
+<span class="nb">print</span> <span class="s1">'.css files: '</span><span class="p">,</span> <span class="n">css_count</span><span class="o">.</span><span class="n">value</span>
+<span class="nb">print</span> <span class="s1">'.html files: '</span><span class="p">,</span> <span class="n">html_count</span><span class="o">.</span><span class="n">value</span>
+<span class="nb">print</span> <span class="s1">'.jpg files: '</span><span class="p">,</span> <span class="n">jpg_count</span><span class="o">.</span><span class="n">value</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</body>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+</div>
+
+
+            <footer>
+<span class="byline author vcard">
+    Posted by
+    <span class="fn">
+            niult
+    </span>
+</span><time datetime="2019-01-15T00:00:00+08:00" pubdate>2019-01-15 00:00</time><span class="categories">
+        <a href="../../../category/tools.html">tools</a>
+</span>
+
+    <span class="categories">
+            <a class="category" href="../../../tag/python.html">python</a>, 
+            <a class="category" href="../../../tag/numpy.html">numpy</a>, 
+            <a class="category" href="../../../tag/spark.html">spark</a>
+    </span>
+
+<div class="sharing">
+</div>            </footer>
+        </article>
+
+    </div>
+<aside class="sidebar">
+    <section>
+        <h1>Recent Posts</h1>
+        <ul id="recent_posts">
+                <li class="post">
+                    <a href="../../../pages/2019/01/21-a-first-look-at-a-neural-network.html">2.1-a-first-look-at-a-neural-network</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/35-classifying-movie-reviews.html">3.5-classifying-movie-reviews</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/36-classifying-newswires.html">3.6-classifying-newswires</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/37-predicting-house-prices.html">3.7-predicting-house-prices</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/44-overfitting-and-underfitting.html">4.4-overfitting-and-underfitting</a>
+                </li>
+        </ul>
+    </section>
+        <section>
+
+            <h1>Categories</h1>
+            <ul id="recent_posts">
+                    <li><a href="../../../category/01chang yong gong ju.html">01常用工具</a></li>
+                    <li><a href="../../../category/02.wo ai du shu.html">02.我爱读书</a></li>
+                    <li><a href="../../../category/algorithms.html">algorithms</a></li>
+                    <li><a href="../../../category/book.html">book</a></li>
+                    <li><a href="../../../category/book-pydata.html">book-pydata</a></li>
+                    <li><a href="../../../category/deep-learning-with-python.html">deep-learning-with-python</a></li>
+                    <li><a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a></li>
+                    <li><a href="../../../category/ke wai du wu.html">课外读物</a></li>
+                    <li><a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a></li>
+                    <li><a href="../../../category/shen du xue xi.html">深度学习</a></li>
+                    <li><a href="../../../category/shen jing wang luo.html">神经网络</a></li>
+                    <li><a href="../../../category/shu ju wa jue.html">数据挖掘</a></li>
+                    <li><a href="../../../category/shu xue ji chu.html">数学基础</a></li>
+                    <li><a href="../../../category/tf-example.html">tf-example</a></li>
+                    <li><a href="../../../category/tool1.html">tool1</a></li>
+                    <li><a href="../../../category/tool2.html">tool2</a></li>
+                    <li><a href="../../../category/tools.html">tools</a></li>
+                    <li><a href="../../../category/tui jian xi tong.html">推荐系统</a></li>
+                    <li><a href="../../../category/wen ben wa jue.html">文本挖掘</a></li>
+            </ul>
+        </section>
+
+
+    <section>
+        <h1>Tags</h1>
+            <a href="../../../tag/python.html">python</a>, 
+            <a href="../../../tag/numpy.html">numpy</a>, 
+            <a href="../../../tag/deep-learning.html">deep-learning</a>, 
+            <a href="../../../tag/algorithms.html">algorithms</a>, 
+            <a href="../../../tag/wen-ben-wa-jue.html">文本挖掘</a>, 
+            <a href="../../../tag/shen-jing-wang-luo.html">神经网络</a>, 
+            <a href="../../../tag/shu-xue-ji-chu.html">数学基础</a>, 
+            <a href="../../../tag/nlp.html">nlp</a>, 
+            <a href="../../../tag/tf-example.html">tf-example</a>, 
+            <a href="../../../tag/tui-jian-xi-tong.html">推荐系统</a>, 
+            <a href="../../../tag/tf.html">tf</a>, 
+            <a href="../../../tag/ji-huo-han-shu.html">激活函数</a>, 
+            <a href="../../../tag/mapreduce.html">mapreduce</a>, 
+            <a href="../../../tag/spark.html">spark</a>, 
+            <a href="../../../tag/handbook.html">handbook</a>, 
+            <a href="../../../tag/matplotlib.html">matplotlib</a>, 
+            <a href="../../../tag/scikit-learn.html">scikit-learn</a>, 
+            <a href="../../../tag/latex.html">latex</a>, 
+            <a href="../../../tag/pandas.html">pandas</a>, 
+            <a href="../../../tag/jupyter.html">jupyter</a>, 
+            <a href="../../../tag/plot.html">plot</a>, 
+            <a href="../../../tag/pip.html">pip</a>, 
+            <a href="../../../tag/geng-xin-suo-you-mo-kuai.html">更新所有模块</a>, 
+            <a href="../../../tag/shen-du-xue-xi.html">深度学习</a>, 
+            <a href="../../../tag/xun-huan-shen-jing-wang-luo.html">循环神经网络</a>, 
+            <a href="../../../tag/pangrank.html">PangRank</a>, 
+            <a href="../../../tag/book.html">book</a>, 
+            <a href="../../../tag/pydata.html">pydata</a>, 
+            <a href="../../../tag/shell.html">shell</a>, 
+            <a href="../../../tag/pyhton.html">pyhton</a>
+    </section>
+
+
+
+    <section>
+        <h1>GitHub Repos</h1>
+            <a href="https://github.com/1007530194">@1007530194</a> on GitHub
+    </section>
+
+</aside>    </div>
+</div>
+<footer role="contentinfo"><p>
+        活到老，学到老，玩到老
+    <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-132396898-1', 'auto');
+
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    </script>
+</body>
+</html>

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+    <head>
+<meta charset="utf-8">
+<title>3.决策树 &mdash; 魑魅魍魉</title>
+
+<meta name="author" content="niult">
+
+
+
+
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link href="../../../theme/css/main.css" media="screen, projection"
+      rel="stylesheet" type="text/css">
+
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<script src="../../../theme/js/modernizr-2.0.js"></script>
+<script src="../../../theme/js/ender.js"></script>
+<script src="../../../theme/js/octopress.js" type="text/javascript"></script>
+<script src="../../../theme/js/echarts.min.js" type="text/javascript"></script>
+<script src="../../../theme/js/require.min.js" type="text/javascript"></script>
+
+<header role="banner"><hgroup>
+  <h1><a href="../../../">魑魅魍魉</a></h1>
+</hgroup></header>
+<nav role="navigation">    <ul class="subscription" data-subscription="rss">
+    </ul>
+
+
+<ul class="main-navigation">
+            <li >
+                <a href="../../../category/01chang yong gong ju.html">01常用工具</a>
+            </li>
+            <li >
+                <a href="../../../category/02.wo ai du shu.html">02.我爱读书</a>
+            </li>
+            <li >
+                <a href="../../../category/algorithms.html">Algorithms</a>
+            </li>
+            <li >
+                <a href="../../../category/book.html">Book</a>
+            </li>
+            <li >
+                <a href="../../../category/book-pydata.html">Book-pydata</a>
+            </li>
+            <li >
+                <a href="../../../category/deep-learning-with-python.html">Deep-learning-with-python</a>
+            </li>
+            <li class="active">
+                <a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a>
+            </li>
+            <li >
+                <a href="../../../category/ke wai du wu.html">课外读物</a>
+            </li>
+            <li >
+                <a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen du xue xi.html">深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen jing wang luo.html">神经网络</a>
+            </li>
+            <li >
+                <a href="../../../category/shu ju wa jue.html">数据挖掘</a>
+            </li>
+            <li >
+                <a href="../../../category/shu xue ji chu.html">数学基础</a>
+            </li>
+            <li >
+                <a href="../../../category/tf-example.html">Tf-example</a>
+            </li>
+            <li >
+                <a href="../../../category/tool1.html">Tool1</a>
+            </li>
+            <li >
+                <a href="../../../category/tool2.html">Tool2</a>
+            </li>
+            <li >
+                <a href="../../../category/tools.html">Tools</a>
+            </li>
+            <li >
+                <a href="../../../category/tui jian xi tong.html">推荐系统</a>
+            </li>
+            <li >
+                <a href="../../../category/wen ben wa jue.html">文本挖掘</a>
+            </li>
+</ul>
+</nav>
+<div id="main">
+    <div id="content">
+    <div>
+
+        <h4>Contents</h4>
+        
+
+        <article class="hentry" role="article">
+<header>
+        <h1 class="entry-title">3.决策树</h1>
+    <p class="meta">
+<time datetime="2017-01-01T00:00:00+08:00" pubdate>2017-01-01 00:00</time>    </p>
+</header>
+
+    <div class="entry-content"><h1>第3章 决策树</h1>
+<p><script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default" type="text/javascript"></script></p>
+<h2>决策树 概述</h2>
+<p><code>决策树（Decision Tree）算法是一种基本的分类与回归方法，是最经常使用的数据挖掘算法之一。我们这章节只讨论用于分类的决策树。</code></p>
+<p><code>决策树模型呈树形结构，在分类问题中，表示基于特征对实例进行分类的过程。它可以认为是 if-then 规则的集合，也可以认为是定义在特征空间与类空间上的条件概率分布。</code></p>
+<p><code>决策树学习通常包括 3 个步骤：特征选择、决策树的生成和决策树的修剪。</code></p>
+<h2>决策树 场景</h2>
+<p>一个叫做 "二十个问题" 的游戏，游戏的规则很简单：参与游戏的一方在脑海中想某个事物，其他参与者向他提问，只允许提 20 个问题，问题的答案也只能用对或错回答。问问题的人通过推断分解，逐步缩小待猜测事物的范围，最后得到游戏的答案。</p>
+<p>一个邮件分类系统，大致工作流程如下：</p>
+<p><img alt="决策树-流程图" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/3.DecisionTree/决策树-流程图.jpg" title="决策树示例流程图"/></p>
+<div class="highlight"><pre><span></span>首先检测发送邮件域名地址。如果地址为 myEmployer.com, 则将其放在分类 "无聊时需要阅读的邮件"中。
+如果邮件不是来自这个域名，则检测邮件内容里是否包含单词 "曲棍球" , 如果包含则将邮件归类到 "需要及时处理的朋友邮件", 
+如果不包含则将邮件归类到 "无需阅读的垃圾邮件" 。
+</pre></div>
+<p>决策树的定义：</p>
+<p>分类决策树模型是一种描述对实例进行分类的树形结构。决策树由结点（node）和有向边（directed edge）组成。结点有两种类型：内部结点（internal node）和叶结点（leaf node）。内部结点表示一个特征或属性(features)，叶结点表示一个类(labels)。</p>
+<p>用决策树对需要测试的实例进行分类：从根节点开始，对实例的某一特征进行测试，根据测试结果，将实例分配到其子结点；这时，每一个子结点对应着该特征的一个取值。如此递归地对实例进行测试并分配，直至达到叶结点。最后将实例分配到叶结点的类中。</p>
+<h2>决策树 原理</h2>
+<h3>决策树 须知概念</h3>
+<h4>信息熵 &amp; 信息增益</h4>
+<p>熵（entropy）：
+熵指的是体系的混乱的程度，在不同的学科中也有引申出的更为具体的定义，是各领域十分重要的参量。</p>
+<p>信息论（information theory）中的熵（香农熵）：
+是一种信息的度量方式，表示信息的混乱程度，也就是说：信息越有序，信息熵越低。例如：火柴有序放在火柴盒里，熵值很低，相反，熵值很高。</p>
+<p>信息增益（information gain）：
+在划分数据集前后信息发生的变化称为信息增益。</p>
+<h3>决策树 工作原理</h3>
+<p>如何构造一个决策树?<br/>
+我们使用 createBranch() 方法，如下所示：</p>
+<div class="highlight"><pre><span></span>def createBranch():
+'''
+此处运用了迭代的思想。 感兴趣可以搜索 迭代 recursion， 甚至是 dynamic programing。
+'''
+    检测数据集中的所有数据的分类标签是否相同:
+        If so return 类标签
+        Else:
+            寻找划分数据集的最好特征（划分之后信息熵最小，也就是信息增益最大的特征）
+            划分数据集
+            创建分支节点
+                for 每个划分的子集
+                    调用函数 createBranch （创建分支的函数）并增加返回结果到分支节点中
+            return 分支节点
+</pre></div>
+<h3>决策树 开发流程</h3>
+<div class="highlight"><pre><span></span>收集数据：可以使用任何方法。
+准备数据：树构造算法 (这里使用的是ID3算法，只适用于标称型数据，这就是为什么数值型数据必须离散化。 还有其他的树构造算法，比如CART)
+分析数据：可以使用任何方法，构造树完成之后，我们应该检查图形是否符合预期。
+训练算法：构造树的数据结构。
+测试算法：使用训练好的树计算错误率。
+使用算法：此步骤可以适用于任何监督学习任务，而使用决策树可以更好地理解数据的内在含义。
+</pre></div>
+<h3>决策树 算法特点</h3>
+<div class="highlight"><pre><span></span>优点：计算复杂度不高，输出结果易于理解，数据有缺失也能跑，可以处理不相关特征。
+缺点：容易过拟合。
+适用数据类型：数值型和标称型。
+</pre></div>
+<h2>决策树 项目案例</h2>
+<h3>项目案例1: 判定鱼类和非鱼类</h3>
+<h4>项目概述</h4>
+<p>根据以下 2 个特征，将动物分成两类：鱼类和非鱼类。</p>
+<p>特征：
+1. 不浮出水面是否可以生存
+2. 是否有脚蹼</p>
+<h4>开发流程</h4>
+<p><a href="https://github.com/apachecn/MachineLearning/blob/python-2.7/src/python/3.DecisionTree/DecisionTree.py">完整代码地址</a>: <a href="https://github.com/apachecn/MachineLearning/blob/master/src/python/3.DecisionTree/DecisionTree.py">https://github.com/apachecn/MachineLearning/blob/master/src/python/3.DecisionTree/DecisionTree.py</a></p>
+<div class="highlight"><pre><span></span>收集数据：可以使用任何方法
+准备数据：树构造算法（这里使用的是ID3算法，因此数值型数据必须离散化。）
+分析数据：可以使用任何方法，构造树完成之后，我们可以将树画出来。
+训练算法：构造树结构
+测试算法：使用习得的决策树执行分类
+使用算法：此步骤可以适用于任何监督学习任务，而使用决策树可以更好地理解数据的内在含义
+</pre></div>
+<blockquote>
+<p>收集数据：可以使用任何方法</p>
+</blockquote>
+<p><img alt="海洋生物数据" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/3.DecisionTree/DT_海洋生物数据.png"/></p>
+<p>我们利用 createDataSet() 函数输入数据</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">createDataSet</span><span class="p">():</span>
+    <span class="n">dataSet</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'yes'</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'yes'</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">'no'</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'no'</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'no'</span><span class="p">]]</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'no surfacing'</span><span class="p">,</span> <span class="s1">'flippers'</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">dataSet</span><span class="p">,</span> <span class="n">labels</span>
+</pre></div>
+<blockquote>
+<p>准备数据：树构造算法</p>
+</blockquote>
+<p>此处，由于我们输入的数据本身就是离散化数据，所以这一步就省略了。</p>
+<blockquote>
+<p>分析数据：可以使用任何方法，构造树完成之后，我们可以将树画出来。</p>
+</blockquote>
+<p><img alt="熵的计算公式" src="https://github.com/1007530194/datas/blob/master/images/blog/books/deeplearningdo/3.DecisionTree/熵的计算公式.jpg?raw=true"/></p>
+<p>计算给定数据集的香农熵的函数</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">calcShannonEnt</span><span class="p">(</span><span class="n">dataSet</span><span class="p">):</span>
+    <span class="c1"># 求list的长度，表示计算参与训练的数据量</span>
+    <span class="n">numEntries</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataSet</span><span class="p">)</span>
+    <span class="c1"># 计算分类标签label出现的次数</span>
+    <span class="n">labelCounts</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c1"># the the number of unique elements and their occurrence</span>
+    <span class="k">for</span> <span class="n">featVec</span> <span class="ow">in</span> <span class="n">dataSet</span><span class="p">:</span>
+        <span class="c1"># 将当前实例的标签存储，即每一行数据的最后一个数据代表的是标签</span>
+        <span class="n">currentLabel</span> <span class="o">=</span> <span class="n">featVec</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># 为所有可能的分类创建字典，如果当前的键值不存在，则扩展字典并将当前键值加入字典。每个键值都记录了当前类别出现的次数。</span>
+        <span class="k">if</span> <span class="n">currentLabel</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">labelCounts</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">labelCounts</span><span class="p">[</span><span class="n">currentLabel</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">labelCounts</span><span class="p">[</span><span class="n">currentLabel</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="c1"># 对于 label 标签的占比，求出 label 标签的香农熵</span>
+    <span class="n">shannonEnt</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">labelCounts</span><span class="p">:</span>
+        <span class="c1"># 使用所有类标签的发生频率计算类别出现的概率。</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">labelCounts</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="o">/</span><span class="n">numEntries</span>
+        <span class="c1"># 计算香农熵，以 2 为底求对数</span>
+        <span class="n">shannonEnt</span> <span class="o">-=</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">log</span><span class="p">(</span><span class="n">prob</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">shannonEnt</span>
+</pre></div>
+<p>按照给定特征划分数据集</p>
+<p><code>将指定特征的特征值等于 value 的行剩下列作为子数据集。</code></p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">splitDataSet</span><span class="p">(</span><span class="n">dataSet</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">"""splitDataSet(通过遍历dataSet数据集，求出index对应的colnum列的值为value的行)</span>
+<span class="sd">        就是依据index列进行分类，如果index列的数据等于 value的时候，就要将 index 划分到我们创建的新的数据集中</span>
+<span class="sd">    Args:</span>
+<span class="sd">        dataSet 数据集                 待划分的数据集</span>
+<span class="sd">        index 表示每一行的index列        划分数据集的特征</span>
+<span class="sd">        value 表示index列对应的value值   需要返回的特征的值。</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        index列为value的数据集【该数据集需要排除index列】</span>
+<span class="sd">    """</span>
+    <span class="n">retDataSet</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">featVec</span> <span class="ow">in</span> <span class="n">dataSet</span><span class="p">:</span> 
+        <span class="c1"># index列为value的数据集【该数据集需要排除index列】</span>
+        <span class="c1"># 判断index列的值是否为value</span>
+        <span class="k">if</span> <span class="n">featVec</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
+            <span class="c1"># chop out index used for splitting</span>
+            <span class="c1"># [:index]表示前index行，即若 index 为2，就是取 featVec 的前 index 行</span>
+            <span class="n">reducedFeatVec</span> <span class="o">=</span> <span class="n">featVec</span><span class="p">[:</span><span class="n">index</span><span class="p">]</span>
+            <span class="sd">'''</span>
+<span class="sd">            请百度查询一下： extend和append的区别</span>
+<span class="sd">            music_media.append(object) 向列表中添加一个对象object</span>
+<span class="sd">            music_media.extend(sequence) 把一个序列seq的内容添加到列表中 (跟 += 在list运用类似， music_media += sequence)</span>
+<span class="sd">            1、使用append的时候，是将object看作一个对象，整体打包添加到music_media对象中。</span>
+<span class="sd">            2、使用extend的时候，是将sequence看作一个序列，将这个序列和music_media序列合并，并放在其后面。</span>
+<span class="sd">            music_media = []</span>
+<span class="sd">            music_media.extend([1,2,3])</span>
+<span class="sd">            print music_media</span>
+<span class="sd">            #结果：</span>
+<span class="sd">            #[1, 2, 3]</span>
+
+<span class="sd">            music_media.append([4,5,6])</span>
+<span class="sd">            print music_media</span>
+<span class="sd">            #结果：</span>
+<span class="sd">            #[1, 2, 3, [4, 5, 6]]</span>
+
+<span class="sd">            music_media.extend([7,8,9])</span>
+<span class="sd">            print music_media</span>
+<span class="sd">            #结果：</span>
+<span class="sd">            #[1, 2, 3, [4, 5, 6], 7, 8, 9]</span>
+<span class="sd">            '''</span>
+            <span class="n">reducedFeatVec</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">featVec</span><span class="p">[</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">:])</span>
+            <span class="c1"># [index+1:]表示从跳过 index 的 index+1行，取接下来的数据</span>
+            <span class="c1"># 收集结果值 index列为value的行【该行需要排除index列】</span>
+            <span class="n">retDataSet</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">reducedFeatVec</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">retDataSet</span>
+</pre></div>
+<p>选择最好的数据集划分方式</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">chooseBestFeatureToSplit</span><span class="p">(</span><span class="n">dataSet</span><span class="p">):</span>
+    <span class="sd">"""chooseBestFeatureToSplit(选择最好的特征)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dataSet 数据集</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        bestFeature 最优的特征列</span>
+<span class="sd">    """</span>
+    <span class="c1"># 求第一行有多少列的 Feature, 最后一列是label列嘛</span>
+    <span class="n">numFeatures</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataSet</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="c1"># 数据集的原始信息熵</span>
+    <span class="n">baseEntropy</span> <span class="o">=</span> <span class="n">calcShannonEnt</span><span class="p">(</span><span class="n">dataSet</span><span class="p">)</span>
+    <span class="c1"># 最优的信息增益值, 和最优的Featurn编号</span>
+    <span class="n">bestInfoGain</span><span class="p">,</span> <span class="n">bestFeature</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="c1"># iterate over all the features</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numFeatures</span><span class="p">):</span>
+        <span class="c1"># create a list of all the examples of this feature</span>
+        <span class="c1"># 获取对应的feature下的所有数据</span>
+        <span class="n">featList</span> <span class="o">=</span> <span class="p">[</span><span class="n">example</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">dataSet</span><span class="p">]</span>
+        <span class="c1"># get a set of unique values</span>
+        <span class="c1"># 获取剔重后的集合，使用set对list数据进行去重</span>
+        <span class="n">uniqueVals</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">featList</span><span class="p">)</span>
+        <span class="c1"># 创建一个临时的信息熵</span>
+        <span class="n">newEntropy</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="c1"># 遍历某一列的value集合，计算该列的信息熵 </span>
+        <span class="c1"># 遍历当前特征中的所有唯一属性值，对每个唯一属性值划分一次数据集，计算数据集的新熵值，并对所有唯一特征值得到的熵求和。</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">uniqueVals</span><span class="p">:</span>
+            <span class="n">subDataSet</span> <span class="o">=</span> <span class="n">splitDataSet</span><span class="p">(</span><span class="n">dataSet</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="c1"># 计算概率</span>
+            <span class="n">prob</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">subDataSet</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataSet</span><span class="p">))</span>
+            <span class="c1"># 计算信息熵</span>
+            <span class="n">newEntropy</span> <span class="o">+=</span> <span class="n">prob</span> <span class="o">*</span> <span class="n">calcShannonEnt</span><span class="p">(</span><span class="n">subDataSet</span><span class="p">)</span>
+        <span class="c1"># gain[信息增益]: 划分数据集前后的信息变化， 获取信息熵最大的值</span>
+        <span class="c1"># 信息增益是熵的减少或者是数据无序度的减少。最后，比较所有特征中的信息增益，返回最好特征划分的索引值。</span>
+        <span class="n">infoGain</span> <span class="o">=</span> <span class="n">baseEntropy</span> <span class="o">-</span> <span class="n">newEntropy</span>
+        <span class="k">print</span> <span class="s1">'infoGain='</span><span class="p">,</span> <span class="n">infoGain</span><span class="p">,</span> <span class="s1">'bestFeature='</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">baseEntropy</span><span class="p">,</span> <span class="n">newEntropy</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">infoGain</span> <span class="o">&gt;</span> <span class="n">bestInfoGain</span><span class="p">):</span>
+            <span class="n">bestInfoGain</span> <span class="o">=</span> <span class="n">infoGain</span>
+            <span class="n">bestFeature</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="n">bestFeature</span>
+</pre></div>
+<div class="highlight"><pre><span></span>问：上面的 newEntropy 为什么是根据子集计算的呢？
+答：因为我们在根据一个特征计算香农熵的时候，该特征的分类值是相同，这个特征这个分类的香农熵为 0；
+这就是为什么计算新的香农熵的时候使用的是子集。
+</pre></div>
+<blockquote>
+<p>训练算法：构造树的数据结构</p>
+</blockquote>
+<p>创建树的函数代码如下：</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">createTree</span><span class="p">(</span><span class="n">dataSet</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="n">classList</span> <span class="o">=</span> <span class="p">[</span><span class="n">example</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">dataSet</span><span class="p">]</span>
+    <span class="c1"># 如果数据集的最后一列的第一个值出现的次数=整个集合的数量，也就说只有一个类别，就只直接返回结果就行</span>
+    <span class="c1"># 第一个停止条件：所有的类标签完全相同，则直接返回该类标签。</span>
+    <span class="c1"># count() 函数是统计括号中的值在list中出现的次数</span>
+    <span class="k">if</span> <span class="n">classList</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">classList</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">classList</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">classList</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># 如果数据集只有1列，那么最初出现label次数最多的一类，作为结果</span>
+    <span class="c1"># 第二个停止条件：使用完了所有特征，仍然不能将数据集划分成仅包含唯一类别的分组。</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataSet</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">majorityCnt</span><span class="p">(</span><span class="n">classList</span><span class="p">)</span>
+
+    <span class="c1"># 选择最优的列，得到最优列对应的label含义</span>
+    <span class="n">bestFeat</span> <span class="o">=</span> <span class="n">chooseBestFeatureToSplit</span><span class="p">(</span><span class="n">dataSet</span><span class="p">)</span>
+    <span class="c1"># 获取label的名称</span>
+    <span class="n">bestFeatLabel</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">bestFeat</span><span class="p">]</span>
+    <span class="c1"># 初始化myTree</span>
+    <span class="n">myTree</span> <span class="o">=</span> <span class="p">{</span><span class="n">bestFeatLabel</span><span class="p">:</span> <span class="p">{}}</span>
+    <span class="c1"># 注：labels列表是可变对象，在PYTHON函数中作为参数时传址引用，能够被全局修改</span>
+    <span class="c1"># 所以这行代码导致函数外的同名变量被删除了元素，造成例句无法执行，提示'no surfacing' is not in list</span>
+    <span class="k">del</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">bestFeat</span><span class="p">])</span>
+    <span class="c1"># 取出最优列，然后它的branch做分类</span>
+    <span class="n">featValues</span> <span class="o">=</span> <span class="p">[</span><span class="n">example</span><span class="p">[</span><span class="n">bestFeat</span><span class="p">]</span> <span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">dataSet</span><span class="p">]</span>
+    <span class="n">uniqueVals</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">featValues</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">uniqueVals</span><span class="p">:</span>
+        <span class="c1"># 求出剩余的标签label</span>
+        <span class="n">subLabels</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[:]</span>
+        <span class="c1"># 遍历当前选择特征包含的所有属性值，在每个数据集划分上递归调用函数createTree()</span>
+        <span class="n">myTree</span><span class="p">[</span><span class="n">bestFeatLabel</span><span class="p">][</span><span class="n">value</span><span class="p">]</span> <span class="o">=</span> <span class="n">createTree</span><span class="p">(</span><span class="n">splitDataSet</span><span class="p">(</span><span class="n">dataSet</span><span class="p">,</span> <span class="n">bestFeat</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">subLabels</span><span class="p">)</span>
+        <span class="c1"># print 'myTree', value, myTree</span>
+    <span class="k">return</span> <span class="n">myTree</span>
+</pre></div>
+<blockquote>
+<p>测试算法：使用决策树执行分类</p>
+</blockquote>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">classify</span><span class="p">(</span><span class="n">inputTree</span><span class="p">,</span> <span class="n">featLabels</span><span class="p">,</span> <span class="n">testVec</span><span class="p">):</span>
+    <span class="sd">"""classify(给输入的节点，进行分类)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        inputTree  决策树模型</span>
+<span class="sd">        featLabels Feature标签对应的名称</span>
+<span class="sd">        testVec    测试输入的数据</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        classLabel 分类的结果值，需要映射label才能知道名称</span>
+<span class="sd">    """</span>
+    <span class="c1"># 获取tree的根节点对于的key值</span>
+    <span class="n">firstStr</span> <span class="o">=</span> <span class="n">inputTree</span><span class="o">.</span><span class="n">keys</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># 通过key得到根节点对应的value</span>
+    <span class="n">secondDict</span> <span class="o">=</span> <span class="n">inputTree</span><span class="p">[</span><span class="n">firstStr</span><span class="p">]</span>
+    <span class="c1"># 判断根节点名称获取根节点在label中的先后顺序，这样就知道输入的testVec怎么开始对照树来做分类</span>
+    <span class="n">featIndex</span> <span class="o">=</span> <span class="n">featLabels</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">firstStr</span><span class="p">)</span>
+    <span class="c1"># 测试数据，找到根节点对应的label位置，也就知道从输入的数据的第几位来开始分类</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">testVec</span><span class="p">[</span><span class="n">featIndex</span><span class="p">]</span>
+    <span class="n">valueOfFeat</span> <span class="o">=</span> <span class="n">secondDict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="k">print</span> <span class="s1">'+++'</span><span class="p">,</span> <span class="n">firstStr</span><span class="p">,</span> <span class="s1">'xxx'</span><span class="p">,</span> <span class="n">secondDict</span><span class="p">,</span> <span class="s1">'---'</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="s1">'&gt;&gt;&gt;'</span><span class="p">,</span> <span class="n">valueOfFeat</span>
+    <span class="c1"># 判断分枝是否结束: 判断valueOfFeat是否是dict类型</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">valueOfFeat</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">classLabel</span> <span class="o">=</span> <span class="n">classify</span><span class="p">(</span><span class="n">valueOfFeat</span><span class="p">,</span> <span class="n">featLabels</span><span class="p">,</span> <span class="n">testVec</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">classLabel</span> <span class="o">=</span> <span class="n">valueOfFeat</span>
+    <span class="k">return</span> <span class="n">classLabel</span>
+</pre></div>
+<blockquote>
+<p>使用算法：此步骤可以适用于任何监督学习任务，而使用决策树可以更好地理解数据的内在含义。</p>
+</blockquote>
+<h3>项目案例2: 使用决策树预测隐形眼镜类型</h3>
+<p><a href="https://github.com/apachecn/MachineLearning/blob/python-2.7/src/python/3.DecisionTree/DecisionTree.py">完整代码地址</a>: <a href="https://github.com/apachecn/MachineLearning/blob/master/src/python/3.DecisionTree/DecisionTree.py">https://github.com/apachecn/MachineLearning/blob/master/src/python/3.DecisionTree/DecisionTree.py</a></p>
+<h4>项目概述</h4>
+<p>隐形眼镜类型包括硬材质、软材质以及不适合佩戴隐形眼镜。我们需要使用决策树预测患者需要佩戴的隐形眼镜类型。</p>
+<h4>开发流程</h4>
+<ol>
+<li>收集数据: 提供的文本文件。</li>
+<li>解析数据: 解析 tab 键分隔的数据行</li>
+<li>分析数据: 快速检查数据，确保正确地解析数据内容，使用 createPlot() 函数绘制最终的树形图。</li>
+<li>训练算法: 使用 createTree() 函数。</li>
+<li>测试算法: 编写测试函数验证决策树可以正确分类给定的数据实例。</li>
+<li>使用算法: 存储树的数据结构，以便下次使用时无需重新构造树。</li>
+</ol>
+<blockquote>
+<p>收集数据：提供的文本文件</p>
+</blockquote>
+<p>文本文件数据格式如下：</p>
+<div class="highlight"><pre><span></span>young   myope   no  reduced no lenses
+pre myope   no  reduced no lenses
+presbyopic  myope   no  reduced no lenses
+</pre></div>
+<blockquote>
+<p>解析数据：解析 tab 键分隔的数据行</p>
+</blockquote>
+<div class="highlight"><pre><span></span><span class="n">lecses</span> <span class="o">=</span> <span class="p">[</span><span class="n">inst</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'</span><span class="se">\t</span><span class="s1">'</span><span class="p">)</span> <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="n">fr</span><span class="o">.</span><span class="n">readlines</span><span class="p">()]</span>
+<span class="n">lensesLabels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'age'</span><span class="p">,</span> <span class="s1">'prescript'</span><span class="p">,</span> <span class="s1">'astigmatic'</span><span class="p">,</span> <span class="s1">'tearRate'</span><span class="p">]</span>
+</pre></div>
+<blockquote>
+<p>分析数据：快速检查数据，确保正确地解析数据内容，使用 createPlot() 函数绘制最终的树形图。</p>
+</blockquote>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">treePlotter</span><span class="o">.</span><span class="n">createPlot</span><span class="p">(</span><span class="n">lensesTree</span><span class="p">)</span>
+</pre></div>
+<blockquote>
+<p>训练算法：使用 createTree() 函数</p>
+</blockquote>
+<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">lensesTree</span> <span class="o">=</span> <span class="n">trees</span><span class="o">.</span><span class="n">createTree</span><span class="p">(</span><span class="n">lenses</span><span class="p">,</span> <span class="n">lensesLabels</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">lensesTree</span>
+<span class="p">{</span><span class="s1">'tearRate'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'reduced'</span><span class="p">:</span> <span class="s1">'no lenses'</span><span class="p">,</span> <span class="s1">'normal'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'astigmatic'</span><span class="p">:{</span><span class="s1">'yes'</span><span class="p">:</span>
+<span class="p">{</span><span class="s1">'prescript'</span><span class="p">:{</span><span class="s1">'hyper'</span><span class="p">:{</span><span class="s1">'age'</span><span class="p">:{</span><span class="s1">'pre'</span><span class="p">:</span><span class="s1">'no lenses'</span><span class="p">,</span> <span class="s1">'presbyopic'</span><span class="p">:</span>
+<span class="s1">'no lenses'</span><span class="p">,</span> <span class="s1">'young'</span><span class="p">:</span><span class="s1">'hard'</span><span class="p">}},</span> <span class="s1">'myope'</span><span class="p">:</span><span class="s1">'hard'</span><span class="p">}},</span> <span class="s1">'no'</span><span class="p">:{</span><span class="s1">'age'</span><span class="p">:{</span><span class="s1">'pre'</span><span class="p">:</span>
+<span class="s1">'soft'</span><span class="p">,</span> <span class="s1">'presbyopic'</span><span class="p">:{</span><span class="s1">'prescript'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'hyper'</span><span class="p">:</span><span class="s1">'soft'</span><span class="p">,</span> <span class="s1">'myope'</span><span class="p">:</span>
+<span class="s1">'no lenses'</span><span class="p">}},</span> <span class="s1">'young'</span><span class="p">:</span><span class="s1">'soft'</span><span class="p">}}}}}</span>
+</pre></div>
+<blockquote>
+<p>测试算法: 编写测试函数验证决策树可以正确分类给定的数据实例。</p>
+<p>使用算法: 存储树的数据结构，以便下次使用时无需重新构造树。</p>
+</blockquote>
+<p>使用 pickle 模块存储决策树</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">storeTree</span><span class="p">(</span><span class="n">inputTree</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="n">impory</span> <span class="n">pickle</span>
+    <span class="n">fw</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">'wb'</span><span class="p">)</span>
+    <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">inputTree</span><span class="p">,</span> <span class="n">fw</span><span class="p">)</span>
+    <span class="n">fw</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">grabTree</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">pickle</span>
+    <span class="n">fr</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">'rb'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fr</span><span class="p">)</span>
+</pre></div>
+<hr/>
+<ul>
+<li><strong>作者：<a href="http://www.apache.wiki/display/~jiangzhonglian">片刻</a> <a href="http://www.apache.wiki/display/~chenyao">小瑶</a></strong></li>
+<li><a href="https://github.com/apachecn/MachineLearning">GitHub地址</a>: <a href="https://github.com/apachecn/MachineLearning">https://github.com/apachecn/MachineLearning</a></li>
+<li><strong>版权声明：欢迎转载学习 =&gt; 请标注信息来源于 <a href="http://www.apachecn.org/">ApacheCN</a></strong> </li>
+</ul></div>
+
+
+            <footer>
+<span class="byline author vcard">
+    Posted by
+    <span class="fn">
+            niult
+    </span>
+</span><time datetime="2017-01-01T00:00:00+08:00" pubdate>2017-01-01 00:00</time><span class="categories">
+        <a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a>
+</span>
+
+
+<div class="sharing">
+</div>            </footer>
+        </article>
+
+    </div>
+<aside class="sidebar">
+    <section>
+        <h1>Recent Posts</h1>
+        <ul id="recent_posts">
+                <li class="post">
+                    <a href="../../../pages/2019/01/21-a-first-look-at-a-neural-network.html">2.1-a-first-look-at-a-neural-network</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/35-classifying-movie-reviews.html">3.5-classifying-movie-reviews</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/36-classifying-newswires.html">3.6-classifying-newswires</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/37-predicting-house-prices.html">3.7-predicting-house-prices</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/44-overfitting-and-underfitting.html">4.4-overfitting-and-underfitting</a>
+                </li>
+        </ul>
+    </section>
+        <section>
+
+            <h1>Categories</h1>
+            <ul id="recent_posts">
+                    <li><a href="../../../category/01chang yong gong ju.html">01常用工具</a></li>
+                    <li><a href="../../../category/02.wo ai du shu.html">02.我爱读书</a></li>
+                    <li><a href="../../../category/algorithms.html">algorithms</a></li>
+                    <li><a href="../../../category/book.html">book</a></li>
+                    <li><a href="../../../category/book-pydata.html">book-pydata</a></li>
+                    <li><a href="../../../category/deep-learning-with-python.html">deep-learning-with-python</a></li>
+                    <li><a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a></li>
+                    <li><a href="../../../category/ke wai du wu.html">课外读物</a></li>
+                    <li><a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a></li>
+                    <li><a href="../../../category/shen du xue xi.html">深度学习</a></li>
+                    <li><a href="../../../category/shen jing wang luo.html">神经网络</a></li>
+                    <li><a href="../../../category/shu ju wa jue.html">数据挖掘</a></li>
+                    <li><a href="../../../category/shu xue ji chu.html">数学基础</a></li>
+                    <li><a href="../../../category/tf-example.html">tf-example</a></li>
+                    <li><a href="../../../category/tool1.html">tool1</a></li>
+                    <li><a href="../../../category/tool2.html">tool2</a></li>
+                    <li><a href="../../../category/tools.html">tools</a></li>
+                    <li><a href="../../../category/tui jian xi tong.html">推荐系统</a></li>
+                    <li><a href="../../../category/wen ben wa jue.html">文本挖掘</a></li>
+            </ul>
+        </section>
+
+
+    <section>
+        <h1>Tags</h1>
+            <a href="../../../tag/python.html">python</a>, 
+            <a href="../../../tag/numpy.html">numpy</a>, 
+            <a href="../../../tag/deep-learning.html">deep-learning</a>, 
+            <a href="../../../tag/algorithms.html">algorithms</a>, 
+            <a href="../../../tag/wen-ben-wa-jue.html">文本挖掘</a>, 
+            <a href="../../../tag/shen-jing-wang-luo.html">神经网络</a>, 
+            <a href="../../../tag/shu-xue-ji-chu.html">数学基础</a>, 
+            <a href="../../../tag/nlp.html">nlp</a>, 
+            <a href="../../../tag/tf-example.html">tf-example</a>, 
+            <a href="../../../tag/tui-jian-xi-tong.html">推荐系统</a>, 
+            <a href="../../../tag/tf.html">tf</a>, 
+            <a href="../../../tag/ji-huo-han-shu.html">激活函数</a>, 
+            <a href="../../../tag/mapreduce.html">mapreduce</a>, 
+            <a href="../../../tag/spark.html">spark</a>, 
+            <a href="../../../tag/handbook.html">handbook</a>, 
+            <a href="../../../tag/matplotlib.html">matplotlib</a>, 
+            <a href="../../../tag/scikit-learn.html">scikit-learn</a>, 
+            <a href="../../../tag/latex.html">latex</a>, 
+            <a href="../../../tag/pandas.html">pandas</a>, 
+            <a href="../../../tag/jupyter.html">jupyter</a>, 
+            <a href="../../../tag/plot.html">plot</a>, 
+            <a href="../../../tag/pip.html">pip</a>, 
+            <a href="../../../tag/geng-xin-suo-you-mo-kuai.html">更新所有模块</a>, 
+            <a href="../../../tag/shen-du-xue-xi.html">深度学习</a>, 
+            <a href="../../../tag/xun-huan-shen-jing-wang-luo.html">循环神经网络</a>, 
+            <a href="../../../tag/pangrank.html">PangRank</a>, 
+            <a href="../../../tag/book.html">book</a>, 
+            <a href="../../../tag/pydata.html">pydata</a>, 
+            <a href="../../../tag/shell.html">shell</a>, 
+            <a href="../../../tag/pyhton.html">pyhton</a>
+    </section>
+
+
+
+    <section>
+        <h1>GitHub Repos</h1>
+            <a href="https://github.com/1007530194">@1007530194</a> on GitHub
+    </section>
+
+</aside>    </div>
+</div>
+<footer role="contentinfo"><p>
+        活到老，学到老，玩到老
+    <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-132396898-1', 'auto');
+
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    </script>
+</body>
+</html>

@@ -1,0 +1,3669 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+    <head>
+<meta charset="utf-8">
+<title>十分钟上手latex_jupyter &mdash; 魑魅魍魉</title>
+
+<meta name="author" content="niult">
+
+
+
+
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link href="../../../theme/css/main.css" media="screen, projection"
+      rel="stylesheet" type="text/css">
+
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<script src="../../../theme/js/modernizr-2.0.js"></script>
+<script src="../../../theme/js/ender.js"></script>
+<script src="../../../theme/js/octopress.js" type="text/javascript"></script>
+<script src="../../../theme/js/echarts.min.js" type="text/javascript"></script>
+<script src="../../../theme/js/require.min.js" type="text/javascript"></script>
+
+<header role="banner"><hgroup>
+  <h1><a href="../../../">魑魅魍魉</a></h1>
+</hgroup></header>
+<nav role="navigation">    <ul class="subscription" data-subscription="rss">
+    </ul>
+
+
+<ul class="main-navigation">
+            <li >
+                <a href="../../../category/01chang yong gong ju.html">01常用工具</a>
+            </li>
+            <li >
+                <a href="../../../category/02.wo ai du shu.html">02.我爱读书</a>
+            </li>
+            <li >
+                <a href="../../../category/algorithms.html">Algorithms</a>
+            </li>
+            <li >
+                <a href="../../../category/book.html">Book</a>
+            </li>
+            <li >
+                <a href="../../../category/book-pydata.html">Book-pydata</a>
+            </li>
+            <li >
+                <a href="../../../category/deep-learning-with-python.html">Deep-learning-with-python</a>
+            </li>
+            <li >
+                <a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a>
+            </li>
+            <li >
+                <a href="../../../category/ke wai du wu.html">课外读物</a>
+            </li>
+            <li >
+                <a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen du xue xi.html">深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen jing wang luo.html">神经网络</a>
+            </li>
+            <li >
+                <a href="../../../category/shu ju wa jue.html">数据挖掘</a>
+            </li>
+            <li >
+                <a href="../../../category/shu xue ji chu.html">数学基础</a>
+            </li>
+            <li >
+                <a href="../../../category/tf-example.html">Tf-example</a>
+            </li>
+            <li >
+                <a href="../../../category/tool1.html">Tool1</a>
+            </li>
+            <li >
+                <a href="../../../category/tool2.html">Tool2</a>
+            </li>
+            <li class="active">
+                <a href="../../../category/tools.html">Tools</a>
+            </li>
+            <li >
+                <a href="../../../category/tui jian xi tong.html">推荐系统</a>
+            </li>
+            <li >
+                <a href="../../../category/wen ben wa jue.html">文本挖掘</a>
+            </li>
+</ul>
+</nav>
+<div id="main">
+    <div id="content">
+    <div>
+
+        <h4>Contents</h4>
+        
+
+        <article class="hentry" role="article">
+<header>
+        <h1 class="entry-title">十分钟上手latex_jupyter</h1>
+    <p class="meta">
+<time datetime="2018-01-01T00:00:00+08:00" pubdate>2018-01-01 00:00</time>    </p>
+</header>
+
+    <div class="entry-content"><style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style><body>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="简介">简介<a class="anchor-link" href="#简介">¶</a></h1><p><a href="http://zh.wikipedia.org/wiki/Help:MATH">http://zh.wikipedia.org/wiki/Help:MATH</a>
+函数、符号及特殊字符</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="常用">常用<a class="anchor-link" href="#常用">¶</a></h1><h2 id="声调">声调<a class="anchor-link" href="#声调">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">\bar{x}</td>
+<td style="text-align:center">$\bar{x}$</td>
+<td style="text-align:center">\acute{\eta}</td>
+<td style="text-align:center">$\acute{\eta}$</td>
+</tr>
+<tr>
+<td style="text-align:center">\check{\alpha}</td>
+<td style="text-align:center">$\check{\alpha}$</td>
+<td style="text-align:center">\breve{a}</td>
+<td style="text-align:center">$ \breve{a}$</td>
+</tr>
+<tr>
+<td style="text-align:center">\grave{\eta}</td>
+<td style="text-align:center">$\grave{\eta}$</td>
+<td style="text-align:center">\ddot{y}</td>
+<td style="text-align:center">$\ddot{y}$</td>
+</tr>
+<tr>
+<td style="text-align:center">\dot{x}</td>
+<td style="text-align:center">$\dot{x} $</td>
+<td style="text-align:center">\hat{\alpha}</td>
+<td style="text-align:center">$\hat{\alpha}$</td>
+</tr>
+<tr>
+<td style="text-align:center">\tilde{\iota}</td>
+<td style="text-align:center">$\tilde{\iota}$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="函数">函数<a class="anchor-link" href="#函数">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">\sin\theta</td>
+<td style="text-align:center">$\sin\theta$</td>
+<td style="text-align:center">\cos\theta</td>
+<td style="text-align:center">$\cos\theta$</td>
+<td style="text-align:center">\tan\theta</td>
+<td style="text-align:center">$\tan\theta$</td>
+</tr>
+<tr>
+<td style="text-align:center">\arcsin\frac{L}{r}</td>
+<td style="text-align:center">$\arcsin\frac{L}{r}$</td>
+<td style="text-align:center">\arccos\frac{T}{r}</td>
+<td style="text-align:center">$\arccos\frac{T}{r}$</td>
+<td style="text-align:center">\arctan\frac{L}{T}</td>
+<td style="text-align:center">$\arctan\frac{L}{T}$</td>
+</tr>
+<tr>
+<td style="text-align:center">\sinh g</td>
+<td style="text-align:center">$\sinh g$</td>
+<td style="text-align:center">\cosh h</td>
+<td style="text-align:center">$\cosh h$</td>
+<td style="text-align:center">\tanh i</td>
+<td style="text-align:center">$\tanh i$</td>
+</tr>
+<tr>
+<td style="text-align:center">\operatorname{sh}j</td>
+<td style="text-align:center">$\operatorname{sh}j$</td>
+<td style="text-align:center">\operatorname{argsh}k</td>
+<td style="text-align:center">$\operatorname{argsh}k$</td>
+</tr>
+<tr>
+<td style="text-align:center">\operatorname{ch}h</td>
+<td style="text-align:center">$\operatorname{ch}h$</td>
+<td style="text-align:center">\operatorname{argch}l</td>
+<td style="text-align:center">$\operatorname{argch}l$</td>
+</tr>
+<tr>
+<td style="text-align:center">\operatorname{th}i</td>
+<td style="text-align:center">$\operatorname{th}i$</td>
+<td style="text-align:center">\operatorname{argth}m</td>
+<td style="text-align:center">$\operatorname{argth}m$</td>
+</tr>
+<tr>
+<td style="text-align:center">\limsup S</td>
+<td style="text-align:center">$\limsup S$</td>
+<td style="text-align:center">\liminf I</td>
+<td style="text-align:center">$\liminf I$</td>
+<td style="text-align:center">\lim_{t\to n}T</td>
+<td style="text-align:center">$\lim_{t\to n}T$</td>
+</tr>
+<tr>
+<td style="text-align:center">\max H</td>
+<td style="text-align:center">$\max H$</td>
+<td style="text-align:center">\min L</td>
+<td style="text-align:center">$\min L$</td>
+</tr>
+<tr>
+<td style="text-align:center">\inf s</td>
+<td style="text-align:center">$\inf s$</td>
+<td style="text-align:center">\sup t</td>
+<td style="text-align:center">$\sup t$</td>
+</tr>
+<tr>
+<td style="text-align:center">\exp!t</td>
+<td style="text-align:center">$\exp\!t$</td>
+<td style="text-align:center">\ln!X</td>
+<td style="text-align:center">$\ln\!X$</td>
+</tr>
+<tr>
+<td style="text-align:center">\lg X</td>
+<td style="text-align:center">$\lg X$</td>
+<td style="text-align:center">\log X</td>
+<td style="text-align:center">$\log X$</td>
+<td style="text-align:center">\log_\alpha X</td>
+<td style="text-align:center">$\log_\alpha X$</td>
+</tr>
+<tr>
+<td style="text-align:center">\ker x</td>
+<td style="text-align:center">$\ker x$</td>
+<td style="text-align:center">\deg x</td>
+<td style="text-align:center">$\deg x$</td>
+<td style="text-align:center">\gcd(T,U,V,W,X)</td>
+<td style="text-align:center">$\gcd(T,U,V,W,X)$</td>
+</tr>
+<tr>
+<td style="text-align:center">\Pr x</td>
+<td style="text-align:center">$\Pr x$</td>
+<td style="text-align:center">\det x</td>
+<td style="text-align:center">$\det x$</td>
+<td style="text-align:center">\hom x</td>
+<td style="text-align:center">$\hom x$</td>
+</tr>
+<tr>
+<td style="text-align:center">\arg x</td>
+<td style="text-align:center">$\arg x$</td>
+<td style="text-align:center">\dim x</td>
+<td style="text-align:center">$\dim x$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="实例">实例<a class="anchor-link" href="#实例">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">k'(x)=\lim_{\Delta x\to 0}\frac{k(x)-k(x-\Delta x)}{\Delta x}</td>
+<td style="text-align:center">$k'(x)=\lim_{\Delta x\to 0}\frac{k(x)-k(x-\Delta x)}{\Delta x}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="同余">同余<a class="anchor-link" href="#同余">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">\pmod{m}</td>
+<td style="text-align:center">$\pmod{m}$</td>
+<td style="text-align:center">a \bmod b</td>
+<td style="text-align:center">$a \bmod b$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="微分">微分<a class="anchor-link" href="#微分">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">\nabla</td>
+<td style="text-align:center">$\nabla$</td>
+<td style="text-align:center">\partial x</td>
+<td style="text-align:center">$\partial x$</td>
+<td style="text-align:center">\mathrm{d}x\</td>
+<td style="text-align:center">$\mathrm{d}x$</td>
+</tr>
+<tr>
+<td style="text-align:center">\dot x</td>
+<td style="text-align:center">$\dot x$</td>
+<td style="text-align:center">\ddot y</td>
+<td style="text-align:center">$\ddot y$</td>
+<td style="text-align:center">\dddot z</td>
+<td style="text-align:center">$\dddot z$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="集合">集合<a class="anchor-link" href="#集合">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">\forall</td>
+<td style="text-align:center">$\forall$</td>
+<td style="text-align:center">\exists</td>
+<td style="text-align:center">$\exists$</td>
+</tr>
+<tr>
+<td style="text-align:center">\emptyset</td>
+<td style="text-align:center">$\emptyset$</td>
+<td style="text-align:center">\varnothing</td>
+<td style="text-align:center">$\varnothing$</td>
+</tr>
+<tr>
+<td style="text-align:center">\in</td>
+<td style="text-align:center">$\in$</td>
+<td style="text-align:center">\not\in</td>
+<td style="text-align:center">$\not\in$</td>
+<td style="text-align:center">\notin</td>
+<td style="text-align:center">$\notin$</td>
+</tr>
+<tr>
+<td style="text-align:center">\subset</td>
+<td style="text-align:center">$\subset$</td>
+<td style="text-align:center">\subseteq</td>
+<td style="text-align:center">$\subseteq$</td>
+</tr>
+<tr>
+<td style="text-align:center">\supset</td>
+<td style="text-align:center">$\supset$</td>
+<td style="text-align:center">\supseteq</td>
+<td style="text-align:center">$\supseteq$</td>
+</tr>
+<tr>
+<td style="text-align:center">\cap</td>
+<td style="text-align:center">$\cap$</td>
+<td style="text-align:center">\bigcap</td>
+<td style="text-align:center">$\bigcap$</td>
+</tr>
+<tr>
+<td style="text-align:center">\cup</td>
+<td style="text-align:center">$\cup$</td>
+<td style="text-align:center">\bigcup</td>
+<td style="text-align:center">$\bigcup$</td>
+</tr>
+<tr>
+<td style="text-align:center">\biguplus</td>
+<td style="text-align:center">$\biguplus$</td>
+</tr>
+<tr>
+<td style="text-align:center">\sqsubset</td>
+<td style="text-align:center">$\sqsubset$</td>
+<td style="text-align:center">\sqsubseteq</td>
+<td style="text-align:center">$\sqsubseteq$</td>
+</tr>
+<tr>
+<td style="text-align:center">\sqsupset</td>
+<td style="text-align:center">$\sqsupset$</td>
+<td style="text-align:center">\sqsupseteq</td>
+<td style="text-align:center">$\sqsupseteq$</td>
+</tr>
+<tr>
+<td style="text-align:center">\sqcup</td>
+<td style="text-align:center">$\sqcup$</td>
+<td style="text-align:center">\bigsqcup</td>
+<td style="text-align:center">$\bigsqcup$</td>
+</tr>
+<tr>
+<td style="text-align:center">\sqcap</td>
+<td style="text-align:center">$\sqcap$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="逻辑">逻辑<a class="anchor-link" href="#逻辑">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">q</td>
+<td style="text-align:center">$q$</td>
+<td style="text-align:center">\bar{q} \to p</td>
+<td style="text-align:center">$\bar{q} \to p$</td>
+</tr>
+<tr>
+<td style="text-align:center">\land</td>
+<td style="text-align:center">$\land$</td>
+<td style="text-align:center">\wedge</td>
+<td style="text-align:center">$\wedge$</td>
+<td style="text-align:center">\bigwedge</td>
+<td style="text-align:center">$\bigwedge$</td>
+</tr>
+<tr>
+<td style="text-align:center">\lor</td>
+<td style="text-align:center">$\lor$</td>
+<td style="text-align:center">\vee</td>
+<td style="text-align:center">$\vee$</td>
+<td style="text-align:center">\bigvee</td>
+<td style="text-align:center">$\bigvee$</td>
+</tr>
+<tr>
+<td style="text-align:center">\lnot q</td>
+<td style="text-align:center">$\lnot q$</td>
+<td style="text-align:center">\neg q</td>
+<td style="text-align:center">$\neg q$</td>
+</tr>
+<tr>
+<td style="text-align:center">\setminus</td>
+<td style="text-align:center">$\setminus$</td>
+<td style="text-align:center">\smallsetminus</td>
+<td style="text-align:center">$\smallsetminus$</td>
+</tr>
+<tr>
+<td style="text-align:center">\sqrt{3}</td>
+<td style="text-align:center">$\sqrt{3}$</td>
+<td style="text-align:center">\sqrt[n]{3}</td>
+<td style="text-align:center">$\sqrt[n]{3}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="关系符号">关系符号<a class="anchor-link" href="#关系符号">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">\sim</td>
+<td style="text-align:center">$\sim$</td>
+<td style="text-align:center">\approx</td>
+<td style="text-align:center">$\approx$</td>
+</tr>
+<tr>
+<td style="text-align:center">\simeq</td>
+<td style="text-align:center">$\simeq$</td>
+<td style="text-align:center">\cong</td>
+<td style="text-align:center">$\cong$</td>
+<td style="text-align:center">\dot=</td>
+<td style="text-align:center">$\dot=$</td>
+</tr>
+<tr>
+<td style="text-align:center">\lll</td>
+<td style="text-align:center">$\lll$</td>
+<td style="text-align:center">\ll</td>
+<td style="text-align:center">$\ll$</td>
+<td style="text-align:center">=</td>
+<td style="text-align:center">$=\,$</td>
+</tr>
+<tr>
+<td style="text-align:center">\ggg</td>
+<td style="text-align:center">$\ggg$</td>
+<td style="text-align:center">\gg</td>
+<td style="text-align:center">$\gg$</td>
+</tr>
+<tr>
+<td style="text-align:center">\geq</td>
+<td style="text-align:center">$\geq$</td>
+<td style="text-align:center">\geqq</td>
+<td style="text-align:center">$\geqq$</td>
+<td style="text-align:center">&gt;</td>
+<td style="text-align:center">$&gt;\,$</td>
+</tr>
+<tr>
+<td style="text-align:center">\leq</td>
+<td style="text-align:center">$\leq$</td>
+<td style="text-align:center">\leqq</td>
+<td style="text-align:center">$\leqq$</td>
+<td style="text-align:center">&lt;</td>
+<td style="text-align:center">$&lt;\,$</td>
+</tr>
+<tr>
+<td style="text-align:center">\equiv</td>
+<td style="text-align:center">$\equiv$</td>
+<td style="text-align:center">\not\equiv</td>
+<td style="text-align:center">$\not\equiv$</td>
+<td style="text-align:center">\gtrless</td>
+<td style="text-align:center">$\gtrless$</td>
+</tr>
+<tr>
+<td style="text-align:center">\ne</td>
+<td style="text-align:center">$\ne$</td>
+<td style="text-align:center">\neq</td>
+<td style="text-align:center">$\neq$</td>
+</tr>
+<tr>
+<td style="text-align:center">\propto</td>
+<td style="text-align:center">$\propto$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$$</td>
+</tr>
+<tr>
+<td style="text-align:center">\pm</td>
+<td style="text-align:center">$\pm$</td>
+<td style="text-align:center">\mp</td>
+<td style="text-align:center">$\mp$</td>
+</tr>
+<tr>
+<td style="text-align:center">\because</td>
+<td style="text-align:center">$\because$</td>
+<td style="text-align:center">\therefore</td>
+<td style="text-align:center">$\therefore$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="实例">实例<a class="anchor-link" href="#实例">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">\Delta ABC\sim\Delta XYZ</td>
+<td style="text-align:center">$\Delta ABC\sim\Delta XYZ$</td>
+</tr>
+<tr>
+<td style="text-align:center">\sqrt{3}\approx1.732050808\ldots</td>
+<td style="text-align:center">$\sqrt{3}\approx1.732050808\ldots$</td>
+</tr>
+<tr>
+<td style="text-align:center">\acute{a}</td>
+<td style="text-align:center">$\acute{a}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">$$</td>
+</tr>
+</tbody>
+</table>
+<p>$$
+\begin{align}
+    \because\begin{cases}
+        a_1x^2+bx^2+c \gtrless 0 \gtrless a_2x^2+bx^2+c
+        \\
+        a_1 &gt; 0 &gt; a_2
+    \end{cases}
+\\
+    \therefore
+        \frac{-b\pm\sqrt{b^2-4a_1c}}{2a_1}{}
+        _\lessgtr^\gtrless x_\lessgtr^\gtrless
+        \frac{-b\pm\sqrt{b^2-4a_2c}}{2a_2}
+\end{align}
+$$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="图形">图形<a class="anchor-link" href="#图形">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">菱形</td>
+<td style="text-align:center">\Diamond</td>
+<td style="text-align:center">$\Diamond$</td>
+</tr>
+<tr>
+<td style="text-align:center">正方形</td>
+<td style="text-align:center">\Box</td>
+<td style="text-align:center">$\Box$</td>
+</tr>
+<tr>
+<td style="text-align:center">三角形</td>
+<td style="text-align:center">\Delta</td>
+<td style="text-align:center">$\Delta$</td>
+</tr>
+<tr>
+<td style="text-align:center">图型</td>
+<td style="text-align:center">\triangle</td>
+<td style="text-align:center">$\triangle$</td>
+</tr>
+<tr>
+<td style="text-align:center">角名</td>
+<td style="text-align:center">\angle\alpha\beta\gamma</td>
+<td style="text-align:center">$\angle\alpha\beta \gamma$</td>
+</tr>
+<tr>
+<td style="text-align:center">垂直</td>
+<td style="text-align:center">\perp</td>
+<td style="text-align:center">$\perp$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="箭头">箭头<a class="anchor-link" href="#箭头">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">$$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">$$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$$</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">$$</td>
+</tr>
+<tr>
+<td style="text-align:center">\leftarrow</td>
+<td style="text-align:center">$\leftarrow$</td>
+<td style="text-align:center">\gets</td>
+<td style="text-align:center">$\gets$</td>
+<td style="text-align:center">\rightarrow</td>
+<td style="text-align:center">$\rightarrow$</td>
+</tr>
+<tr>
+<td style="text-align:center">\to</td>
+<td style="text-align:center">$\to$</td>
+<td style="text-align:center">\leftrightarrow</td>
+<td style="text-align:center">$\leftrightarrow$</td>
+<td style="text-align:center">\longleftarrow</td>
+<td style="text-align:center">$\longleftarrow$</td>
+</tr>
+<tr>
+<td style="text-align:center">\longrightarrow</td>
+<td style="text-align:center">$\longrightarrow$</td>
+<td style="text-align:center">\mapsto</td>
+<td style="text-align:center">$\mapsto$</td>
+<td style="text-align:center">\longmapsto</td>
+<td style="text-align:center">$\longmapsto$</td>
+</tr>
+<tr>
+<td style="text-align:center">\hookrightarrow</td>
+<td style="text-align:center">$\hookrightarrow$</td>
+<td style="text-align:center">\hookleftarrow</td>
+<td style="text-align:center">$\hookleftarrow$</td>
+<td style="text-align:center">\nearrow</td>
+<td style="text-align:center">$\nearrow$</td>
+</tr>
+<tr>
+<td style="text-align:center">\searrow</td>
+<td style="text-align:center">$\searrow$</td>
+<td style="text-align:center">\swarrow</td>
+<td style="text-align:center">$\swarrow$</td>
+<td style="text-align:center">\nwarrow</td>
+<td style="text-align:center">$\nwarrow$</td>
+</tr>
+<tr>
+<td style="text-align:center">\uparrow</td>
+<td style="text-align:center">$\uparrow$</td>
+<td style="text-align:center">\downarrow</td>
+<td style="text-align:center">$\downarrow$</td>
+<td style="text-align:center">\updownarrow</td>
+<td style="text-align:center">$\updownarrow$</td>
+</tr>
+<tr>
+<td style="text-align:center">\rightharpoonup</td>
+<td style="text-align:center">$\rightharpoonup$</td>
+<td style="text-align:center">\rightharpoondown</td>
+<td style="text-align:center">$\rightharpoondown$</td>
+</tr>
+<tr>
+<td style="text-align:center">\leftharpoonup</td>
+<td style="text-align:center">$\leftharpoonup$</td>
+<td style="text-align:center">\leftharpoondown</td>
+<td style="text-align:center">$\leftharpoondown$</td>
+</tr>
+<tr>
+<td style="text-align:center">\upharpoonleft</td>
+<td style="text-align:center">$\upharpoonleft$</td>
+<td style="text-align:center">\upharpoonright</td>
+<td style="text-align:center">$\upharpoonright$</td>
+</tr>
+<tr>
+<td style="text-align:center">\downharpoonleft</td>
+<td style="text-align:center">$\downharpoonleft$</td>
+<td style="text-align:center">\downharpoonright</td>
+<td style="text-align:center">$\downharpoonright$</td>
+</tr>
+<tr>
+<td style="text-align:center">\Leftarrow</td>
+<td style="text-align:center">$\Leftarrow$</td>
+<td style="text-align:center">\Rightarrow</td>
+<td style="text-align:center">$\Rightarrow$</td>
+<td style="text-align:center">\Leftrightarrow</td>
+<td style="text-align:center">$\Leftrightarrow$</td>
+</tr>
+<tr>
+<td style="text-align:center">\Longleftarrow</td>
+<td style="text-align:center">$\Longleftarrow$</td>
+<td style="text-align:center">\Longrightarrow</td>
+<td style="text-align:center">$\Longrightarrow$</td>
+<td style="text-align:center">\Longleftrightarrow (or \iff)</td>
+<td style="text-align:center">$\Longleftrightarrow$</td>
+</tr>
+<tr>
+<td style="text-align:center">\Uparrow</td>
+<td style="text-align:center">$\Uparrow$</td>
+<td style="text-align:center">\Downarrow</td>
+<td style="text-align:center">$\Downarrow$</td>
+<td style="text-align:center">\Updownarrow</td>
+<td style="text-align:center">$\Updownarrow$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="特殊符号">特殊符号<a class="anchor-link" href="#特殊符号">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">\eth</td>
+<td style="text-align:center">$\eth$</td>
+<td style="text-align:center">\S</td>
+<td style="text-align:center">$\S$</td>
+<td style="text-align:center">\P</td>
+<td style="text-align:center">$\\P$</td>
+</tr>
+<tr>
+<td style="text-align:center">\%</td>
+<td style="text-align:center">$\%$</td>
+<td style="text-align:center">\dagger</td>
+<td style="text-align:center">$\dagger$</td>
+<td style="text-align:center">\ddagger</td>
+<td style="text-align:center">$\ddagger$</td>
+</tr>
+<tr>
+<td style="text-align:center">\star</td>
+<td style="text-align:center">$\star$</td>
+<td style="text-align:center">*</td>
+<td style="text-align:center">$*$</td>
+<td style="text-align:center">\ldots</td>
+<td style="text-align:center">$\ldots$</td>
+</tr>
+<tr>
+<td style="text-align:center">\smile</td>
+<td style="text-align:center">$\smile$</td>
+<td style="text-align:center">\frown</td>
+<td style="text-align:center">$\frown$</td>
+<td style="text-align:center">\wr</td>
+<td style="text-align:center">$\wr$</td>
+</tr>
+<tr>
+<td style="text-align:center">\oplus</td>
+<td style="text-align:center">$\oplus$</td>
+<td style="text-align:center">\bigoplus</td>
+<td style="text-align:center">$\bigoplus$</td>
+<td style="text-align:center">\otimes</td>
+<td style="text-align:center">$\otimes$</td>
+</tr>
+<tr>
+<td style="text-align:center">\bigotimes</td>
+<td style="text-align:center">$\bigotimes$</td>
+<td style="text-align:center">\times</td>
+<td style="text-align:center">$\times$</td>
+<td style="text-align:center">\cdot</td>
+<td style="text-align:center">$\cdot$</td>
+</tr>
+<tr>
+<td style="text-align:center">\div</td>
+<td style="text-align:center">$\div$</td>
+<td style="text-align:center">\circ</td>
+<td style="text-align:center">$\circ$</td>
+<td style="text-align:center">\bullet</td>
+<td style="text-align:center">$\bullet$</td>
+</tr>
+<tr>
+<td style="text-align:center">\bigodot</td>
+<td style="text-align:center">$\bigodot$</td>
+<td style="text-align:center">\boxtimes</td>
+<td style="text-align:center">$\boxtimes$</td>
+<td style="text-align:center">\boxplus</td>
+<td style="text-align:center">$\boxplus$</td>
+</tr>
+<tr>
+<td style="text-align:center">\triangleleft</td>
+<td style="text-align:center">$\triangleleft$</td>
+<td style="text-align:center">\triangleright</td>
+<td style="text-align:center">$\triangleright$</td>
+<td style="text-align:center">\infty</td>
+<td style="text-align:center">$\infty$</td>
+</tr>
+<tr>
+<td style="text-align:center">\bot</td>
+<td style="text-align:center">$\bot$</td>
+<td style="text-align:center">\top</td>
+<td style="text-align:center">$\top$</td>
+<td style="text-align:center">\vdash</td>
+<td style="text-align:center">$\vdash$</td>
+</tr>
+<tr>
+<td style="text-align:center">\vDash</td>
+<td style="text-align:center">$\vDash$</td>
+<td style="text-align:center">\Vdash</td>
+<td style="text-align:center">$\Vdash$</td>
+<td style="text-align:center">\models</td>
+<td style="text-align:center">$\models$</td>
+</tr>
+<tr>
+<td style="text-align:center">\lVert</td>
+<td style="text-align:center">$\lVert$</td>
+<td style="text-align:center">\rVert</td>
+<td style="text-align:center">$\rVert$</td>
+</tr>
+<tr>
+<td style="text-align:center">\imath</td>
+<td style="text-align:center">$\imath$</td>
+<td style="text-align:center">\hbar</td>
+<td style="text-align:center">$\hbar$</td>
+<td style="text-align:center">\ell</td>
+<td style="text-align:center">$\ell$</td>
+</tr>
+<tr>
+<td style="text-align:center">\mho</td>
+<td style="text-align:center">$\mho$</td>
+<td style="text-align:center">\Finv</td>
+<td style="text-align:center">$\Finv$</td>
+<td style="text-align:center">\Re</td>
+<td style="text-align:center">$\Re$</td>
+</tr>
+<tr>
+<td style="text-align:center">\Im</td>
+<td style="text-align:center">$\Im$</td>
+<td style="text-align:center">\wp</td>
+<td style="text-align:center">$\wp$</td>
+<td style="text-align:center">\complement</td>
+<td style="text-align:center">$\complement$</td>
+</tr>
+<tr>
+<td style="text-align:center">\diamondsuit</td>
+<td style="text-align:center">$\diamondsuit$</td>
+<td style="text-align:center">\heartsuit</td>
+<td style="text-align:center">$\heartsuit$</td>
+</tr>
+<tr>
+<td style="text-align:center">\clubsuit</td>
+<td style="text-align:center">$\clubsuit$</td>
+<td style="text-align:center">\spadesuit</td>
+<td style="text-align:center">$\spadesuit$</td>
+</tr>
+<tr>
+<td style="text-align:center">\Game</td>
+<td style="text-align:center">$\Game$</td>
+<td style="text-align:center">\flat</td>
+<td style="text-align:center">$\flat$</td>
+<td style="text-align:center">\natural</td>
+<td style="text-align:center">$\natural$</td>
+<td>\sharp</td>
+<td>$\sharp$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="上标、下标及积分等">上标、下标及积分等<a class="anchor-link" href="#上标、下标及积分等">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">功能</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">上标</td>
+<td style="text-align:center">a^2</td>
+<td style="text-align:center">$a^2$</td>
+</tr>
+<tr>
+<td style="text-align:center">下标</td>
+<td style="text-align:center">a_2</td>
+<td style="text-align:center">$a_2$</td>
+</tr>
+<tr>
+<td style="text-align:center">组合</td>
+<td style="text-align:center">a^{2+2}</td>
+<td style="text-align:center">$a^{2+2}$</td>
+</tr>
+<tr>
+<td style="text-align:center">组合</td>
+<td style="text-align:center">a_{i,j}</td>
+<td style="text-align:center">$a_{i,j}$</td>
+</tr>
+<tr>
+<td style="text-align:center">结合上下标</td>
+<td style="text-align:center">x_2^3</td>
+<td style="text-align:center">$ x_2^3$</td>
+</tr>
+<tr>
+<td style="text-align:center">前置上下标</td>
+<td style="text-align:center">{}_1^2X_3^4</td>
+<td style="text-align:center">${}_1^2X_3^4$</td>
+</tr>
+<tr>
+<td style="text-align:center">导数（HTML）</td>
+<td style="text-align:center">x'</td>
+<td style="text-align:center">$ x'$</td>
+</tr>
+<tr>
+<td style="text-align:center">导数（PNG）</td>
+<td style="text-align:center">x^\prime</td>
+<td style="text-align:center">$x^\prime$</td>
+</tr>
+<tr>
+<td style="text-align:center">导数（错误）</td>
+<td style="text-align:center">x\prime</td>
+<td style="text-align:center">$x\prime$</td>
+</tr>
+<tr>
+<td style="text-align:center">导数点</td>
+<td style="text-align:center">\dot{x}</td>
+<td style="text-align:center">$\dot{x}$</td>
+</tr>
+<tr>
+<td style="text-align:center">导数点</td>
+<td style="text-align:center">\ddot{y}</td>
+<td style="text-align:center">$\ddot{y}$</td>
+</tr>
+<tr>
+<td style="text-align:center">向量</td>
+<td style="text-align:center">\vec{c}</td>
+<td style="text-align:center">$\vec{c}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\overleftarrow{a b}</td>
+<td style="text-align:center">$\overleftarrow{a b}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\overrightarrow{c d}</td>
+<td style="text-align:center">$\overrightarrow{c d}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\widehat{e f g}</td>
+<td style="text-align:center">$\widehat{e f g}$</td>
+</tr>
+<tr>
+<td style="text-align:center">上弧 (注: 正确应该用 \overarc, 但在这里行不通。要用建议的语法作为解决办法)</td>
+<td style="text-align:center">\overset{\frown} {AB}</td>
+<td style="text-align:center">$\overset{\frown} {AB}$</td>
+</tr>
+<tr>
+<td style="text-align:center">上划线</td>
+<td style="text-align:center">\overline{h i j}</td>
+<td style="text-align:center">$\overline{h i j}$</td>
+</tr>
+<tr>
+<td style="text-align:center">下划线</td>
+<td style="text-align:center">\underline{k l m}</td>
+<td style="text-align:center">$\underline{k l m}$</td>
+</tr>
+<tr>
+<td style="text-align:center">上括号</td>
+<td style="text-align:center">\overbrace{1+2+\cdots+100}</td>
+<td style="text-align:center">$\overbrace{1+2+\cdots+100}$</td>
+</tr>
+<tr>
+<td style="text-align:center">?</td>
+<td style="text-align:center">\begin{matrix} 5050 \\ \overbrace{ 1+2+\cdots+100 } \end{matrix}</td>
+<td style="text-align:center">$\begin{matrix} 5050 \\\ \overbrace{ 1+2+\cdots+100 } \end{matrix}$</td>
+</tr>
+<tr>
+<td style="text-align:center">下括号</td>
+<td style="text-align:center">\underbrace{a+b+\cdots+z}</td>
+<td style="text-align:center">$\underbrace{a+b+\cdots+z}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\begin{matrix} \underbrace{ a+b+\cdots+z } \\ 26 \end{matrix}</td>
+<td style="text-align:center">$\begin{matrix} \underbrace{ a+b+\cdots+z } \\\ 26 \end{matrix}$</td>
+</tr>
+<tr>
+<td style="text-align:center">求和</td>
+<td style="text-align:center">\sum_{k=1}^N k^2</td>
+<td style="text-align:center">$\sum_{k=1}^N k^2$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\begin{matrix} \sum_{k=1}^N k^2 \end{matrix}</td>
+<td style="text-align:center">$\begin{matrix} \sum_{k=1}^N k^2 \end{matrix}$</td>
+</tr>
+<tr>
+<td style="text-align:center">求积</td>
+<td style="text-align:center">\prod_{i=1}^N x_i</td>
+<td style="text-align:center">$\prod_{i=1}^N x_i$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\begin{matrix} \prod_{i=1}^N x_i \end{matrix}</td>
+<td style="text-align:center">$\begin{matrix} \prod_{i=1}^N x_i \end{matrix}$</td>
+</tr>
+<tr>
+<td style="text-align:center">上积</td>
+<td style="text-align:center">\coprod_{i=1}^N x_i</td>
+<td style="text-align:center">$\coprod_{i=1}^N x_i$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\begin{matrix} \coprod_{i=1}^N x_i \end{matrix}</td>
+<td style="text-align:center">$\begin{matrix} \coprod_{i=1}^N x_i \end{matrix}$</td>
+</tr>
+<tr>
+<td style="text-align:center">极限</td>
+<td style="text-align:center">\lim_{n \to \infty}x_n</td>
+<td style="text-align:center">$\lim_ {n \to \infty}{x_n}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\begin{matrix} \lim_{n \to \infty}x_n \end{matrix}</td>
+<td style="text-align:center">$\begin{matrix} \lim_{n \to \infty}x_n \end{matrix} $</td>
+</tr>
+<tr>
+<td style="text-align:center">积分</td>
+<td style="text-align:center">\int_{-N}^{N} e^x\, dx</td>
+<td style="text-align:center">$\int_{-N}^{N} e^x\, dx$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\begin{matrix} \int_{-N}^{N} e^x\, dx \end{matrix}</td>
+<td style="text-align:center">$\begin{matrix} \int_{-N}^{N} e^x\, dx \end{matrix}$</td>
+</tr>
+<tr>
+<td style="text-align:center">双重积分</td>
+<td style="text-align:center">\iint_{D}^{W} \, dx\,dy</td>
+<td style="text-align:center">$\iint_{D}^{W} \, dx\,dy$</td>
+</tr>
+<tr>
+<td style="text-align:center">三重积分</td>
+<td style="text-align:center">\iiint_{E}^{V} \, dx\,dy\,dz</td>
+<td style="text-align:center">$\iiint_{E}^{V} \, dx\,dy\,dz$</td>
+</tr>
+<tr>
+<td style="text-align:center">四重积分</td>
+<td style="text-align:center">\iiiint_{F}^{U} \, dx\,dy\,dz\,dt</td>
+<td style="text-align:center">$ \iiiint_{F}^{U} \, dx\,dy\,dz\,dt$</td>
+</tr>
+<tr>
+<td style="text-align:center">闭合的曲线、曲面积分</td>
+<td style="text-align:center">\oint_{C} x^3\, dx + 4y^2\, dy</td>
+<td style="text-align:center">$\oint_{C} x^3\, dx + 4y^2\, dy$</td>
+</tr>
+<tr>
+<td style="text-align:center">交集</td>
+<td style="text-align:center">\bigcap_1^{n} p</td>
+<td style="text-align:center">$\bigcap_1^{n} p$</td>
+</tr>
+<tr>
+<td style="text-align:center">并集</td>
+<td style="text-align:center">\bigcup_1^{k} p</td>
+<td style="text-align:center">$\bigcup_1^{k} p$</td>
+</tr>
+<tr>
+<td style="text-align:center">分数</td>
+<td style="text-align:center">\frac{2}{4}=0.5</td>
+<td style="text-align:center">$\frac{2}{4}=0.5$</td>
+</tr>
+<tr>
+<td style="text-align:center">小型分数</td>
+<td style="text-align:center">\tfrac{2}{4} = 0.5</td>
+<td style="text-align:center">$\tfrac{2}{4} = 0.5$</td>
+</tr>
+<tr>
+<td style="text-align:center">大型分数（嵌套）</td>
+<td style="text-align:center">\cfrac{2}{c + \cfrac{2}{d + \cfrac{2}{4}}} = a</td>
+<td style="text-align:center">$\cfrac{2}{c + \cfrac{2}{d + \cfrac{2}{4}}} = a$</td>
+</tr>
+<tr>
+<td style="text-align:center">大型分数（不嵌套）</td>
+<td style="text-align:center">\dfrac{2}{4} = 0.5 \qquad \dfrac{2}{c + \dfrac{2}{d + \dfrac{2}{4}}} = a</td>
+<td style="text-align:center">$\dfrac{2}{4} = 0.5 \qquad \dfrac{2}{c + \dfrac{2}{d + \dfrac{2}{4}}} = a$</td>
+</tr>
+<tr>
+<td style="text-align:center">二项式系数</td>
+<td style="text-align:center">\dbinom{n}{r}=\binom{n}{n-r}=C^n<em>r=C^n</em>{n-r}</td>
+<td style="text-align:center">$\dbinom{n}{r}=\binom{n}{n-r}=C^n_r=C^n_{n-r}$</td>
+</tr>
+<tr>
+<td style="text-align:center">小型二项式系数</td>
+<td style="text-align:center">\tbinom{n}{r}=\tbinom{n}{n-r}=C^n<em>r=C^n</em>{n-r}</td>
+<td style="text-align:center">$\tbinom{n}{r}=\tbinom{n}{n-r}=C^n_r=C^n_{n-r}$</td>
+</tr>
+<tr>
+<td style="text-align:center">大型二项式系数</td>
+<td style="text-align:center">\binom{n}{r}=\dbinom{n}{n-r}=C^n<em>r=C^n</em>{n-r}</td>
+<td style="text-align:center">$\binom{n}{r}=\dbinom{n}{n-r}=C^n_r=C^n_{n-r}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="矩阵">矩阵<a class="anchor-link" href="#矩阵">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">功能</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">矩阵</td>
+<td style="text-align:center">\begin{matrix} x &amp; y \\ z &amp; v \end{matrix}</td>
+<td style="text-align:center">$\begin{matrix} x &amp; y \\\ z &amp; v \end{matrix}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\begin{vmatrix} x &amp; y \\ z &amp; v \end{vmatrix}</td>
+<td style="text-align:center">$\begin{vmatrix} x &amp; y \\\ z &amp; v \end{vmatrix}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\begin{Vmatrix} x &amp; y \\ z &amp; v \end{Vmatrix}</td>
+<td style="text-align:center">$\begin{Vmatrix} x &amp; y \\\ z &amp; v \end{Vmatrix}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\begin{bmatrix} 0 &amp; \cdots &amp; 0 \\ \vdots &amp; \ddots &amp; \vdots \\ 0 &amp; \cdots &amp; 0 \end{bmatrix}</td>
+<td style="text-align:center">$\begin{bmatrix} 0 &amp; \cdots &amp; 0 \\\ \vdots &amp; \ddots &amp; \vdots \\\ 0 &amp; \cdots &amp; 0\end{bmatrix}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\begin{Bmatrix} x &amp; y \\ z &amp; v \end{Bmatrix}</td>
+<td style="text-align:center">$\begin{Bmatrix} x &amp; y \\\ z &amp; v \end{Bmatrix}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\begin{pmatrix} x &amp; y \\ z &amp; v \end{pmatrix}</td>
+<td style="text-align:center">$\begin{pmatrix} x &amp; y \\\ z &amp; v \end{pmatrix}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\bigl( \begin{smallmatrix} a&amp;b\\ c&amp;d \end{smallmatrix} \bigr)</td>
+<td style="text-align:center">$\bigl( \begin{smallmatrix} a&amp;b\\ c&amp;d \end{smallmatrix} \bigr)$</td>
+</tr>
+<tr>
+<td style="text-align:center">条件定义</td>
+<td style="text-align:center">f(n) = \begin{cases} n/2, &amp; \mbox{if }n\mbox{ is even} \\ 3n+1, &amp; \mbox{if }n\mbox{ is odd} \end{cases}</td>
+<td style="text-align:center">$ f(n) = \begin{cases} n/2, &amp; \mbox{if }n\mbox{ is even} \\\ 3n+1, &amp; \mbox{if }n\mbox{ is odd} \end{cases} $</td>
+</tr>
+<tr>
+<td style="text-align:center">多行等式</td>
+<td style="text-align:center">\begin{align} f(x) &amp; = (m+n)^2 \\ &amp; = m^2+2mn+n^2 \\ \end{align}</td>
+<td style="text-align:center">$ \begin{align} f(x) &amp; = (m+n)^2 \\\ &amp; = m^2+2mn+n^2 \ \end{align} $</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">\begin{alignat}{2} f(x) &amp; = (m-n)^2 \\ f(x) &amp; = (-m+n)^2 \\ &amp; = m^2-2mn+n^2 \\ \end{alignat}</td>
+<td style="text-align:center">$\begin{alignat}{2} f(x) &amp; = (m-n)^2 \\\ f(x) &amp; = (-m+n)^2 \\\ &amp; = m^2-2mn+n^2 \ \end{alignat} $</td>
+</tr>
+<tr>
+<td style="text-align:center">多行等式（左对齐）</td>
+<td style="text-align:center">\begin{array}{lcl} z &amp; = &amp; a \\ f(x,y,z) &amp; = &amp; x + y + z \end{array}</td>
+<td style="text-align:center">$\begin{array}{lcl} z &amp; = &amp; a \\\ f(x,y,z) &amp; = &amp; x + y + z \end{array}$</td>
+</tr>
+<tr>
+<td style="text-align:center">多行等式（右对齐）</td>
+<td style="text-align:center">\begin{array}{lcr} z &amp; = &amp; a \\ f(x,y,z) &amp; = &amp; x + y + z \end{array}</td>
+<td style="text-align:center">$\begin{array}{lcr} z &amp; = &amp; a \\\ f(x,y,z) &amp; = &amp; x + y + z \end{array}$</td>
+</tr>
+<tr>
+<td style="text-align:center">长公式换行</td>
+<td style="text-align:center">f(x) \,!= \sum_{n=0}^\infty a_n x^n \\ = a_0 +a_1x+a_2x^2+\cdots</td>
+<td style="text-align:center">$f(x) \,\!= \sum_{n=0}^\infty a_n x^n \\\ = a_0 +a_1x+a_2x^2+\cdots$</td>
+</tr>
+<tr>
+<td style="text-align:center">方程组</td>
+<td style="text-align:center">\begin{cases} 3x + 5y + z \\ 7x - 2y + 4z \\ -6x + 3y + 2z \end{cases}</td>
+<td style="text-align:center">$\begin{cases} 3x + 5y + z \\\ 7x - 2y + 4z \\\ -6x + 3y + 2z \end{cases}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="字体">字体<a class="anchor-link" href="#字体">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">序号</th>
+<th style="text-align:center">小写</th>
+<th style="text-align:center">小写</th>
+<th style="text-align:center">小写粗体</th>
+<th style="text-align:center">大写</th>
+<th style="text-align:center">大写</th>
+<th style="text-align:center">大写粗体</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">\alpha</td>
+<td style="text-align:center">$\alpha$</td>
+<td style="text-align:center">$\boldsymbol{\alpha}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">\beta</td>
+<td style="text-align:center">$\beta$</td>
+<td style="text-align:center">$\boldsymbol{\beta}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">\gamma</td>
+<td style="text-align:center">$\gamma$</td>
+<td style="text-align:center">$\boldsymbol{\gamma}$</td>
+<td style="text-align:center">\Gamma</td>
+<td style="text-align:center">$\Gamma$</td>
+<td>$\boldsymbol{\Gamma}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">\delta</td>
+<td style="text-align:center">$\delta$</td>
+<td style="text-align:center">$\boldsymbol{\delta}$</td>
+<td style="text-align:center">\Delta</td>
+<td style="text-align:center">$\Delta$</td>
+<td>$\boldsymbol{\Delta}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">\epsilon</td>
+<td style="text-align:center">$\epsilon$</td>
+<td style="text-align:center">$\boldsymbol{\epsilon}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">\varepsilon</td>
+<td style="text-align:center">$\varepsilon$</td>
+<td style="text-align:center">$\boldsymbol{\varepsilon}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">\zeta</td>
+<td style="text-align:center">$\zeta$</td>
+<td style="text-align:center">$\boldsymbol{\zeta}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">\eta</td>
+<td style="text-align:center">$\eta$</td>
+<td style="text-align:center">$\boldsymbol{\eta}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">\theta</td>
+<td style="text-align:center">$\theta$</td>
+<td style="text-align:center">$\boldsymbol{\theta}$</td>
+<td style="text-align:center">\Theta</td>
+<td style="text-align:center">$\Theta$</td>
+<td>$\boldsymbol{\Theta}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">\vartheta</td>
+<td style="text-align:center">$\vartheta$</td>
+<td style="text-align:center">$\boldsymbol{\vartheta}$</td>
+<td style="text-align:center">\varTheta</td>
+<td style="text-align:center">$\varTheta$</td>
+<td>$\boldsymbol{\varTheta}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">11</td>
+<td style="text-align:center">\iota</td>
+<td style="text-align:center">$\iota$</td>
+<td style="text-align:center">$\boldsymbol{\iota}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">12</td>
+<td style="text-align:center">\lambda</td>
+<td style="text-align:center">$\lambda$</td>
+<td style="text-align:center">$\boldsymbol{\lambda}$</td>
+<td style="text-align:center">\Lambda</td>
+<td style="text-align:center">$\Lambda$</td>
+<td>$\boldsymbol{\Lambda}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">13</td>
+<td style="text-align:center">\kappa</td>
+<td style="text-align:center">$\kappa$</td>
+<td style="text-align:center">$\boldsymbol{\kappa}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">14</td>
+<td style="text-align:center">\varkappa</td>
+<td style="text-align:center">$\varkappa$</td>
+<td style="text-align:center">$\boldsymbol{\varkappa}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">15</td>
+<td style="text-align:center">\mu</td>
+<td style="text-align:center">$\mu$</td>
+<td style="text-align:center">$\boldsymbol{\mu}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">16</td>
+<td style="text-align:center">\nu</td>
+<td style="text-align:center">$\nu$</td>
+<td style="text-align:center">$\boldsymbol{\nu}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">17</td>
+<td style="text-align:center">\xi</td>
+<td style="text-align:center">$\xi$</td>
+<td style="text-align:center">$\boldsymbol{\xi}$</td>
+<td style="text-align:center">\Xi</td>
+<td style="text-align:center">$\Xi$</td>
+<td>$\boldsymbol{\Xi}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">18</td>
+<td style="text-align:center">\omicron</td>
+<td style="text-align:center">$\omicron$</td>
+<td style="text-align:center">$\boldsymbol{\omicron}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">19</td>
+<td style="text-align:center">\pi</td>
+<td style="text-align:center">$\pi$</td>
+<td style="text-align:center">$\boldsymbol{\pi}$</td>
+<td style="text-align:center">\Pi</td>
+<td style="text-align:center">$\Pi$</td>
+<td>$\boldsymbol{\Pi}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">20</td>
+<td style="text-align:center">\varpi</td>
+<td style="text-align:center">$\varpi$</td>
+<td style="text-align:center">$\boldsymbol{\varpi}$</td>
+<td style="text-align:center">\varPi</td>
+<td style="text-align:center">$\varPi$</td>
+<td>$\boldsymbol{\varPi}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">21</td>
+<td style="text-align:center">\rho</td>
+<td style="text-align:center">$\rho$</td>
+<td style="text-align:center">$\boldsymbol{\rho}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">22</td>
+<td style="text-align:center">\varrho</td>
+<td style="text-align:center">$\varrho$</td>
+<td style="text-align:center">$\boldsymbol{\varrho}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">23</td>
+<td style="text-align:center">\sigma</td>
+<td style="text-align:center">$\sigma$</td>
+<td style="text-align:center">$\boldsymbol{\sigma}$</td>
+<td style="text-align:center">\Sigma</td>
+<td style="text-align:center">$\Sigma$</td>
+<td>$\boldsymbol{\Sigma}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">24</td>
+<td style="text-align:center">\varsigma</td>
+<td style="text-align:center">$\varsigma$</td>
+<td style="text-align:center">$\boldsymbol{\varsigma}$</td>
+<td style="text-align:center">\varSigma</td>
+<td style="text-align:center">$\varSigma$</td>
+<td>$\boldsymbol{\varSigma}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">25</td>
+<td style="text-align:center">\tau</td>
+<td style="text-align:center">$\tau$</td>
+<td style="text-align:center">$\boldsymbol{\tau}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">26</td>
+<td style="text-align:center">\upsilon</td>
+<td style="text-align:center">$\upsilon$</td>
+<td style="text-align:center">$\boldsymbol{\upsilon}$</td>
+<td style="text-align:center">\Upsilon</td>
+<td style="text-align:center">$\Upsilon$</td>
+<td>$\boldsymbol{\Upsilon}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">27</td>
+<td style="text-align:center">\phi</td>
+<td style="text-align:center">$\phi$</td>
+<td style="text-align:center">$\boldsymbol{\phi}$</td>
+<td style="text-align:center">\Phi</td>
+<td style="text-align:center">$\Phi$</td>
+<td>$\boldsymbol{\Phi}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">28</td>
+<td style="text-align:center">\varphi</td>
+<td style="text-align:center">$\varphi$</td>
+<td style="text-align:center">$\boldsymbol{\varphi}$</td>
+<td style="text-align:center">\varPhi</td>
+<td style="text-align:center">$\varPhi$</td>
+<td>$\boldsymbol{\varPhi}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">29</td>
+<td style="text-align:center">\chi</td>
+<td style="text-align:center">$\chi$</td>
+<td style="text-align:center">$\boldsymbol{\chi}$</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center"></td>
+<td></td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">30</td>
+<td style="text-align:center">\psi</td>
+<td style="text-align:center">$\psi$</td>
+<td style="text-align:center">$\boldsymbol{\psi}$</td>
+<td style="text-align:center">\Psi</td>
+<td style="text-align:center">$\Psi$</td>
+<td>$\boldsymbol{\Psi}$</td>
+</tr>
+<tr>
+<td style="text-align:center"></td>
+<td style="text-align:center">31</td>
+<td style="text-align:center">\omega</td>
+<td style="text-align:center">$\omega$</td>
+<td style="text-align:center">$\boldsymbol{\omega}$</td>
+<td style="text-align:center">\Omega</td>
+<td style="text-align:center">$\Omega$</td>
+<td>$\boldsymbol{\Omega}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="字体集合">字体集合<a class="anchor-link" href="#字体集合">¶</a></h1><h2 id="字体集">字体集<a class="anchor-link" href="#字体集">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">序号</th>
+<th style="text-align:center">字体</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">实例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">正体</td>
+<td style="text-align:center">012,abc,ABC</td>
+<td style="text-align:center">$012,abc,ABC$</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">正粗体</td>
+<td style="text-align:center">\mathbf{012,abc,ABC}</td>
+<td style="text-align:center">$\mathbf{012,abc,ABC}$</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">斜体</td>
+<td style="text-align:center">\mathit{012,abc,ABC}</td>
+<td style="text-align:center">$\mathit{012,abc,ABC}$</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">斜粗体</td>
+<td style="text-align:center">\boldsymbol{012,abc,ABC}</td>
+<td style="text-align:center">$\boldsymbol{012,abc,ABC}$</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">黑板体</td>
+<td style="text-align:center">\mathbb{012,abc,ABC}</td>
+<td style="text-align:center">$\mathbb{012,abc,ABC}$</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">哥特体</td>
+<td style="text-align:center">\mathfrak{012,abc,ABC}</td>
+<td style="text-align:center">$\mathfrak{012,abc,ABC}$</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">手写体</td>
+<td style="text-align:center">\mathcal{012,abc,ABC}</td>
+<td style="text-align:center">$\mathcal{012,abc,ABC}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="数字字母字体集">数字字母字体集<a class="anchor-link" href="#数字字母字体集">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">序号</th>
+<th style="text-align:center">正体</th>
+<th style="text-align:center">正粗体bf</th>
+<th style="text-align:center">斜体it</th>
+<th style="text-align:center">斜粗体</th>
+<th style="text-align:center">黑板字体bb</th>
+<th style="text-align:center">哥特体frak</th>
+<th style="text-align:center">手写体cal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">$\mathbf{0}$</td>
+<td style="text-align:center">$\mathit{0}$</td>
+<td style="text-align:center">$\boldsymbol{0}$</td>
+<td style="text-align:center">$\mathbb{0}$</td>
+<td style="text-align:center">$\mathfrak{0}$</td>
+<td style="text-align:center">$\mathcal{0}$</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">$\mathbf{1}$</td>
+<td style="text-align:center">$\mathit{1}$</td>
+<td style="text-align:center">$\boldsymbol{1}$</td>
+<td style="text-align:center">$\mathbb{1}$</td>
+<td style="text-align:center">$\mathfrak{1}$</td>
+<td style="text-align:center">$\mathcal{1}$</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">$\mathbf{2}$</td>
+<td style="text-align:center">$\mathit{2}$</td>
+<td style="text-align:center">$\boldsymbol{2}$</td>
+<td style="text-align:center">$\mathbb{2}$</td>
+<td style="text-align:center">$\mathfrak{2}$</td>
+<td style="text-align:center">$\mathcal{2}$</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">3</td>
+<td style="text-align:center">$\mathbf{3}$</td>
+<td style="text-align:center">$\mathit{3}$</td>
+<td style="text-align:center">$\boldsymbol{3}$</td>
+<td style="text-align:center">$\mathbb{3}$</td>
+<td style="text-align:center">$\mathfrak{3}$</td>
+<td style="text-align:center">$\mathcal{3}$</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">$\mathbf{4}$</td>
+<td style="text-align:center">$\mathit{4}$</td>
+<td style="text-align:center">$\boldsymbol{4}$</td>
+<td style="text-align:center">$\mathbb{4}$</td>
+<td style="text-align:center">$\mathfrak{4}$</td>
+<td style="text-align:center">$\mathcal{4}$</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">$\mathbf{5}$</td>
+<td style="text-align:center">$\mathit{5}$</td>
+<td style="text-align:center">$\boldsymbol{5}$</td>
+<td style="text-align:center">$\mathbb{5}$</td>
+<td style="text-align:center">$\mathfrak{5}$</td>
+<td style="text-align:center">$\mathcal{5}$</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">$\mathbf{6}$</td>
+<td style="text-align:center">$\mathit{6}$</td>
+<td style="text-align:center">$\boldsymbol{6}$</td>
+<td style="text-align:center">$\mathbb{6}$</td>
+<td style="text-align:center">$\mathfrak{6}$</td>
+<td style="text-align:center">$\mathcal{6}$</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:center">7</td>
+<td style="text-align:center">$\mathbf{7}$</td>
+<td style="text-align:center">$\mathit{7}$</td>
+<td style="text-align:center">$\boldsymbol{7}$</td>
+<td style="text-align:center">$\mathbb{7}$</td>
+<td style="text-align:center">$\mathfrak{7}$</td>
+<td style="text-align:center">$\mathcal{7}$</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">$\mathbf{8}$</td>
+<td style="text-align:center">$\mathit{8}$</td>
+<td style="text-align:center">$\boldsymbol{8}$</td>
+<td style="text-align:center">$\mathbb{8}$</td>
+<td style="text-align:center">$\mathfrak{8}$</td>
+<td style="text-align:center">$\mathcal{8}$</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">$\mathbf{9}$</td>
+<td style="text-align:center">$\mathit{9}$</td>
+<td style="text-align:center">$\boldsymbol{9}$</td>
+<td style="text-align:center">$\mathbb{9}$</td>
+<td style="text-align:center">$\mathfrak{9}$</td>
+<td style="text-align:center">$\mathcal{9}$</td>
+</tr>
+<tr>
+<td style="text-align:center">11</td>
+<td style="text-align:center">a</td>
+<td style="text-align:center">$\mathbf{a}$</td>
+<td style="text-align:center">$\mathit{a}$</td>
+<td style="text-align:center">$\boldsymbol{a}$</td>
+<td style="text-align:center">$\mathbb{a}$</td>
+<td style="text-align:center">$\mathfrak{a}$</td>
+<td style="text-align:center">$\mathcal{a}$</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td style="text-align:center">b</td>
+<td style="text-align:center">$\mathbf{b}$</td>
+<td style="text-align:center">$\mathit{b}$</td>
+<td style="text-align:center">$\boldsymbol{b}$</td>
+<td style="text-align:center">$\mathbb{b}$</td>
+<td style="text-align:center">$\mathfrak{b}$</td>
+<td style="text-align:center">$\mathcal{b}$</td>
+</tr>
+<tr>
+<td style="text-align:center">13</td>
+<td style="text-align:center">c</td>
+<td style="text-align:center">$\mathbf{c}$</td>
+<td style="text-align:center">$\mathit{c}$</td>
+<td style="text-align:center">$\boldsymbol{c}$</td>
+<td style="text-align:center">$\mathbb{c}$</td>
+<td style="text-align:center">$\mathfrak{c}$</td>
+<td style="text-align:center">$\mathcal{c}$</td>
+</tr>
+<tr>
+<td style="text-align:center">14</td>
+<td style="text-align:center">d</td>
+<td style="text-align:center">$\mathbf{d}$</td>
+<td style="text-align:center">$\mathit{d}$</td>
+<td style="text-align:center">$\boldsymbol{d}$</td>
+<td style="text-align:center">$\mathbb{d}$</td>
+<td style="text-align:center">$\mathfrak{d}$</td>
+<td style="text-align:center">$\mathcal{d}$</td>
+</tr>
+<tr>
+<td style="text-align:center">15</td>
+<td style="text-align:center">e</td>
+<td style="text-align:center">$\mathbf{e}$</td>
+<td style="text-align:center">$\mathit{e}$</td>
+<td style="text-align:center">$\boldsymbol{e}$</td>
+<td style="text-align:center">$\mathbb{e}$</td>
+<td style="text-align:center">$\mathfrak{e}$</td>
+<td style="text-align:center">$\mathcal{e}$</td>
+</tr>
+<tr>
+<td style="text-align:center">16</td>
+<td style="text-align:center">f</td>
+<td style="text-align:center">$\mathbf{f}$</td>
+<td style="text-align:center">$\mathit{f}$</td>
+<td style="text-align:center">$\boldsymbol{f}$</td>
+<td style="text-align:center">$\mathbb{f}$</td>
+<td style="text-align:center">$\mathfrak{f}$</td>
+<td style="text-align:center">$\mathcal{f}$</td>
+</tr>
+<tr>
+<td style="text-align:center">17</td>
+<td style="text-align:center">g</td>
+<td style="text-align:center">$\mathbf{g}$</td>
+<td style="text-align:center">$\mathit{g}$</td>
+<td style="text-align:center">$\boldsymbol{g}$</td>
+<td style="text-align:center">$\mathbb{g}$</td>
+<td style="text-align:center">$\mathfrak{g}$</td>
+<td style="text-align:center">$\mathcal{g}$</td>
+</tr>
+<tr>
+<td style="text-align:center">18</td>
+<td style="text-align:center">h</td>
+<td style="text-align:center">$\mathbf{h}$</td>
+<td style="text-align:center">$\mathit{h}$</td>
+<td style="text-align:center">$\boldsymbol{h}$</td>
+<td style="text-align:center">$\mathbb{h}$</td>
+<td style="text-align:center">$\mathfrak{h}$</td>
+<td style="text-align:center">$\mathcal{h}$</td>
+</tr>
+<tr>
+<td style="text-align:center">19</td>
+<td style="text-align:center">i</td>
+<td style="text-align:center">$\mathbf{i}$</td>
+<td style="text-align:center">$\mathit{i}$</td>
+<td style="text-align:center">$\boldsymbol{i}$</td>
+<td style="text-align:center">$\mathbb{i}$</td>
+<td style="text-align:center">$\mathfrak{i}$</td>
+<td style="text-align:center">$\mathcal{i}$</td>
+</tr>
+<tr>
+<td style="text-align:center">20</td>
+<td style="text-align:center">j</td>
+<td style="text-align:center">$\mathbf{j}$</td>
+<td style="text-align:center">$\mathit{j}$</td>
+<td style="text-align:center">$\boldsymbol{j}$</td>
+<td style="text-align:center">$\mathbb{j}$</td>
+<td style="text-align:center">$\mathfrak{j}$</td>
+<td style="text-align:center">$\mathcal{j}$</td>
+</tr>
+<tr>
+<td style="text-align:center">21</td>
+<td style="text-align:center">k</td>
+<td style="text-align:center">$\mathbf{k}$</td>
+<td style="text-align:center">$\mathit{k}$</td>
+<td style="text-align:center">$\boldsymbol{k}$</td>
+<td style="text-align:center">$\mathbb{k}$</td>
+<td style="text-align:center">$\mathfrak{k}$</td>
+<td style="text-align:center">$\mathcal{k}$</td>
+</tr>
+<tr>
+<td style="text-align:center">22</td>
+<td style="text-align:center">l</td>
+<td style="text-align:center">$\mathbf{l}$</td>
+<td style="text-align:center">$\mathit{l}$</td>
+<td style="text-align:center">$\boldsymbol{l}$</td>
+<td style="text-align:center">$\mathbb{l}$</td>
+<td style="text-align:center">$\mathfrak{l}$</td>
+<td style="text-align:center">$\mathcal{l}$</td>
+</tr>
+<tr>
+<td style="text-align:center">23</td>
+<td style="text-align:center">m</td>
+<td style="text-align:center">$\mathbf{m}$</td>
+<td style="text-align:center">$\mathit{m}$</td>
+<td style="text-align:center">$\boldsymbol{m}$</td>
+<td style="text-align:center">$\mathbb{m}$</td>
+<td style="text-align:center">$\mathfrak{m}$</td>
+<td style="text-align:center">$\mathcal{m}$</td>
+</tr>
+<tr>
+<td style="text-align:center">24</td>
+<td style="text-align:center">n</td>
+<td style="text-align:center">$\mathbf{n}$</td>
+<td style="text-align:center">$\mathit{n}$</td>
+<td style="text-align:center">$\boldsymbol{n}$</td>
+<td style="text-align:center">$\mathbb{n}$</td>
+<td style="text-align:center">$\mathfrak{n}$</td>
+<td style="text-align:center">$\mathcal{n}$</td>
+</tr>
+<tr>
+<td style="text-align:center">25</td>
+<td style="text-align:center">o</td>
+<td style="text-align:center">$\mathbf{o}$</td>
+<td style="text-align:center">$\mathit{o}$</td>
+<td style="text-align:center">$\boldsymbol{o}$</td>
+<td style="text-align:center">$\mathbb{o}$</td>
+<td style="text-align:center">$\mathfrak{o}$</td>
+<td style="text-align:center">$\mathcal{o}$</td>
+</tr>
+<tr>
+<td style="text-align:center">26</td>
+<td style="text-align:center">p</td>
+<td style="text-align:center">$\mathbf{p}$</td>
+<td style="text-align:center">$\mathit{p}$</td>
+<td style="text-align:center">$\boldsymbol{p}$</td>
+<td style="text-align:center">$\mathbb{p}$</td>
+<td style="text-align:center">$\mathfrak{p}$</td>
+<td style="text-align:center">$\mathcal{p}$</td>
+</tr>
+<tr>
+<td style="text-align:center">27</td>
+<td style="text-align:center">q</td>
+<td style="text-align:center">$\mathbf{q}$</td>
+<td style="text-align:center">$\mathit{q}$</td>
+<td style="text-align:center">$\boldsymbol{q}$</td>
+<td style="text-align:center">$\mathbb{q}$</td>
+<td style="text-align:center">$\mathfrak{q}$</td>
+<td style="text-align:center">$\mathcal{q}$</td>
+</tr>
+<tr>
+<td style="text-align:center">28</td>
+<td style="text-align:center">r</td>
+<td style="text-align:center">$\mathbf{r}$</td>
+<td style="text-align:center">$\mathit{r}$</td>
+<td style="text-align:center">$\boldsymbol{r}$</td>
+<td style="text-align:center">$\mathbb{r}$</td>
+<td style="text-align:center">$\mathfrak{r}$</td>
+<td style="text-align:center">$\mathcal{r}$</td>
+</tr>
+<tr>
+<td style="text-align:center">29</td>
+<td style="text-align:center">s</td>
+<td style="text-align:center">$\mathbf{s}$</td>
+<td style="text-align:center">$\mathit{s}$</td>
+<td style="text-align:center">$\boldsymbol{s}$</td>
+<td style="text-align:center">$\mathbb{s}$</td>
+<td style="text-align:center">$\mathfrak{s}$</td>
+<td style="text-align:center">$\mathcal{s}$</td>
+</tr>
+<tr>
+<td style="text-align:center">30</td>
+<td style="text-align:center">t</td>
+<td style="text-align:center">$\mathbf{t}$</td>
+<td style="text-align:center">$\mathit{t}$</td>
+<td style="text-align:center">$\boldsymbol{t}$</td>
+<td style="text-align:center">$\mathbb{t}$</td>
+<td style="text-align:center">$\mathfrak{t}$</td>
+<td style="text-align:center">$\mathcal{t}$</td>
+</tr>
+<tr>
+<td style="text-align:center">31</td>
+<td style="text-align:center">u</td>
+<td style="text-align:center">$\mathbf{u}$</td>
+<td style="text-align:center">$\mathit{u}$</td>
+<td style="text-align:center">$\boldsymbol{u}$</td>
+<td style="text-align:center">$\mathbb{u}$</td>
+<td style="text-align:center">$\mathfrak{u}$</td>
+<td style="text-align:center">$\mathcal{u}$</td>
+</tr>
+<tr>
+<td style="text-align:center">32</td>
+<td style="text-align:center">v</td>
+<td style="text-align:center">$\mathbf{v}$</td>
+<td style="text-align:center">$\mathit{v}$</td>
+<td style="text-align:center">$\boldsymbol{v}$</td>
+<td style="text-align:center">$\mathbb{v}$</td>
+<td style="text-align:center">$\mathfrak{v}$</td>
+<td style="text-align:center">$\mathcal{v}$</td>
+</tr>
+<tr>
+<td style="text-align:center">33</td>
+<td style="text-align:center">w</td>
+<td style="text-align:center">$\mathbf{w}$</td>
+<td style="text-align:center">$\mathit{w}$</td>
+<td style="text-align:center">$\boldsymbol{w}$</td>
+<td style="text-align:center">$\mathbb{w}$</td>
+<td style="text-align:center">$\mathfrak{w}$</td>
+<td style="text-align:center">$\mathcal{w}$</td>
+</tr>
+<tr>
+<td style="text-align:center">34</td>
+<td style="text-align:center">x</td>
+<td style="text-align:center">$\mathbf{x}$</td>
+<td style="text-align:center">$\mathit{x}$</td>
+<td style="text-align:center">$\boldsymbol{x}$</td>
+<td style="text-align:center">$\mathbb{x}$</td>
+<td style="text-align:center">$\mathfrak{x}$</td>
+<td style="text-align:center">$\mathcal{x}$</td>
+</tr>
+<tr>
+<td style="text-align:center">35</td>
+<td style="text-align:center">y</td>
+<td style="text-align:center">$\mathbf{y}$</td>
+<td style="text-align:center">$\mathit{y}$</td>
+<td style="text-align:center">$\boldsymbol{y}$</td>
+<td style="text-align:center">$\mathbb{y}$</td>
+<td style="text-align:center">$\mathfrak{y}$</td>
+<td style="text-align:center">$\mathcal{y}$</td>
+</tr>
+<tr>
+<td style="text-align:center">36</td>
+<td style="text-align:center">z</td>
+<td style="text-align:center">$\mathbf{z}$</td>
+<td style="text-align:center">$\mathit{z}$</td>
+<td style="text-align:center">$\boldsymbol{z}$</td>
+<td style="text-align:center">$\mathbb{z}$</td>
+<td style="text-align:center">$\mathfrak{z}$</td>
+<td style="text-align:center">$\mathcal{z}$</td>
+</tr>
+<tr>
+<td style="text-align:center">37</td>
+<td style="text-align:center">A</td>
+<td style="text-align:center">$\mathbf{A}$</td>
+<td style="text-align:center">$\mathit{A}$</td>
+<td style="text-align:center">$\boldsymbol{A}$</td>
+<td style="text-align:center">$\mathbb{A}$</td>
+<td style="text-align:center">$\mathfrak{A}$</td>
+<td style="text-align:center">$\mathcal{A}$</td>
+</tr>
+<tr>
+<td style="text-align:center">38</td>
+<td style="text-align:center">B</td>
+<td style="text-align:center">$\mathbf{B}$</td>
+<td style="text-align:center">$\mathit{B}$</td>
+<td style="text-align:center">$\boldsymbol{B}$</td>
+<td style="text-align:center">$\mathbb{B}$</td>
+<td style="text-align:center">$\mathfrak{B}$</td>
+<td style="text-align:center">$\mathcal{B}$</td>
+</tr>
+<tr>
+<td style="text-align:center">39</td>
+<td style="text-align:center">C</td>
+<td style="text-align:center">$\mathbf{C}$</td>
+<td style="text-align:center">$\mathit{C}$</td>
+<td style="text-align:center">$\boldsymbol{C}$</td>
+<td style="text-align:center">$\mathbb{C}$</td>
+<td style="text-align:center">$\mathfrak{C}$</td>
+<td style="text-align:center">$\mathcal{C}$</td>
+</tr>
+<tr>
+<td style="text-align:center">40</td>
+<td style="text-align:center">D</td>
+<td style="text-align:center">$\mathbf{D}$</td>
+<td style="text-align:center">$\mathit{D}$</td>
+<td style="text-align:center">$\boldsymbol{D}$</td>
+<td style="text-align:center">$\mathbb{D}$</td>
+<td style="text-align:center">$\mathfrak{D}$</td>
+<td style="text-align:center">$\mathcal{D}$</td>
+</tr>
+<tr>
+<td style="text-align:center">41</td>
+<td style="text-align:center">E</td>
+<td style="text-align:center">$\mathbf{E}$</td>
+<td style="text-align:center">$\mathit{E}$</td>
+<td style="text-align:center">$\boldsymbol{E}$</td>
+<td style="text-align:center">$\mathbb{E}$</td>
+<td style="text-align:center">$\mathfrak{E}$</td>
+<td style="text-align:center">$\mathcal{E}$</td>
+</tr>
+<tr>
+<td style="text-align:center">42</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">$\mathbf{F}$</td>
+<td style="text-align:center">$\mathit{F}$</td>
+<td style="text-align:center">$\boldsymbol{F}$</td>
+<td style="text-align:center">$\mathbb{F}$</td>
+<td style="text-align:center">$\mathfrak{F}$</td>
+<td style="text-align:center">$\mathcal{F}$</td>
+</tr>
+<tr>
+<td style="text-align:center">43</td>
+<td style="text-align:center">G</td>
+<td style="text-align:center">$\mathbf{G}$</td>
+<td style="text-align:center">$\mathit{G}$</td>
+<td style="text-align:center">$\boldsymbol{G}$</td>
+<td style="text-align:center">$\mathbb{G}$</td>
+<td style="text-align:center">$\mathfrak{G}$</td>
+<td style="text-align:center">$\mathcal{G}$</td>
+</tr>
+<tr>
+<td style="text-align:center">44</td>
+<td style="text-align:center">H</td>
+<td style="text-align:center">$\mathbf{H}$</td>
+<td style="text-align:center">$\mathit{H}$</td>
+<td style="text-align:center">$\boldsymbol{H}$</td>
+<td style="text-align:center">$\mathbb{H}$</td>
+<td style="text-align:center">$\mathfrak{H}$</td>
+<td style="text-align:center">$\mathcal{H}$</td>
+</tr>
+<tr>
+<td style="text-align:center">45</td>
+<td style="text-align:center">I</td>
+<td style="text-align:center">$\mathbf{I}$</td>
+<td style="text-align:center">$\mathit{I}$</td>
+<td style="text-align:center">$\boldsymbol{I}$</td>
+<td style="text-align:center">$\mathbb{I}$</td>
+<td style="text-align:center">$\mathfrak{I}$</td>
+<td style="text-align:center">$\mathcal{I}$</td>
+</tr>
+<tr>
+<td style="text-align:center">46</td>
+<td style="text-align:center">J</td>
+<td style="text-align:center">$\mathbf{J}$</td>
+<td style="text-align:center">$\mathit{J}$</td>
+<td style="text-align:center">$\boldsymbol{J}$</td>
+<td style="text-align:center">$\mathbb{J}$</td>
+<td style="text-align:center">$\mathfrak{J}$</td>
+<td style="text-align:center">$\mathcal{J}$</td>
+</tr>
+<tr>
+<td style="text-align:center">47</td>
+<td style="text-align:center">K</td>
+<td style="text-align:center">$\mathbf{K}$</td>
+<td style="text-align:center">$\mathit{K}$</td>
+<td style="text-align:center">$\boldsymbol{K}$</td>
+<td style="text-align:center">$\mathbb{K}$</td>
+<td style="text-align:center">$\mathfrak{K}$</td>
+<td style="text-align:center">$\mathcal{K}$</td>
+</tr>
+<tr>
+<td style="text-align:center">48</td>
+<td style="text-align:center">L</td>
+<td style="text-align:center">$\mathbf{L}$</td>
+<td style="text-align:center">$\mathit{L}$</td>
+<td style="text-align:center">$\boldsymbol{L}$</td>
+<td style="text-align:center">$\mathbb{L}$</td>
+<td style="text-align:center">$\mathfrak{L}$</td>
+<td style="text-align:center">$\mathcal{L}$</td>
+</tr>
+<tr>
+<td style="text-align:center">49</td>
+<td style="text-align:center">M</td>
+<td style="text-align:center">$\mathbf{M}$</td>
+<td style="text-align:center">$\mathit{M}$</td>
+<td style="text-align:center">$\boldsymbol{M}$</td>
+<td style="text-align:center">$\mathbb{M}$</td>
+<td style="text-align:center">$\mathfrak{M}$</td>
+<td style="text-align:center">$\mathcal{M}$</td>
+</tr>
+<tr>
+<td style="text-align:center">50</td>
+<td style="text-align:center">N</td>
+<td style="text-align:center">$\mathbf{N}$</td>
+<td style="text-align:center">$\mathit{N}$</td>
+<td style="text-align:center">$\boldsymbol{N}$</td>
+<td style="text-align:center">$\mathbb{N}$</td>
+<td style="text-align:center">$\mathfrak{N}$</td>
+<td style="text-align:center">$\mathcal{N}$</td>
+</tr>
+<tr>
+<td style="text-align:center">51</td>
+<td style="text-align:center">O</td>
+<td style="text-align:center">$\mathbf{O}$</td>
+<td style="text-align:center">$\mathit{O}$</td>
+<td style="text-align:center">$\boldsymbol{O}$</td>
+<td style="text-align:center">$\mathbb{O}$</td>
+<td style="text-align:center">$\mathfrak{O}$</td>
+<td style="text-align:center">$\mathcal{O}$</td>
+</tr>
+<tr>
+<td style="text-align:center">52</td>
+<td style="text-align:center">P</td>
+<td style="text-align:center">$\mathbf{P}$</td>
+<td style="text-align:center">$\mathit{P}$</td>
+<td style="text-align:center">$\boldsymbol{P}$</td>
+<td style="text-align:center">$\mathbb{P}$</td>
+<td style="text-align:center">$\mathfrak{P}$</td>
+<td style="text-align:center">$\mathcal{P}$</td>
+</tr>
+<tr>
+<td style="text-align:center">53</td>
+<td style="text-align:center">Q</td>
+<td style="text-align:center">$\mathbf{Q}$</td>
+<td style="text-align:center">$\mathit{Q}$</td>
+<td style="text-align:center">$\boldsymbol{Q}$</td>
+<td style="text-align:center">$\mathbb{Q}$</td>
+<td style="text-align:center">$\mathfrak{Q}$</td>
+<td style="text-align:center">$\mathcal{Q}$</td>
+</tr>
+<tr>
+<td style="text-align:center">54</td>
+<td style="text-align:center">R</td>
+<td style="text-align:center">$\mathbf{R}$</td>
+<td style="text-align:center">$\mathit{R}$</td>
+<td style="text-align:center">$\boldsymbol{R}$</td>
+<td style="text-align:center">$\mathbb{R}$</td>
+<td style="text-align:center">$\mathfrak{R}$</td>
+<td style="text-align:center">$\mathcal{R}$</td>
+</tr>
+<tr>
+<td style="text-align:center">55</td>
+<td style="text-align:center">S</td>
+<td style="text-align:center">$\mathbf{S}$</td>
+<td style="text-align:center">$\mathit{S}$</td>
+<td style="text-align:center">$\boldsymbol{S}$</td>
+<td style="text-align:center">$\mathbb{S}$</td>
+<td style="text-align:center">$\mathfrak{S}$</td>
+<td style="text-align:center">$\mathcal{S}$</td>
+</tr>
+<tr>
+<td style="text-align:center">56</td>
+<td style="text-align:center">T</td>
+<td style="text-align:center">$\mathbf{T}$</td>
+<td style="text-align:center">$\mathit{T}$</td>
+<td style="text-align:center">$\boldsymbol{T}$</td>
+<td style="text-align:center">$\mathbb{T}$</td>
+<td style="text-align:center">$\mathfrak{T}$</td>
+<td style="text-align:center">$\mathcal{T}$</td>
+</tr>
+<tr>
+<td style="text-align:center">57</td>
+<td style="text-align:center">U</td>
+<td style="text-align:center">$\mathbf{U}$</td>
+<td style="text-align:center">$\mathit{U}$</td>
+<td style="text-align:center">$\boldsymbol{U}$</td>
+<td style="text-align:center">$\mathbb{U}$</td>
+<td style="text-align:center">$\mathfrak{U}$</td>
+<td style="text-align:center">$\mathcal{U}$</td>
+</tr>
+<tr>
+<td style="text-align:center">58</td>
+<td style="text-align:center">V</td>
+<td style="text-align:center">$\mathbf{V}$</td>
+<td style="text-align:center">$\mathit{V}$</td>
+<td style="text-align:center">$\boldsymbol{V}$</td>
+<td style="text-align:center">$\mathbb{V}$</td>
+<td style="text-align:center">$\mathfrak{V}$</td>
+<td style="text-align:center">$\mathcal{V}$</td>
+</tr>
+<tr>
+<td style="text-align:center">59</td>
+<td style="text-align:center">W</td>
+<td style="text-align:center">$\mathbf{W}$</td>
+<td style="text-align:center">$\mathit{W}$</td>
+<td style="text-align:center">$\boldsymbol{W}$</td>
+<td style="text-align:center">$\mathbb{W}$</td>
+<td style="text-align:center">$\mathfrak{W}$</td>
+<td style="text-align:center">$\mathcal{W}$</td>
+</tr>
+<tr>
+<td style="text-align:center">60</td>
+<td style="text-align:center">X</td>
+<td style="text-align:center">$\mathbf{X}$</td>
+<td style="text-align:center">$\mathit{X}$</td>
+<td style="text-align:center">$\boldsymbol{X}$</td>
+<td style="text-align:center">$\mathbb{X}$</td>
+<td style="text-align:center">$\mathfrak{X}$</td>
+<td style="text-align:center">$\mathcal{X}$</td>
+</tr>
+<tr>
+<td style="text-align:center">61</td>
+<td style="text-align:center">Y</td>
+<td style="text-align:center">$\mathbf{Y}$</td>
+<td style="text-align:center">$\mathit{Y}$</td>
+<td style="text-align:center">$\boldsymbol{Y}$</td>
+<td style="text-align:center">$\mathbb{Y}$</td>
+<td style="text-align:center">$\mathfrak{Y}$</td>
+<td style="text-align:center">$\mathcal{Y}$</td>
+</tr>
+<tr>
+<td style="text-align:center">62</td>
+<td style="text-align:center">Z</td>
+<td style="text-align:center">$\mathbf{Z}$</td>
+<td style="text-align:center">$\mathit{Z}$</td>
+<td style="text-align:center">$\boldsymbol{Z}$</td>
+<td style="text-align:center">$\mathbb{Z}$</td>
+<td style="text-align:center">$\mathfrak{Z}$</td>
+<td style="text-align:center">$\mathcal{Z}$</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="括号">括号<a class="anchor-link" href="#括号">¶</a></h2><table>
+<thead><tr>
+<th style="text-align:center">功能</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">显示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">圆括号-小括号</td>
+<td style="text-align:center">\left( \frac{a}{b} \right)</td>
+<td style="text-align:center">$\left( \frac{a}{b} \right)$</td>
+</tr>
+<tr>
+<td style="text-align:center">方括号-中括号</td>
+<td style="text-align:center">\left[ \frac{a}{b} \right]</td>
+<td style="text-align:center">$\left[ \frac{a}{b} \right]$</td>
+</tr>
+<tr>
+<td style="text-align:center">花括号，大括号</td>
+<td style="text-align:center">\left{ \frac{a}{b} \right}</td>
+<td style="text-align:center">$\left\{ \frac{a}{b}\right\}$</td>
+</tr>
+<tr>
+<td style="text-align:center">角括号</td>
+<td style="text-align:center">\left \langle \frac{a}{b} \right \rangle</td>
+<td style="text-align:center">$\left\langle \frac{a}{b} \right \rangle$</td>
+</tr>
+<tr>
+<td style="text-align:center">单竖线-绝对值</td>
+<td style="text-align:center">\left\</td>
+<td style="text-align:center">\frac{a}{b} \right\</td>
+<td></td>
+<td>$\left\</td>
+<td>\frac{a}{b} \right\</td>
+<td>$</td>
+</tr>
+<tr>
+<td style="text-align:center">双竖线-范</td>
+<td style="text-align:center">\left\</td>
+<td style="text-align:center">\frac{a}{b} \right\</td>
+<td></td>
+<td>$ \left \</td>
+<td>\frac{a}{b} \right \</td>
+<td>$</td>
+</tr>
+<tr>
+<td style="text-align:center">取整</td>
+<td style="text-align:center">\left \lfloor \frac{a}{b} \right \rfloor</td>
+<td style="text-align:center">$\left \lfloor \frac{a}{b} \right \rfloor$</td>
+</tr>
+<tr>
+<td style="text-align:center">取顶</td>
+<td style="text-align:center">\left \lceil \frac{c}{d} \right \rceil</td>
+<td style="text-align:center">$\left \lceil \frac{c}{d} \right \rceil$</td>
+</tr>
+<tr>
+<td style="text-align:center">斜线与反斜线</td>
+<td style="text-align:center">\left / \frac{a}{b} \right \backslash</td>
+<td style="text-align:center">$ \left / \frac{a}{b} \right \backslash $</td>
+</tr>
+<tr>
+<td style="text-align:center">上下箭头</td>
+<td style="text-align:center">\left \uparrow \frac{a}{b} \right \downarrow</td>
+<td style="text-align:center">$\left \uparrow \frac{a}{b} \right \downarrow$</td>
+</tr>
+<tr>
+<td style="text-align:center">什么</td>
+<td style="text-align:center">\left \Uparrow \frac{a}{b} \right \Downarrow</td>
+<td style="text-align:center">$\left \Uparrow \frac{a}{b} \right \Downarrow$</td>
+</tr>
+<tr>
+<td style="text-align:center">什么</td>
+<td style="text-align:center">\left \updownarrow \frac{a}{b} \right \updownarrow</td>
+<td style="text-align:center">$\left \updownarrow \frac{a}{b} \right \updownarrow$</td>
+</tr>
+<tr>
+<td style="text-align:center">混合括号</td>
+<td style="text-align:center">\left [ 0,1 \right )</td>
+<td style="text-align:center">$ \left [ 0,1 \right )  $</td>
+</tr>
+<tr>
+<td style="text-align:center">单左括号</td>
+<td style="text-align:center">\left { \frac{a}{b} \right .</td>
+<td style="text-align:center">$\left \{ \frac{a}{b} \right .$</td>
+</tr>
+<tr>
+<td style="text-align:center">单右括号</td>
+<td style="text-align:center">\left . \frac{a}{b} \right }</td>
+<td style="text-align:center">$\left . \frac{a}{b} \right \}$</td>
+</tr>
+</tbody>
+</table>
+<p>备注：
+可以使用 \big, \Big, \bigg, \Bigg 控制括号的大小，比如代码
+\Bigg ( \bigg [ \Big { \big \langle \left | | \frac{a}{b} | \right | \big\rangle \Big } \bigg ] \Bigg )
+　显示︰
+$\Bigg ( \bigg [ \Big \{ \big \langle \left | \| x \| \right | \big \rangle \Big \} \bigg ] \Bigg )$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="空格">空格<a class="anchor-link" href="#空格">¶</a></h2><p>注意TEX能够自动处理大多数的空格，但是您有时候需要自己来控制。</p>
+<table>
+<thead><tr>
+<th style="text-align:center">功能</th>
+<th style="text-align:center">语法</th>
+<th style="text-align:center">显示</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">2个quad空格</td>
+<td style="text-align:center">\alpha\qquad\beta</td>
+<td style="text-align:center">$\alpha\qquad\beta 2m\ $</td>
+</tr>
+<tr>
+<td style="text-align:center">quad空格</td>
+<td style="text-align:center">\alpha\quad\beta</td>
+<td style="text-align:center">$\alpha\quad\beta  m\ $</td>
+</tr>
+<tr>
+<td style="text-align:center">大空格</td>
+<td style="text-align:center">\alpha\ \beta</td>
+<td style="text-align:center">$\alpha\ \beta \frac{m}{3}$</td>
+</tr>
+<tr>
+<td style="text-align:center">中等空格</td>
+<td style="text-align:center">\alpha\;\beta</td>
+<td style="text-align:center">$\alpha\;\beta \frac{2m}{7}$</td>
+</tr>
+<tr>
+<td style="text-align:center">小空格</td>
+<td style="text-align:center">\alpha\,\beta</td>
+<td style="text-align:center">$\alpha\,\beta \frac{m}{6}$</td>
+</tr>
+<tr>
+<td style="text-align:center">没有空格</td>
+<td style="text-align:center">\alpha\beta</td>
+<td style="text-align:center">$\alpha\beta\  0\ $</td>
+</tr>
+<tr>
+<td style="text-align:center">紧贴</td>
+<td style="text-align:center">\alpha!\beta</td>
+<td style="text-align:center">$\alpha\!\beta -\frac{m}{6}$</td>
+</tr>
+</tbody>
+</table>
+<p>小型数学公式
+当要把分数等公式放进文字中的时候，我们需要使用小型的数学公式。
+苹果原产于欧洲和中亚细亚。哈萨克的阿拉木图与新疆阿力麻里有苹果城的美誉。中国古代的林檎、柰、花红等水果被认为是中国土生苹果品种或与苹果相似的水果。苹果在中国的栽培记录可以追溯至西汉时期，汉武帝时，10 的 $f(x)=5+\frac{1}{5} $是 2。上林苑中曾栽培林檎和柰，当时多用于薰香衣裳等，亦有置于床头当香熏或置于衣服初作为香囊，总之一般不食用。但也有看法认为，林檎和柰是现在的沙果，曾被误认为苹果，真正意义上的苹果是元朝时期从中亚地区传入中国，当时只有在宫廷才可享用。
+✗并不好看。
+苹果原产于欧洲和中亚细亚。哈萨克的阿拉木图与新疆阿力麻里有苹果城的美誉。中国古代的林檎、柰、花红等水果被认为是中国土生苹果品种或与苹果相似的水果。苹果在中国的栽培记录可以追溯至西汉时期，汉武帝时，10 的 $\begin{smallmatrix} f(x)=5+\frac{1}{5} \end{smallmatrix} $ 是 2。上林苑中曾栽培林檎和柰，当时多用于薰香衣裳等，亦有置于床头当香熏或置于衣服初作为香囊，总之一般不食用。但也有看法认为，林檎和柰是现在的沙果，曾被误认为苹果，真正意义上的苹果是元朝时期从中亚地区传入中国，当时只有在宫廷才可享用。
+✓好看些了。
+可以使用
+$\begin{smallmatrix}...\end{smallmatrix}$</p>
+</div>
+</div>
+</div>
+</body>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+</div>
+
+
+            <footer>
+<span class="byline author vcard">
+    Posted by
+    <span class="fn">
+            niult
+    </span>
+</span><time datetime="2018-01-01T00:00:00+08:00" pubdate>2018-01-01 00:00</time><span class="categories">
+        <a href="../../../category/tools.html">tools</a>
+</span>
+
+    <span class="categories">
+            <a class="category" href="../../../tag/jupyter.html">jupyter</a>, 
+            <a class="category" href="../../../tag/python.html">python</a>, 
+            <a class="category" href="../../../tag/latex.html">latex</a>
+    </span>
+
+<div class="sharing">
+</div>            </footer>
+        </article>
+
+    </div>
+<aside class="sidebar">
+    <section>
+        <h1>Recent Posts</h1>
+        <ul id="recent_posts">
+                <li class="post">
+                    <a href="../../../pages/2019/01/21-a-first-look-at-a-neural-network.html">2.1-a-first-look-at-a-neural-network</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/35-classifying-movie-reviews.html">3.5-classifying-movie-reviews</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/36-classifying-newswires.html">3.6-classifying-newswires</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/37-predicting-house-prices.html">3.7-predicting-house-prices</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/44-overfitting-and-underfitting.html">4.4-overfitting-and-underfitting</a>
+                </li>
+        </ul>
+    </section>
+        <section>
+
+            <h1>Categories</h1>
+            <ul id="recent_posts">
+                    <li><a href="../../../category/01chang yong gong ju.html">01常用工具</a></li>
+                    <li><a href="../../../category/02.wo ai du shu.html">02.我爱读书</a></li>
+                    <li><a href="../../../category/algorithms.html">algorithms</a></li>
+                    <li><a href="../../../category/book.html">book</a></li>
+                    <li><a href="../../../category/book-pydata.html">book-pydata</a></li>
+                    <li><a href="../../../category/deep-learning-with-python.html">deep-learning-with-python</a></li>
+                    <li><a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a></li>
+                    <li><a href="../../../category/ke wai du wu.html">课外读物</a></li>
+                    <li><a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a></li>
+                    <li><a href="../../../category/shen du xue xi.html">深度学习</a></li>
+                    <li><a href="../../../category/shen jing wang luo.html">神经网络</a></li>
+                    <li><a href="../../../category/shu ju wa jue.html">数据挖掘</a></li>
+                    <li><a href="../../../category/shu xue ji chu.html">数学基础</a></li>
+                    <li><a href="../../../category/tf-example.html">tf-example</a></li>
+                    <li><a href="../../../category/tool1.html">tool1</a></li>
+                    <li><a href="../../../category/tool2.html">tool2</a></li>
+                    <li><a href="../../../category/tools.html">tools</a></li>
+                    <li><a href="../../../category/tui jian xi tong.html">推荐系统</a></li>
+                    <li><a href="../../../category/wen ben wa jue.html">文本挖掘</a></li>
+            </ul>
+        </section>
+
+
+    <section>
+        <h1>Tags</h1>
+            <a href="../../../tag/python.html">python</a>, 
+            <a href="../../../tag/numpy.html">numpy</a>, 
+            <a href="../../../tag/deep-learning.html">deep-learning</a>, 
+            <a href="../../../tag/algorithms.html">algorithms</a>, 
+            <a href="../../../tag/wen-ben-wa-jue.html">文本挖掘</a>, 
+            <a href="../../../tag/shen-jing-wang-luo.html">神经网络</a>, 
+            <a href="../../../tag/shu-xue-ji-chu.html">数学基础</a>, 
+            <a href="../../../tag/nlp.html">nlp</a>, 
+            <a href="../../../tag/tf-example.html">tf-example</a>, 
+            <a href="../../../tag/tui-jian-xi-tong.html">推荐系统</a>, 
+            <a href="../../../tag/tf.html">tf</a>, 
+            <a href="../../../tag/ji-huo-han-shu.html">激活函数</a>, 
+            <a href="../../../tag/mapreduce.html">mapreduce</a>, 
+            <a href="../../../tag/spark.html">spark</a>, 
+            <a href="../../../tag/handbook.html">handbook</a>, 
+            <a href="../../../tag/matplotlib.html">matplotlib</a>, 
+            <a href="../../../tag/scikit-learn.html">scikit-learn</a>, 
+            <a href="../../../tag/latex.html">latex</a>, 
+            <a href="../../../tag/pandas.html">pandas</a>, 
+            <a href="../../../tag/jupyter.html">jupyter</a>, 
+            <a href="../../../tag/plot.html">plot</a>, 
+            <a href="../../../tag/pip.html">pip</a>, 
+            <a href="../../../tag/geng-xin-suo-you-mo-kuai.html">更新所有模块</a>, 
+            <a href="../../../tag/shen-du-xue-xi.html">深度学习</a>, 
+            <a href="../../../tag/xun-huan-shen-jing-wang-luo.html">循环神经网络</a>, 
+            <a href="../../../tag/pangrank.html">PangRank</a>, 
+            <a href="../../../tag/book.html">book</a>, 
+            <a href="../../../tag/pydata.html">pydata</a>, 
+            <a href="../../../tag/shell.html">shell</a>, 
+            <a href="../../../tag/pyhton.html">pyhton</a>
+    </section>
+
+
+
+    <section>
+        <h1>GitHub Repos</h1>
+            <a href="https://github.com/1007530194">@1007530194</a> on GitHub
+    </section>
+
+</aside>    </div>
+</div>
+<footer role="contentinfo"><p>
+        活到老，学到老，玩到老
+    <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-132396898-1', 'auto');
+
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    </script>
+</body>
+</html>

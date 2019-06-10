@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+    <head>
+<meta charset="utf-8">
+<title>algorithms-隐马尔科夫模型HMM &mdash; 魑魅魍魉</title>
+
+<meta name="author" content="niult">
+
+
+
+
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link href="../../../theme/css/main.css" media="screen, projection"
+      rel="stylesheet" type="text/css">
+
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<script src="../../../theme/js/modernizr-2.0.js"></script>
+<script src="../../../theme/js/ender.js"></script>
+<script src="../../../theme/js/octopress.js" type="text/javascript"></script>
+<script src="../../../theme/js/echarts.min.js" type="text/javascript"></script>
+<script src="../../../theme/js/require.min.js" type="text/javascript"></script>
+
+<header role="banner"><hgroup>
+  <h1><a href="../../../">魑魅魍魉</a></h1>
+</hgroup></header>
+<nav role="navigation">    <ul class="subscription" data-subscription="rss">
+    </ul>
+
+
+<ul class="main-navigation">
+            <li >
+                <a href="../../../category/01chang yong gong ju.html">01常用工具</a>
+            </li>
+            <li >
+                <a href="../../../category/02.wo ai du shu.html">02.我爱读书</a>
+            </li>
+            <li >
+                <a href="../../../category/algorithms.html">Algorithms</a>
+            </li>
+            <li >
+                <a href="../../../category/book.html">Book</a>
+            </li>
+            <li >
+                <a href="../../../category/book-pydata.html">Book-pydata</a>
+            </li>
+            <li >
+                <a href="../../../category/deep-learning-with-python.html">Deep-learning-with-python</a>
+            </li>
+            <li >
+                <a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a>
+            </li>
+            <li >
+                <a href="../../../category/ke wai du wu.html">课外读物</a>
+            </li>
+            <li >
+                <a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen du xue xi.html">深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen jing wang luo.html">神经网络</a>
+            </li>
+            <li >
+                <a href="../../../category/shu ju wa jue.html">数据挖掘</a>
+            </li>
+            <li >
+                <a href="../../../category/shu xue ji chu.html">数学基础</a>
+            </li>
+            <li >
+                <a href="../../../category/tf-example.html">Tf-example</a>
+            </li>
+            <li >
+                <a href="../../../category/tool1.html">Tool1</a>
+            </li>
+            <li >
+                <a href="../../../category/tool2.html">Tool2</a>
+            </li>
+            <li >
+                <a href="../../../category/tools.html">Tools</a>
+            </li>
+            <li >
+                <a href="../../../category/tui jian xi tong.html">推荐系统</a>
+            </li>
+            <li class="active">
+                <a href="../../../category/wen ben wa jue.html">文本挖掘</a>
+            </li>
+</ul>
+</nav>
+<div id="main">
+    <div id="content">
+    <div>
+
+        <h4>Contents</h4>
+        
+
+        <article class="hentry" role="article">
+<header>
+        <h1 class="entry-title">algorithms-隐马尔科夫模型HMM</h1>
+    <p class="meta">
+<time datetime="2019-01-16T00:00:00+08:00" pubdate>2019-01-16 00:00</time>    </p>
+</header>
+
+    <div class="entry-content"><style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style><body>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="HMM模型基础">HMM模型基础<a class="anchor-link" href="#HMM模型基础">¶</a></h1><p>隐马尔科夫模型（Hidden Markov Model，以下简称HMM）是比较经典的机器学习模型了，它在语言识别，自然语言处理，模式识别等领域得到广泛的应用。当然，随着目前深度学习的崛起，尤其是<a href="http://www.cnblogs.com/pinard/p/6509630.html">RNN</a>，<a href="http://www.cnblogs.com/pinard/p/6519110.html">LSTM</a>等神经网络序列模型的火热，HMM的地位有所下降。但是作为一个经典的模型，学习HMM的模型和对应算法，对我们解决问题建模的能力提高以及算法思路的拓展还是很好的。本文是HMM系列的第一篇，关注于HMM模型的基础。</p>
+<h2 id="什么样的问题需要HMM模型">什么样的问题需要HMM模型<a class="anchor-link" href="#什么样的问题需要HMM模型">¶</a></h2><p>首先我们来看看什么样的问题解决可以用HMM模型。使用HMM模型时我们的问题一般有这两个特征：１）我们的问题是基于序列的，比如时间序列，或者状态序列。２）我们的问题中有两类数据，一类序列数据是可以观测到的，即观测序列；而另一类数据是不能观察到的，即隐藏状态序列，简称状态序列。</p>
+<p>有了这两个特征，那么这个问题一般可以用HMM模型来尝试解决。这样的问题在实际生活中是很多的。比如：我现在在打字写博客，我在键盘上敲出来的一系列字符就是观测序列，而我实际想写的一段话就是隐藏序列，输入法的任务就是从敲入的一系列字符尽可能的猜测我要写的一段话，并把最可能的词语放在最前面让我选择，这就可以看做一个HMM模型了。再举一个，我在和你说话，我发出的一串连续的声音就是观测序列，而我实际要表达的一段话就是状态序列，你大脑的任务，就是从这一串连续的声音中判断出我最可能要表达的话的内容。</p>
+<p>从这些例子中，我们可以发现，HMM模型可以无处不在。但是上面的描述还不精确，下面我们用精确的数学符号来表述我们的HMM模型。</p>
+<h2 id="HMM模型的定义">HMM模型的定义<a class="anchor-link" href="#HMM模型的定义">¶</a></h2><p>对于HMM模型，首先我们假设$Q$是所有可能的隐藏状态的集合，$V$是所有可能的观测状态的集合，即：$$Q = \{q_1,q_2,...,q_N\}, \; V =\{v_1,v_2,...v_M\}$$</p>
+<p>其中，$N$是可能的隐藏状态数，$M$是所有的可能的观察状态数。</p>
+<p>对于一个长度为$T$的序列，$I$对应的状态序列, $O$是对应的观察序列，即：$$I = \{i_1,i_2,...,i_T\}, \; O =\{o_1,o_2,...o_T\}$$</p>
+<p>其中，任意一个隐藏状态$i_t \in Q$,任意一个观察状态$o_t \in V$</p>
+<p>HMM模型做了两个很重要的假设如下：</p>
+<p>1） 齐次马尔科夫链假设。即任意时刻的隐藏状态只依赖于它前一个隐藏状态，这个我们在<a href="http://www.cnblogs.com/pinard/p/6632399.html">MCMC(二)马尔科夫链</a>中有详细讲述。当然这样假设有点极端，因为很多时候我们的某一个隐藏状态不仅仅只依赖于前一个隐藏状态，可能是前两个或者是前三个。但是这样假设的好处就是模型简单，便于求解。如果在时刻$t$的隐藏状态是$i_t= q_i$,在时刻$t+1$的隐藏状态是$i_{t+1} = q_j$, 则从时刻$t$到时刻$t+1$的HMM状态转移概率$a_{ij}$可以表示为：$$a_{ij} = P(i_{t+1} = q_j | i_t= q_i)$$</p>
+<p>这样$a_{ij}$可以组成马尔科夫链的状态转移矩阵$A$:$$A=\Big [a_{ij}\Big ]_{N \times N}$$</p>
+<p>2） 观测独立性假设。即任意时刻的观察状态只仅仅依赖于当前时刻的隐藏状态，这也是一个为了简化模型的假设。如果在时刻$t$的隐藏状态是$i_t= q_j$, 而对应的观察状态为$o_t = v_k$, 则该时刻观察状态$v_k$在隐藏状态$q_j$下生成的概率为$b_j(k)$,满足：$$b_j(k) = P(o_t = v_k | i_t= q_j)$$</p>
+<p>这样$b_j(k) $可以组成观测状态生成的概率矩阵$B$:$$B = \Big [b_j(k) \Big ]_{N \times M}$$</p>
+<p>除此之外，我们需要一组在时刻$t=1$的隐藏状态概率分布$\Pi$: $$\Pi = \Big [ \pi(i)\Big ]_N \; 其中 \;\pi(i) = P(i_1 = q_i)$$</p>
+<p>一个HMM模型，可以由隐藏状态初始概率分布$\Pi$, 状态转移概率矩阵$A$和观测状态概率矩阵$B$决定。$\Pi,A$决定状态序列，$B$决定观测序列。因此，HMM模型可以由一个三元组$\lambda$表示如下：$$\lambda = (A, B, \Pi)$$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="一个HMM模型实例">一个HMM模型实例<a class="anchor-link" href="#一个HMM模型实例">¶</a></h2><p>下面我们用一个简单的实例来描述上面抽象出的HMM模型。这是一个盒子与球的模型，例子来源于李航的《统计学习方法》。</p>
+<p>假设我们有3个盒子，每个盒子里都有红色和白色两种球，这三个盒子里球的数量分别是：</p>
+<p>盒子123红球数547白球数563</p>
+<p>按照下面的方法从盒子里抽球，开始的时候，从第一个盒子抽球的概率是0.2，从第二个盒子抽球的概率是0.4，从第三个盒子抽球的概率是0.4。以这个概率抽一次球后，将球放回。然后从当前盒子转移到下一个盒子进行抽球。规则是：如果当前抽球的盒子是第一个盒子，则以0.5的概率仍然留在第一个盒子继续抽球，以0.2的概率去第二个盒子抽球，以0.3的概率去第三个盒子抽球。如果当前抽球的盒子是第二个盒子，则以0.5的概率仍然留在第二个盒子继续抽球，以0.3的概率去第一个盒子抽球，以0.2的概率去第三个盒子抽球。如果当前抽球的盒子是第三个盒子，则以0.5的概率仍然留在第三个盒子继续抽球，以0.2的概率去第一个盒子抽球，以0.3的概率去第二个盒子抽球。如此下去，直到重复三次，得到一个球的颜色的观测序列:$$O=\{红，白，红\}$$</p>
+<p>注意在这个过程中，观察者只能看到球的颜色序列，却不能看到球是从哪个盒子里取出的。</p>
+<p>那么按照我们上一节HMM模型的定义，我们的观察集合是:$$V=\{红，白\}，M=2$$</p>
+<p>我们的状态集合是：$$Q =\{盒子1，盒子2，盒子3\}， N=3 $$</p>
+<p>而观察序列和状态序列的长度为3.</p>
+<p>初始状态分布为：$$\Pi = (0.2,0.4,0.4)^T$$</p>
+<p>状态转移概率分布矩阵为：</p>
+<p>$$A = \left( \begin{array} {ccc} 0.5 &amp; 0.2 &amp; 0.3 \\ 0.3 &amp; 0.5 &amp; 0.2 \\ 0.2 &amp; 0.3 &amp;0.5 \end{array} \right) $$</p>
+<p>观测状态概率矩阵为：</p>
+<p>$$B = \left( \begin{array} {ccc} 0.5 &amp; 0.5 \\ 0.4 &amp; 0.6 \\ 0.7 &amp; 0.3 \end{array} \right) $$</p>
+<h2 id="HMM观测序列的生成">HMM观测序列的生成<a class="anchor-link" href="#HMM观测序列的生成">¶</a></h2><p>从上一节的例子，我们也可以抽象出HMM观测序列生成的过程。</p>
+<p>输入的是HMM的模型$\lambda = (A, B, \Pi)$,观测序列的长度$T$</p>
+<p>输出是观测序列$O =\{o_1,o_2,...o_T\}$</p>
+<p>生成的过程如下：</p>
+<p>1）根据初始状态概率分布$\Pi$生成隐藏状态$i_1$</p>
+<p>2) for t from 1 to T</p>
+<p>a. 按照隐藏状态$i_t$的观测状态分布$b_{i_t}(k)$生成观察状态$o_t$</p>
+<p>b. 按照隐藏状态$i_t$的状态转移概率分布$a_{i_t\;\;i_{t+1}}$产生隐藏状态$i_{t+1}$</p>
+<p>所有的$o_t$一起形成观测序列$O =\{o_1,o_2,...o_T\}$</p>
+<h2 id="HMM模型的三个基本问题">HMM模型的三个基本问题<a class="anchor-link" href="#HMM模型的三个基本问题">¶</a></h2><p>HMM模型一共有三个经典的问题需要解决：</p>
+<p>1） 评估观察序列概率。即给定模型$\lambda = (A, B, \Pi)$和观测序列$O =\{o_1,o_2,...o_T\}$，计算在模型$\lambda$下观测序列$O$出现的概率$P(O|\lambda)$。这个问题的求解需要用到前向后向算法，我们在这个系列的第二篇会详细讲解。这个问题是HMM模型三个问题中最简单的。</p>
+<p>2）模型参数学习问题。即给定观测序列$O =\{o_1,o_2,...o_T\}$，估计模型$\lambda = (A, B, \Pi)$的参数，使该模型下观测序列的条件概率$P(O|\lambda)$最大。这个问题的求解需要用到基于EM算法的鲍姆-韦尔奇算法， 我们在这个系列的第三篇会详细讲解。这个问题是HMM模型三个问题中最复杂的。</p>
+<p>3）预测问题，也称为解码问题。即给定模型$\lambda = (A, B, \Pi)$和观测序列$O =\{o_1,o_2,...o_T\}$，求给定观测序列条件下，最可能出现的对应的状态序列，这个问题的求解需要用到基于动态规划的维特比算法，我们在这个系列的第四篇会详细讲解。这个问题是HMM模型三个问题中复杂度居中的算法。</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="前向后向算法评估观察序列概率">前向后向算法评估观察序列概率<a class="anchor-link" href="#前向后向算法评估观察序列概率">¶</a></h1><h2 id="求观测序列的概率">求观测序列的概率<a class="anchor-link" href="#求观测序列的概率">¶</a></h2><p>首先我们回顾下HMM模型的问题一。这个问题是这样的。我们已知HMM模型的参数$\lambda = (A, B, \Pi)$。其中$A$是隐藏状态转移概率的矩阵，$B$是观测状态生成概率的矩阵， $\Pi$是隐藏状态的初始概率分布。同时我们也已经得到了观测序列$O =\{o_1,o_2,...o_T\}$,现在我们要求观测序列$O$在模型$\lambda$下出现的条件概率$P(O|\lambda)$。</p>
+<p>乍一看，这个问题很简单。因为我们知道所有的隐藏状态之间的转移概率和所有从隐藏状态到观测状态生成概率，那么我们是可以暴力求解的。</p>
+<p>我们可以列举出所有可能出现的长度为$T$的隐藏序列$I = \{i_1,i_2,...,i_T\}$,分布求出这些隐藏序列与观测序列$O =\{o_1,o_2,...o_T\}$的联合概率分布$P(O,I|\lambda)$，这样我们就可以很容易的求出边缘分布$P(O|\lambda)$了。</p>
+<p>具体暴力求解的方法是这样的：首先，任意一个隐藏序列$I = \{i_1,i_2,...,i_T\}$出现的概率是：$$P(I|\lambda) = \pi_{i_1} a_{i_1i_2} a_{i_2i_3}... a_{i_{T-1}\;\;i_T}$$</p>
+<p>对于固定的状态序列$I = \{i_1,i_2,...,i_T\}$，我们要求的观察序列$O =\{o_1,o_2,...o_T\}$出现的概率是：$$P(O|I, \lambda) = b_{i_1}(o_1)b_{i_2}(o_2)...b_{i_T}(o_T)$$</p>
+<p>则$O$和$I$联合出现的概率是：$$P(O,I|\lambda) = P(I|\lambda)P(O|I, \lambda) = \pi_{i_1}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)...a_{i_{T-1}\;\;i_T}b_{i_T}(o_T)$$</p>
+<p>然后求边缘概率分布，即可得到观测序列$O$在模型$\lambda$下出现的条件概率$P(O|\lambda)$：$$P(O|\lambda) = \sum\limits_{I}P(O,I|\lambda) = \sum\limits_{i_1,i_2,...i_T}\pi_{i_1}b_{i_1}(o_1)a_{i_1i_2}b_{i_2}(o_2)...a_{i_{T-1}\;\;i_T}b_{i_T}(o_T)$$</p>
+<p>虽然上述方法有效，但是如果我们的隐藏状态数$N$非常多的那就麻烦了，此时我们预测状态有$N^T$种组合，算法的时间复杂度是$O(TN^T)$阶的。因此对于一些隐藏状态数极少的模型，我们可以用暴力求解法来得到观测序列出现的概率，但是如果隐藏状态多，则上述算法太耗时，我们需要寻找其他简洁的算法。</p>
+<p>前向后向算法就是来帮助我们在较低的时间复杂度情况下求解这个问题的。</p>
+<h2 id="用前向算法求HMM观测序列的概率">用前向算法求HMM观测序列的概率<a class="anchor-link" href="#用前向算法求HMM观测序列的概率">¶</a></h2><p>前向后向算法是前向算法和后向算法的统称，这两个算法都可以用来求HMM观测序列的概率。我们先来看看前向算法是如何求解这个问题的。</p>
+<p>前向算法本质上属于动态规划的算法，也就是我们要通过找到局部状态递推的公式，这样一步步的从子问题的最优解拓展到整个问题的最优解。</p>
+<p>在前向算法中，通过定义“前向概率”来定义动态规划的这个局部状态。什么是前向概率呢, 其实定义很简单：定义时刻$t$时隐藏状态为$q_i$, 观测状态的序列为$o_1,o_2,...o_t$的概率为前向概率。记为：$$\alpha_t(i) = P(o_1,o_2,...o_t, i_t =q_i | \lambda)$$</p>
+<p>既然是动态规划，我们就要递推了，现在我们假设我们已经找到了在时刻$t$时各个隐藏状态的前向概率，现在我们需要递推出时刻$t+1$时各个隐藏状态的前向概率。</p>
+<p>从下图可以看出，我们可以基于时刻$t$时各个隐藏状态的前向概率，再乘以对应的状态转移概率，即$\alpha_t(j)a_{ji}$就是在时刻$t$观测到$o_1,o_2,...o_t$，并且时刻$t$隐藏状态$q_j$, 时刻$t+1$隐藏状态$q_i$的概率。如果将想下面所有的线对应的概率求和，即$\sum\limits_{j=1}^N\alpha_t(j)a_{ji}$就是在时刻$t$观测到$o_1,o_2,...o_t$，并且时刻$t+1$隐藏状态$q_i$的概率。继续一步，由于观测状态$o_{t+1}$只依赖于$t+1$时刻隐藏状态$q_i$, 这样$[\sum\limits_{j=1}^N\alpha_t(j)a_{ji}]b_i(o_{t+1})$就是在在时刻$t+1$观测到$o_1,o_2,...o_t，o_{t+1}$，并且时刻$t+1$隐藏状态$q_i$的概率。而这个概率，恰恰就是时刻$t+1$对应的隐藏状态$i$的前向概率，这样我们得到了前向概率的递推关系式如下：$$\alpha_{t+1}(i) = \Big[\sum\limits_{j=1}^N\alpha_t(j)a_{ji}\Big]b_i(o_{t+1})$$</p>
+<p><img alt="" src="https://images2015.cnblogs.com/blog/1042406/201706/1042406-20170607140245012-63214356.png"/></p>
+<p>我们的动态规划从时刻1开始，到时刻$T$结束，由于$\alpha_T(i)$表示在时刻$T$观测序列为$o_1,o_2,...o_T$，并且时刻$T$隐藏状态$q_i$的概率，我们只要将所有隐藏状态对应的概率相加，即$\sum\limits_{i=1}^N\alpha_T(i)$就得到了在时刻$T$观测序列为$o_1,o_2,...o_T$的概率。</p>
+<p>下面总结下前向算法。</p>
+<p>输入：HMM模型$\lambda = (A, B, \Pi)$，观测序列$O=(o_1,o_2,...o_T)$</p>
+<p>输出：观测序列概率$P(O|\lambda)$</p>
+<p>1) 计算时刻1的各个隐藏状态前向概率：$$\alpha_1(i) = \pi_ib_i(o_1),\; i=1,2,...N$$</p>
+<p>2) 递推时刻$2,3,...T$时刻的前向概率：$$\alpha_{t+1}(i) = \Big[\sum\limits_{j=1}^N\alpha_t(j)a_{ji}\Big]b_i(o_{t+1}),\; i=1,2,...N$$</p>
+<p>3) 计算最终结果：$$P(O|\lambda) = \sum\limits_{i=1}^N\alpha_T(i)$$</p>
+<p>从递推公式可以看出，我们的算法时间复杂度是$O(TN^2)$，比暴力解法的时间复杂度$O(TN^T)$少了几个数量级。</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="HMM前向算法求解实例">HMM前向算法求解实例<a class="anchor-link" href="#HMM前向算法求解实例">¶</a></h2><p>这里我们用盒子与球的例子来显示前向概率的计算。</p>
+<p>我们的观察集合是:$$V=\{红，白\}，M=2$$</p>
+<p>我们的状态集合是：$$Q =\{盒子1，盒子2，盒子3\}， N=3 $$</p>
+<p>而观察序列和状态序列的长度为3.</p>
+<p>初始状态分布为：$$\Pi = (0.2,0.4,0.4)^T$$</p>
+<p>状态转移概率分布矩阵为：</p>
+<p>$$A = \left( \begin{array} {ccc} 0.5 &amp; 0.2 &amp; 0.3 \\ 0.3 &amp; 0.5 &amp; 0.2 \\ 0.2 &amp; 0.3 &amp;0.5 \end{array} \right) $$</p>
+<p>观测状态概率矩阵为：</p>
+<p>$$B = \left( \begin{array} {ccc} 0.5 &amp; 0.5 \\ 0.4 &amp; 0.6 \\ 0.7 &amp; 0.3 \end{array} \right) $$</p>
+<p>球的颜色的观测序列:$$O=\{红，白，红\}$$</p>
+<p>按照我们上一节的前向算法。首先计算时刻1三个状态的前向概率：</p>
+<p>时刻1是红色球，隐藏状态是盒子1的概率为：$$\alpha_1(1) = \pi_1b_1(o_1) = 0.2 \times 0.5 = 0.1$$</p>
+<p>隐藏状态是盒子2的概率为：$$\alpha_1(2) = \pi_2b_2(o_1) = 0.4 \times 0.4 = 0.16$$</p>
+<p>隐藏状态是盒子3的概率为：$$\alpha_1(3) = \pi_3b_3(o_1) = 0.4 \times 0.7 = 0.28$$</p>
+<p>现在我们可以开始递推了，首先递推时刻2三个状态的前向概率：</p>
+<p>时刻2是白色球，隐藏状态是盒子1的概率为：$$\alpha_2(1) = \Big[\sum\limits_{i=1}^3\alpha_1(i)a_{i1}\Big]b_1(o_2) = [0.1*0.5+0.16*0.3+0.28*0.2 ] \times 0.5 = 0.077$$</p>
+<p>隐藏状态是盒子2的概率为：$$\alpha_2(2) = \Big[\sum\limits_{i=1}^3\alpha_1(i)a_{i2}\Big]b_2(o_2) = [0.1*0.2+0.16*0.5+0.28*0.3 ] \times 0.6 = 0.1104$$</p>
+<p>隐藏状态是盒子3的概率为：$$\alpha_2(3) = \Big[\sum\limits_{i=1}^3\alpha_1(i)a_{i3}\Big]b_3(o_2) = [0.1*0.3+0.16*0.2+0.28*0.5 ] \times 0.3 = 0.0606$$</p>
+<p>继续递推，现在我们递推时刻3三个状态的前向概率：</p>
+<p>时刻3是红色球，隐藏状态是盒子1的概率为：$$\alpha_3(1) = \Big[\sum\limits_{i=1}^3\alpha_2(i)a_{i1}\Big]b_1(o_3) = [0.077*0.5+0.1104*0.3+0.0606*0.2 ] \times 0.5 = 0.04187$$</p>
+<p>隐藏状态是盒子2的概率为：$$\alpha_3(2) = \Big[\sum\limits_{i=1}^3\alpha_2(i)a_{i2}\Big]b_2(o_3) = [0.077*0.2+0.1104*0.5+0.0606*0.3 ] \times 0.4 = 0.03551$$</p>
+<p>隐藏状态是盒子3的概率为：$$\alpha_3(3) = \Big[\sum\limits_{i=1}^3\alpha_3(i)a_{i3}\Big]b_3(o_3) = [0.077*0.3+0.1104*0.2+0.0606*0.5 ] \times 0.7 = 0.05284$$</p>
+<p>最终我们求出观测序列:$O=\{红，白，红\}$的概率为：$$P(O|\lambda) = \sum\limits_{i=1}^3\alpha_3(i) = 0.13022 $$</p>
+<h2 id="用后向算法求HMM观测序列的概率">用后向算法求HMM观测序列的概率<a class="anchor-link" href="#用后向算法求HMM观测序列的概率">¶</a></h2><p>熟悉了用前向算法求HMM观测序列的概率，现在我们再来看看怎么用后向算法求HMM观测序列的概率。</p>
+<p>后向算法和前向算法非常类似，都是用的动态规划，唯一的区别是选择的局部状态不同，后向算法用的是“后向概率”，那么后向概率是如何定义的呢？</p>
+<p>定义时刻$t$时隐藏状态为$q_i$, 从时刻$t+1$到最后时刻$T$的观测状态的序列为$o_{t+1},o_{t+2},...o_T$的概率为后向概率。记为：$$\beta_t(i) = P(o_{t+1},o_{t+2},...o_T| i_t =q_i , \lambda)$$</p>
+<p>后向概率的动态规划递推公式和前向概率是相反的。现在我们假设我们已经找到了在时刻$t+1$时各个隐藏状态的后向概率$\beta_{t+1}(j)$，现在我们需要递推出时刻$t$时各个隐藏状态的后向概率。如下图，我们可以计算出观测状态的序列为$o_{t+2},o_{t+3},...o_T$， $t$时隐藏状态为$q_i$, 时刻$t+1$隐藏状态为$q_j$的概率为$a_{ij}\beta_{t+1}(j)$, 接着可以得到观测状态的序列为$o_{t+1},o_{t+2},...o_T$， $t$时隐藏状态为$q_i$, 时刻$t+1$隐藏状态为$q_j$的概率为$a_{ij}b_j(o_{t+1})\beta_{t+1}(j)$, 则把下面所有线对应的概率加起来，我们可以得到观测状态的序列为$o_{t+1},o_{t+2},...o_T$， $t$时隐藏状态为$q_i$的概率为$\sum\limits_{j=1}^{N}a_{ij}b_j(o_{t+1})\beta_{t+1}(j)$，这个概率即为时刻$t$的后向概率。</p>
+<p><img alt="" src="https://images2015.cnblogs.com/blog/1042406/201706/1042406-20170607172032606-996787196.png"/></p>
+<p>这样我们得到了后向概率的递推关系式如下：$$\beta_{t}(i) = \sum\limits_{j=1}^{N}a_{ij}b_j(o_{t+1})\beta_{t+1}(j)$$</p>
+<p>现在我们总结下后向算法的流程,注意下和前向算法的相同点和不同点：</p>
+<p>输入：HMM模型$\lambda = (A, B, \Pi)$，观测序列$O=(o_1,o_2,...o_T)$</p>
+<p>输出：观测序列概率$P(O|\lambda)$</p>
+<p>1) 初始化时刻$T$的各个隐藏状态后向概率：$$\beta_T(i) = 1,\; i=1,2,...N$$</p>
+<p>2) 递推时刻$T-1,T-2,...1$时刻的后向概率：$$\beta_{t}(i) = \sum\limits_{j=1}^{N}a_{ij}b_j(o_{t+1})\beta_{t+1}(j),\; i=1,2,...N$$</p>
+<p>3) 计算最终结果：$$P(O|\lambda) = \sum\limits_{i=1}^N\pi_ib_i(o_1)\beta_1(i)$$</p>
+<p>此时我们的算法时间复杂度仍然是$O(TN^2)$。</p>
+<h2 id="HMM常用概率的计算">HMM常用概率的计算<a class="anchor-link" href="#HMM常用概率的计算">¶</a></h2><p>利用前向概率和后向概率，我们可以计算出HMM中单个状态和两个状态的概率公式。</p>
+<p>1）给定模型$\lambda$和观测序列$O$,在时刻$t$处于状态$q_i$的概率记为:$$\gamma_t(i) = P(i_t = q_i | O,\lambda) = \frac{P(i_t = q_i ,O|\lambda)}{P(O|\lambda)} $$</p>
+<p>利用前向概率和后向概率的定义可知：$$P(i_t = q_i ,O|\lambda) = \alpha_t(i)\beta_t(i)$$</p>
+<p>于是我们得到：$$\gamma_t(i) = \frac{ \alpha_t(i)\beta_t(i)}{\sum\limits_{j=1}^N \alpha_t(j)\beta_t(j)}$$</p>
+<p>2）给定模型$\lambda$和观测序列$O$,在时刻$t$处于状态$q_i$，且时刻$t+1$处于状态$q_j$的概率记为:$$\xi_t(i,j) = P(i_t = q_i, i_{t+1}=q_j | O,\lambda) = \frac{ P(i_t = q_i, i_{t+1}=q_j , O|\lambda)}{P(O|\lambda)} $$</p>
+<p>而$P(i_t = q_i, i_{t+1}=q_j , O|\lambda)$可以由前向后向概率来表示为:$$P(i_t = q_i, i_{t+1}=q_j , O|\lambda) = \alpha_t(i)a_{ij}b_j(o_{t+1})\beta_{t+1}(j)$$</p>
+<p>从而最终我们得到$\xi_t(i,j)$的表达式如下：$$\xi_t(i,j) = \frac{\alpha_t(i)a_{ij}b_j(o_{t+1})\beta_{t+1}(j)}{\sum\limits_{r=1}^N\sum\limits_{s=1}^N\alpha_t(r)a_{rs}b_s(o_{t+1})\beta_{t+1}(s)}$$</p>
+<p>3) 将$\gamma_t(i)$和$\xi_t(i,j)$在各个时刻$t$求和，可以得到：</p>
+<p>在观测序列$O$下状态$i$出现的期望值$\sum\limits_{t=1}^T\gamma_t(i)$</p>
+<p>在观测序列$O$下由状态$i$转移的期望值$\sum\limits_{t=1}^{T-1}\gamma_t(i)$</p>
+<p>在观测序列$O$下由状态$i$转移到状态$j$的期望值$\sum\limits_{t=1}^{T-1}\xi_t(i,j)$</p>
+<p>上面这些常用的概率值在求解HMM问题二，即求解HMM模型参数的时候需要用到。我们在这个系列的第三篇来讨论求解HMM参数的问题和解法。</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="鲍姆-韦尔奇算法求解HMM参数">鲍姆-韦尔奇算法求解HMM参数<a class="anchor-link" href="#鲍姆-韦尔奇算法求解HMM参数">¶</a></h1><p>在本篇我们会讨论HMM模型参数求解的问题，这个问题在HMM三个问题里算是最复杂的。在研究这个问题之前，建议先阅读这个系列的前两篇以熟悉HMM模型和HMM的前向后向算法，以及EM算法原理总结，这些在本篇里会用到。在李航的《统计学习方法》中，这个算法的讲解只考虑了单个观测序列的求解，因此无法用于实际多样本观测序列的模型求解，本文关注于如何使用多个观测序列来求解HMM模型参数。</p>
+<h2 id="HMM模型参数求解概述">HMM模型参数求解概述<a class="anchor-link" href="#HMM模型参数求解概述">¶</a></h2><p>HMM模型参数求解根据已知的条件可以分为两种情况。</p>
+<p>第一种情况较为简单，就是我们已知$D$个长度为$T$的观测序列和对应的隐藏状态序列，即$\{(O_1, I_1), (O_2, I_2), ...(O_D, I_D)\}$是已知的，此时我们可以很容易的用最大似然来求解模型参数。</p>
+<p>假设样本从隐藏状态$q_i$转移到$q_j$的频率计数是$A_{ij}$,那么状态转移矩阵求得为：$$A = \Big[a_{ij}\Big], \;其中a_{ij} = \frac{A_{ij}}{\sum\limits_{s=1}^{N}A_{is}}$$</p>
+<p>假设样本隐藏状态为$q_j$且观测状态为$v_k$的频率计数是$B_{jk}$,那么观测状态概率矩阵为：$$B= \Big[b_{j}(k)\Big], \;其中b_{j}(k) = \frac{B_{jk}}{\sum\limits_{s=1}^{M}B_{js}}$$</p>
+<p>假设所有样本中初始隐藏状态为$q_i$的频率计数为$C(i)$,那么初始概率分布为：$$\Pi = \pi(i) = \frac{C(i)}{\sum\limits_{s=1}^{N}C(s)}$$</p>
+<p>可见第一种情况下求解模型还是很简单的。但是在很多时候，我们无法得到HMM样本观察序列对应的隐藏序列，只有$D$个长度为$T$的观测序列，即$\{(O_1), (O_2), ...(O_D)\}$是已知的，此时我们能不能求出合适的HMM模型参数呢？这就是我们的第二种情况，也是我们本文要讨论的重点。它的解法最常用的是鲍姆-韦尔奇算法，其实就是基于EM算法的求解，只不过鲍姆-韦尔奇算法出现的时代，EM算法还没有被抽象出来，所以我们本文还是说鲍姆-韦尔奇算法。</p>
+<h2 id="鲍姆-韦尔奇算法原理">鲍姆-韦尔奇算法原理<a class="anchor-link" href="#鲍姆-韦尔奇算法原理">¶</a></h2><p>鲍姆-韦尔奇算法原理既然使用的就是EM算法的原理，那么我们需要在E步求出联合分布$P(O,I|\lambda)$基于条件概率$P(I|O,\overline{\lambda})$的期望，其中$\overline{\lambda}$为当前的模型参数，然后再M步最大化这个期望，得到更新的模型参数$\lambda$。接着不停的进行EM迭代，直到模型参数的值收敛为止。</p>
+<p>首先来看看E步，当前模型参数为$\overline{\lambda}$, 联合分布$P(O,I|\lambda)$基于条件概率$P(I|O,\overline{\lambda})$的期望表达式为：$$L(\lambda, \overline{\lambda}) = \sum\limits_{I}P(I|O,\overline{\lambda})logP(O,I|\lambda)$$</p>
+<p>在M步，我们极大化上式，然后得到更新后的模型参数如下： $$\overline{\lambda} = arg\;\max_{\lambda}\sum\limits_{I}P(I|O,\overline{\lambda})logP(O,I|\lambda)$$</p>
+<p>通过不断的E步和M步的迭代，直到$\overline{\lambda}$收敛。下面我们来看看鲍姆-韦尔奇算法的推导过程。</p>
+<h2 id="鲍姆-韦尔奇算法的推导">鲍姆-韦尔奇算法的推导<a class="anchor-link" href="#鲍姆-韦尔奇算法的推导">¶</a></h2><p>我们的训练数据为$\{(O_1, I_1), (O_2, I_2), ...(O_D, I_D)\}$，其中任意一个观测序列$O_d = \{o_1^{(d)}, o_2^{(d)}, ... o_T^{(d)}\}$,其对应的未知的隐藏状态序列表示为：$I_d = \{i_1^{(d)}, i_2^{(d)}, ... i_T^{(d)}\}$</p>
+<p>首先看鲍姆-韦尔奇算法的E步，我们需要先计算联合分布$P(O,I|\lambda)$的表达式如下：$$P(O,I|\lambda) = \prod_{d=1}^D\pi_{i_1^{(d)}}b_{i_1^{(d)}}(o_1^{(d)})a_{i_1^{(d)}i_2^{(d)}}b_{i_2^{(d)}}(o_2^{(d)})...a_{i_{T-1}^{(d)}i_T^{(d)}}b_{i_T^{(d)}}(o_T^{(d)})$$</p>
+<p>我们的E步得到的期望表达式为：$$L(\lambda, \overline{\lambda}) = \sum\limits_{I}P(I|O,\overline{\lambda})logP(O,I|\lambda)$$</p>
+<p>在M步我们要极大化上式。由于$P(I|O,\overline{\lambda}) = P(I,O|\overline{\lambda})/P(O|\overline{\lambda})$,而$P(O|\overline{\lambda})$是常数，因此我们要极大化的式子等价于：$$\overline{\lambda} = arg\;\max_{\lambda}\sum\limits_{I}P(O,I|\overline{\lambda})logP(O,I|\lambda)$$</p>
+<p>我们将上面$P(O,I|\lambda)$的表达式带入我们的极大化式子，得到的表达式如下：$$\overline{\lambda} = arg\;\max_{\lambda}\sum\limits_{d=1}^D\sum\limits_{I}P(O,I|\overline{\lambda})(log\pi_{i_1} + \sum\limits_{t=1}^{T-1}log\;a_{i_t,i_{t+1}} + \sum\limits_{t=1}^Tb_{i_t}(o_t))$$</p>
+<p>我们的隐藏模型参数$\lambda =(A,B,\Pi)$,因此下面我们只需要对上式分别对$A,B,\Pi$求导即可得到我们更新的模型参数$\overline{\lambda}$</p>
+<p>首先我们看看对模型参数$\Pi$的求导。由于$\Pi$只在上式中括号里的第一部分出现，因此我们对于$\Pi$的极大化式子为：$$\overline{\pi_i} = arg\;\max_{\pi_{i_1}} \sum\limits_{d=1}^D\sum\limits_{I}P(O,I|\overline{\lambda})log\pi_{i_1} = arg\;\max_{\pi_{i}} \sum\limits_{d=1}^D\sum\limits_{i=1}^NP(O,i_1^{(d)} =i|\overline{\lambda})log\pi_{i}$$</p>
+<p>由于$\pi_i$还满足$\sum\limits_{i=1}^N\pi_i =1$，因此根据拉格朗日子乘法，我们得到$\pi_i$要极大化的拉格朗日函数为：$$arg\;\max_{\pi_{i}}\sum\limits_{d=1}^D\sum\limits_{i=1}^NP(O,i_1^{(d)} =i|\overline{\lambda})log\pi_{i} + \gamma(\sum\limits_{i=1}^N\pi_i -1)$$</p>
+<p>其中，$\gamma$为拉格朗日系数。上式对$\pi_i$求偏导数并令结果为0， 我们得到：$$\sum\limits_{d=1}^DP(O,i_1^{(d)} =i|\overline{\lambda}) + \gamma\pi_i = 0$$</p>
+<p>令$i$分别等于从1到$N$，从上式可以得到$N$个式子，对这$N$个式子求和可得：$$\sum\limits_{d=1}^DP(O|\overline{\lambda}) + \gamma = 0 $$</p>
+<p>从上两式消去$\gamma$,得到$\pi_i$的表达式为：$$\pi_i =\frac{\sum\limits_{d=1}^DP(O,i_1^{(d)} =i|\overline{\lambda})}{\sum\limits_{d=1}^DP(O|\overline{\lambda})} = \frac{\sum\limits_{d=1}^DP(O,i_1^{(d)} =i|\overline{\lambda})}{DP(O|\overline{\lambda})} = \frac{\sum\limits_{d=1}^DP(i_1^{(d)} =i|O, \overline{\lambda})}{D} = \frac{\sum\limits_{d=1}^DP(i_1^{(d)} =i|O^{(d)}, \overline{\lambda})}{D}$$</p>
+<p>利用前向概率的定义可得：$$P(i_1^{(d)} =i|O^{(d)}, \overline{\lambda}) = \gamma_1^{(d)}(i)$$</p>
+<p>因此最终我们在M步$\pi_i$的迭代公式为：$$\pi_i = \frac{\sum\limits_{d=1}^D\gamma_1^{(d)}(i)}{D}$$</p>
+<p>现在我们来看看$A$的迭代公式求法。方法和$\Pi$的类似。由于$A$只在最大化函数式中括号里的第二部分出现，而这部分式子可以整理为：$$\sum\limits_{d=1}^D\sum\limits_{I}\sum\limits_{t=1}^{T-1}P(O,I|\overline{\lambda})log\;a_{i_t,i_{t+1}} = \sum\limits_{d=1}^D\sum\limits_{i=1}^N\sum\limits_{j=1}^N\sum\limits_{t=1}^{T-1}P(O,i_t^{(d)} = i, i_{t+1}^{(d)} = j|\overline{\lambda})log\;a_{ij}$$</p>
+<p>由于$a_{ij}$还满足$\sum\limits_{j=1}^Na_{ij} =1$。和求解$\pi_i$类似，我们可以用拉格朗日子乘法并对$a_{ij}$求导，并令结果为0，可以得到$a_{ij}$的迭代表达式为：$$a_{ij} = \frac{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T-1}P(O^{(d)}, i_t^{(d)} = i, i_{t+1}^{(d)} = j|\overline{\lambda})}{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T-1}P(O^{(d)}, i_t^{(d)} = i|\overline{\lambda})}$$</p>
+<p>利用前向概率的定义和$\xi_t(i,j)$的定义可得们在M步$a_{ij}$的迭代公式为：$$a_{ij} = \frac{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T-1}\xi_t^{(d)}(i,j)}{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T-1}\gamma_t^{(d)}(i)}$$</p>
+<p>现在我们来看看$B$的迭代公式求法。方法和$\Pi$的类似。由于$B$只在最大化函数式中括号里的第三部分出现，而这部分式子可以整理为：$$\sum\limits_{d=1}^D\sum\limits_{I}\sum\limits_{t=1}^{T}P(O,I|\overline{\lambda})log\;b_{i_t}(o_t) = \sum\limits_{d=1}^D\sum\limits_{j=1}^N\sum\limits_{t=1}^{T}P(O,i_t^{(d)} = j|\overline{\lambda})log\;b_{j}(o_t)$$</p>
+<p>由于$b_{j}(o_t)$还满足$\sum\limits_{k=1}^Mb_{j}(o_t =v_k) =1$。和求解$\pi_i$类似，我们可以用拉格朗日子乘法并对$b_{j}(k)$求导，并令结果为0，得到$b_{j}(k)$的迭代表达式为：$$b_{j}(k) = \frac{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T}P(O,i_t^{(d)} = j|\overline{\lambda})I(o_t^{(d)}=v_k)}{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T}P(O,i_t^{(d)} = j|\overline{\lambda})}$$</p>
+<p>其中$I(o_t^{(d)}=v_k)$当且仅当$o_t^{(d)}=v_k$时为1，否则为0. 利用前向概率的定义可得$b_{j}(o_t)$的最终表达式为：$$b_{j}(k) = \frac{\sum\limits_{d=1}^D\sum\limits_{t=1, o_t^{(d)}=v_k}^{T}\gamma_t^{(d)}(j)}{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T}\gamma_t^{(d)}(j)}$$</p>
+<p>有了$\pi_i, a_{ij},b_{j}(k)$的迭代公式，我们就可以迭代求解HMM模型参数了。</p>
+<h2 id="鲍姆-韦尔奇算法流程总结">鲍姆-韦尔奇算法流程总结<a class="anchor-link" href="#鲍姆-韦尔奇算法流程总结">¶</a></h2><p>这里我们概括总结下鲍姆-韦尔奇算法的流程。</p>
+<p>输入： $D$个观测序列样本$\{(O_1), (O_2), ...(O_D)\}$</p>
+<p>输出：HMM模型参数</p>
+<p>1)随机初始化所有的$\pi_i, a_{ij},b_{j}(k)$</p>
+<p>2) 对于每个样本$d = 1,2,...D$，用前向后向算法计算$\gamma_t^{(d)}(i)，\xi_t^{(d)}(i,j), t =1,2...T$</p>
+<p>3) 更新模型参数：</p>
+<p>$$\pi_i = \frac{\sum\limits_{d=1}^D\gamma_1^{(d)}(i)}{D}$$</p>
+<p>$$a_{ij} = \frac{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T-1}\xi_t^{(d)}(i,j)}{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T-1}\gamma_t^{(d)}(i)}$$</p>
+<p>$$b_{j}(k) = \frac{\sum\limits_{d=1}^D\sum\limits_{t=1, o_t^{(d)}=v_k}^{T}\gamma_t^{(d)}(j)}{\sum\limits_{d=1}^D\sum\limits_{t=1}^{T}\gamma_t^{(d)}(j)}$$</p>
+<p>4) 如果$\pi_i, a_{ij},b_{j}(k)$的值已经收敛，则算法结束，否则回到第2）步继续迭代。</p>
+<p>以上就是鲍姆-韦尔奇算法的整个过程。</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="维特比算法解码隐藏状态序列">维特比算法解码隐藏状态序列<a class="anchor-link" href="#维特比算法解码隐藏状态序列">¶</a></h1><p>本章节讲述给定模型和观测序列，求给定观测序列条件下，最可能出现的对应的隐藏状态序列。</p>
+<p>HMM模型的解码问题最常用的算法是维特比算法，当然也有其他的算法可以求解这个问题。同时维特比算法是一个通用的求序列最短路径的动态规划算法，也可以用于很多其他问题，比如单独用维特比算法来做分词。</p>
+<p>本文关注于用维特比算法来解码HMM的的最可能隐藏状态序列。</p>
+<h2 id="最可能隐藏状态序列求解概述">最可能隐藏状态序列求解概述<a class="anchor-link" href="#最可能隐藏状态序列求解概述">¶</a></h2><p>在HMM模型的解码问题中，给定模型$\lambda = (A, B, \Pi)$和观测序列$O =\{o_1,o_2,...o_T\}$，求给定观测序列O条件下，最可能出现的对应的状态序列$I^*= \{i_1^*,i_2^*,...i_T^*\}$,即$P(I^*|O)$要最大化。</p>
+<p>一个可能的近似解法是求出观测序列$O$在每个时刻$t$最可能的隐藏状态$i_t^*$然后得到一个近似的隐藏状态序列$I^*= \{i_1^*,i_2^*,...i_T^*\}$。要这样近似求解不难，在给定模型$\lambda$和观测序列$O$时，在时刻$t$处于状态$q_i$的概率是$\gamma_t(i)$，这个概率可以通过HMM的前向算法与后向算法计算。这样我们有：$$i_t^* = arg \max_{1 \leq i \leq N}[\gamma_t(i)], \; t =1,2,...T$$</p>
+<p>近似算法很简单，但是却不能保证预测的状态序列是整体是最可能的状态序列，因为预测的状态序列中某些相邻的隐藏状态可能存在转移概率为0的情况。</p>
+<p>而维特比算法可以将HMM的状态序列作为一个整体来考虑，避免近似算法的问题，下面我们来看看维特比算法进行HMM解码的方法。</p>
+<h2 id="算法概述">算法概述<a class="anchor-link" href="#算法概述">¶</a></h2><p>维特比算法是一个通用的解码算法，是基于动态规划的求序列最短路径的方法。</p>
+<p>既然是动态规划算法，那么就需要找到合适的局部状态，以及局部状态的递推公式。在HMM中，维特比算法定义了两个局部状态用于递推。</p>
+<p>第一个局部状态是在时刻$t$隐藏状态为$i$所有可能的状态转移路径$i_1,i_2,...i_t$中的概率最大值。记为$\delta_t(i)$:$$\delta_t(i) = \max_{i_1,i_2,...i_{t-1}}\;P(i_t=i, i_1,i_2,...i_{t-1},o_t,o_{t-1},...o_1|\lambda),\; i =1,2,...N$$</p>
+<p>由$\delta_t(i)$的定义可以得到$\delta$的递推表达式：
+\begin{align} 
+\delta_{t+1}(i) &amp; = \max_{i_1,i_2,...i_{t}}\;P(i_{t+1}=i, i_1,i_2,...i_{t},o_{t+1},o_{t},...o_1|\lambda) \\ &amp; = \max_{1 \leq j \leq N}\;[\delta_t(j)a_{ji}]b_i(o_{t+1})
+\end{align}</p>
+<p>第二个局部状态由第一个局部状态递推得到。我们定义在时刻$t$隐藏状态为$i$的所有单个状态转移路径$(i_1,i_2,...,i_{t-1},i)$中概率最大的转移路径中第$t-1$个节点的隐藏状态为$\Psi_t(i)$,其递推表达式可以表示为：$$\Psi_t(i) = arg \; \max_{1 \leq j \leq N}\;[\delta_{t-1}(j)a_{ji}]$$</p>
+<p>有了这两个局部状态，我们就可以从时刻0一直递推到时刻$T$，然后利用$\Psi_t(i)$记录的前一个最可能的状态节点回溯，直到找到最优的隐藏状态序列。</p>
+<h2 id="算法流程总结">算法流程总结<a class="anchor-link" href="#算法流程总结">¶</a></h2><p>现在我们来总结下维特比算法的流程：</p>
+<p>输入：HMM模型$\lambda = (A, B, \Pi)$，观测序列$O=(o_1,o_2,...o_T)$</p>
+<p>输出：最有可能的隐藏状态序列$I^*= \{i_1^*,i_2^*,...i_T^*\}$</p>
+<p>1）初始化局部状态：$$\delta_1(i) = \pi_ib_i(o_1),\;i=1,2...N$$$$\Psi_1(i)=0,\;i=1,2...N$$</p>
+<p>2) 进行动态规划递推时刻$t=2,3,...T$时刻的局部状态：$$\delta_{t}(i) = \max_{1 \leq j \leq N}\;[\delta_{t-1}(j)a_{ji}]b_i(0_{t}),\;i=1,2...N$$$$\Psi_t(i) = arg \; \max_{1 \leq j \leq N}\;[\delta_{t-1}(j)a_{ji}],\;i=1,2...N$$</p>
+<p>3) 计算时刻$T$最大的$\delta_{T}(i)$,即为最可能隐藏状态序列出现的概率。计算时刻$T$最大的$\Psi_t(i)$,即为时刻$T$最可能的隐藏状态。$$P* = \max_{1 \leq j \leq N}\delta_{T}(i)$$$$i_T^* = arg \; \max_{1 \leq j \leq N}\;[\delta_{T}(i)]$$</p>
+<p>4) 利用局部状态$\Psi(i)$开始回溯。对于$t=T-1,T-2,...,1$：$$i_t^* = \Psi_{t+1}(i_{t+1}^*)$$</p>
+<p>最终得到最有可能的隐藏状态序列$I^*= \{i_1^*,i_2^*,...i_T^*\}$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="算法求解实例">算法求解实例<a class="anchor-link" href="#算法求解实例">¶</a></h2><p>下面我们仍然用盒子与球的例子来看看HMM维特比算法求解。</p>
+<p>我们的观察集合是:$$V=\{红，白\}，M=2$$</p>
+<p>我们的状态集合是：$$Q =\{盒子1，盒子2，盒子3\}， N=3 $$</p>
+<p>而观察序列和状态序列的长度为3.</p>
+<p>初始状态分布为：$$\Pi = (0.2,0.4,0.4)^T$$</p>
+<p>状态转移概率分布矩阵为：</p>
+<p>$$A = \left( \begin{array} {ccc} 0.5 &amp; 0.2 &amp; 0.3 \\ 0.3 &amp; 0.5 &amp; 0.2 \\ 0.2 &amp; 0.3 &amp;0.5 \end{array} \right) $$</p>
+<p>观测状态概率矩阵为：</p>
+<p>$$B = \left( \begin{array} {ccc} 0.5 &amp; 0.5 \\ 0.4 &amp; 0.6 \\ 0.7 &amp; 0.3 \end{array} \right) $$</p>
+<p>球的颜色的观测序列:$$O=\{红，白，红\}$$</p>
+<p>按照我们上一节的维特比算法，首先需要得到三个隐藏状态在时刻1时对应的各自两个局部状态，此时观测状态为1：</p>
+<p>$$\delta_1(1) = \pi_1b_1(o_1) = 0.2 \times 0.5 = 0.1$$</p>
+<p>$$\delta_1(2) = \pi_2b_2(o_1) = 0.4 \times 0.4 = 0.16$$</p>
+<p>$$\delta_1(3) = \pi_3b_3(o_1) = 0.4 \times 0.7 = 0.28$$</p>
+<p>$$\Psi_1(1)=\Psi_1(2) =\Psi_1(3) =0$$</p>
+<p>现在开始递推三个隐藏状态在时刻2时对应的各自两个局部状态，此时观测状态为2：</p>
+<p>$$\delta_2(1) = \max_{1\leq j \leq 3}[\delta_1(j)a_{j1}]b_1(o_2) = \max_{1\leq j \leq 3}[0.1 \times 0.5, 0.16 \times 0.3, 0.28\times 0.2] \times 0.5 = 0.028$$</p>
+<p>$$\Psi_2(1)=3$$</p>
+<p>$$\delta_2(2) = \max_{1\leq j \leq 3}[\delta_1(j)a_{j2}]b_2(o_2) = \max_{1\leq j \leq 3}[0.1 \times 0.2, 0.16 \times 0.5, 0.28\times 0.3] \times 0.6 = 0.0504$$</p>
+<p>$$\Psi_2(2)=3$$</p>
+<p>$$\delta_2(3) = \max_{1\leq j \leq 3}[\delta_1(j)a_{j3}]b_3(o_2) = \max_{1\leq j \leq 3}[0.1 \times 0.3, 0.16 \times 0.2, 0.28\times 0.5] \times 0.3 = 0.042$$</p>
+<p>$$\Psi_2(3)=3$$</p>
+<p>继续递推三个隐藏状态在时刻3时对应的各自两个局部状态，此时观测状态为1：</p>
+<p>$$\delta_3(1) = \max_{1\leq j \leq 3}[\delta_2(j)a_{j1}]b_1(o_3) = \max_{1\leq j \leq 3}[0.028 \times 0.5, 0.0504 \times 0.3, 0.042\times 0.2] \times 0.5 = 0.00756$$</p>
+<p>$$\Psi_3(1)=2$$</p>
+<p>$$\delta_3(2) = \max_{1\leq j \leq 3}[\delta_2(j)a_{j2}]b_2(o_3) = \max_{1\leq j \leq 3}[0.028 \times 0.2, 0.0504\times 0.5, 0.042\times 0.3] \times 0.4 = 0.01008$$</p>
+<p>$$\Psi_3(2)=2$$</p>
+<p>$$\delta_3(3) = \max_{1\leq j \leq 3}[\delta_2(j)a_{j3}]b_3(o_3) = \max_{1\leq j \leq 3}[0.028 \times 0.3, 0.0504 \times 0.2, 0.042\times 0.5] \times 0.7 = 0.0147$$</p>
+<p>$$\Psi_3(3)=3$$</p>
+<p>此时已经到最后的时刻，我们开始准备回溯。此时最大概率为$\delta_3(3)$,从而得到$i_3^* =3$</p>
+<p>由于$\Psi_3(3)=3$,所以$i_2^* =3$, 而又由于$\Psi_2(3)=3$,所以$i_1^* =3$。从而得到最终的最可能的隐藏状态序列为：$(3,3,3)$</p>
+<h2 id="算法总结">算法总结<a class="anchor-link" href="#算法总结">¶</a></h2><p>如果大家看过文本挖掘的分词原理中的维特比算法，就会发现这两篇之中的维特比算法稍有不同。主要原因是在中文分词时，我们没有观察状态和隐藏状态的区别，只有一种状态。但是维特比算法的核心是定义动态规划的局部状态与局部递推公式，这一点在中文分词维特比算法和HMM的维特比算法是相同的，也是维特比算法的精华所在。</p>
+<p>维特比算法也是寻找序列最短路径的一个通用方法，和dijkstra算法有些类似，但是dijkstra算法并没有使用动态规划，而是贪心算法。同时维特比算法仅仅局限于求序列最短路径，而dijkstra算法是通用的求最短路径的方法。</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="参考文献">参考文献<a class="anchor-link" href="#参考文献">¶</a></h1><p><a href="http://www.cnblogs.com/pinard/p/6945257.html">隐马尔科夫模型HMM（一）HMM模型基础</a><br/>
+<a href="http://www.cnblogs.com/pinard/p/6955871.html">隐马尔科夫模型HMM（二）前向后向算法评估观察序列概率</a><br/>
+<a href="http://www.cnblogs.com/pinard/p/6972299.html">隐马尔科夫模型HMM（三）鲍姆-韦尔奇算法求解HMM参数</a><br/>
+<a href="http://www.cnblogs.com/pinard/p/6991852.html">隐马尔科夫模型HMM（四）维特比算法解码隐藏状态序列</a></p>
+</div>
+</div>
+</div>
+</body>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+</div>
+
+
+            <footer>
+<span class="byline author vcard">
+    Posted by
+    <span class="fn">
+            niult
+    </span>
+</span><time datetime="2019-01-16T00:00:00+08:00" pubdate>2019-01-16 00:00</time><span class="categories">
+        <a href="../../../category/wen ben wa jue.html">文本挖掘</a>
+</span>
+
+    <span class="categories">
+            <a class="category" href="../../../tag/python.html">python</a>, 
+            <a class="category" href="../../../tag/numpy.html">numpy</a>, 
+            <a class="category" href="../../../tag/wen-ben-wa-jue.html">文本挖掘</a>
+    </span>
+
+<div class="sharing">
+</div>            </footer>
+        </article>
+
+    </div>
+<aside class="sidebar">
+    <section>
+        <h1>Recent Posts</h1>
+        <ul id="recent_posts">
+                <li class="post">
+                    <a href="../../../pages/2019/01/21-a-first-look-at-a-neural-network.html">2.1-a-first-look-at-a-neural-network</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/35-classifying-movie-reviews.html">3.5-classifying-movie-reviews</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/36-classifying-newswires.html">3.6-classifying-newswires</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/37-predicting-house-prices.html">3.7-predicting-house-prices</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/44-overfitting-and-underfitting.html">4.4-overfitting-and-underfitting</a>
+                </li>
+        </ul>
+    </section>
+        <section>
+
+            <h1>Categories</h1>
+            <ul id="recent_posts">
+                    <li><a href="../../../category/01chang yong gong ju.html">01常用工具</a></li>
+                    <li><a href="../../../category/02.wo ai du shu.html">02.我爱读书</a></li>
+                    <li><a href="../../../category/algorithms.html">algorithms</a></li>
+                    <li><a href="../../../category/book.html">book</a></li>
+                    <li><a href="../../../category/book-pydata.html">book-pydata</a></li>
+                    <li><a href="../../../category/deep-learning-with-python.html">deep-learning-with-python</a></li>
+                    <li><a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a></li>
+                    <li><a href="../../../category/ke wai du wu.html">课外读物</a></li>
+                    <li><a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a></li>
+                    <li><a href="../../../category/shen du xue xi.html">深度学习</a></li>
+                    <li><a href="../../../category/shen jing wang luo.html">神经网络</a></li>
+                    <li><a href="../../../category/shu ju wa jue.html">数据挖掘</a></li>
+                    <li><a href="../../../category/shu xue ji chu.html">数学基础</a></li>
+                    <li><a href="../../../category/tf-example.html">tf-example</a></li>
+                    <li><a href="../../../category/tool1.html">tool1</a></li>
+                    <li><a href="../../../category/tool2.html">tool2</a></li>
+                    <li><a href="../../../category/tools.html">tools</a></li>
+                    <li><a href="../../../category/tui jian xi tong.html">推荐系统</a></li>
+                    <li><a href="../../../category/wen ben wa jue.html">文本挖掘</a></li>
+            </ul>
+        </section>
+
+
+    <section>
+        <h1>Tags</h1>
+            <a href="../../../tag/python.html">python</a>, 
+            <a href="../../../tag/numpy.html">numpy</a>, 
+            <a href="../../../tag/deep-learning.html">deep-learning</a>, 
+            <a href="../../../tag/algorithms.html">algorithms</a>, 
+            <a href="../../../tag/wen-ben-wa-jue.html">文本挖掘</a>, 
+            <a href="../../../tag/shen-jing-wang-luo.html">神经网络</a>, 
+            <a href="../../../tag/shu-xue-ji-chu.html">数学基础</a>, 
+            <a href="../../../tag/nlp.html">nlp</a>, 
+            <a href="../../../tag/tf-example.html">tf-example</a>, 
+            <a href="../../../tag/tui-jian-xi-tong.html">推荐系统</a>, 
+            <a href="../../../tag/tf.html">tf</a>, 
+            <a href="../../../tag/ji-huo-han-shu.html">激活函数</a>, 
+            <a href="../../../tag/mapreduce.html">mapreduce</a>, 
+            <a href="../../../tag/spark.html">spark</a>, 
+            <a href="../../../tag/handbook.html">handbook</a>, 
+            <a href="../../../tag/matplotlib.html">matplotlib</a>, 
+            <a href="../../../tag/scikit-learn.html">scikit-learn</a>, 
+            <a href="../../../tag/latex.html">latex</a>, 
+            <a href="../../../tag/pandas.html">pandas</a>, 
+            <a href="../../../tag/jupyter.html">jupyter</a>, 
+            <a href="../../../tag/plot.html">plot</a>, 
+            <a href="../../../tag/pip.html">pip</a>, 
+            <a href="../../../tag/geng-xin-suo-you-mo-kuai.html">更新所有模块</a>, 
+            <a href="../../../tag/shen-du-xue-xi.html">深度学习</a>, 
+            <a href="../../../tag/xun-huan-shen-jing-wang-luo.html">循环神经网络</a>, 
+            <a href="../../../tag/pangrank.html">PangRank</a>, 
+            <a href="../../../tag/book.html">book</a>, 
+            <a href="../../../tag/pydata.html">pydata</a>, 
+            <a href="../../../tag/shell.html">shell</a>, 
+            <a href="../../../tag/pyhton.html">pyhton</a>
+    </section>
+
+
+
+    <section>
+        <h1>GitHub Repos</h1>
+            <a href="https://github.com/1007530194">@1007530194</a> on GitHub
+    </section>
+
+</aside>    </div>
+</div>
+<footer role="contentinfo"><p>
+        活到老，学到老，玩到老
+    <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-132396898-1', 'auto');
+
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    </script>
+</body>
+</html>

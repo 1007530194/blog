@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+    <head>
+<meta charset="utf-8">
+<title>CNN-卷积神经网络理论 &mdash; 魑魅魍魉</title>
+
+<meta name="author" content="niult">
+
+
+
+
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link href="../../../theme/css/main.css" media="screen, projection"
+      rel="stylesheet" type="text/css">
+
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<script src="../../../theme/js/modernizr-2.0.js"></script>
+<script src="../../../theme/js/ender.js"></script>
+<script src="../../../theme/js/octopress.js" type="text/javascript"></script>
+<script src="../../../theme/js/echarts.min.js" type="text/javascript"></script>
+<script src="../../../theme/js/require.min.js" type="text/javascript"></script>
+
+<header role="banner"><hgroup>
+  <h1><a href="../../../">魑魅魍魉</a></h1>
+</hgroup></header>
+<nav role="navigation">    <ul class="subscription" data-subscription="rss">
+    </ul>
+
+
+<ul class="main-navigation">
+            <li >
+                <a href="../../../category/01chang yong gong ju.html">01常用工具</a>
+            </li>
+            <li >
+                <a href="../../../category/02.wo ai du shu.html">02.我爱读书</a>
+            </li>
+            <li >
+                <a href="../../../category/algorithms.html">Algorithms</a>
+            </li>
+            <li >
+                <a href="../../../category/book.html">Book</a>
+            </li>
+            <li >
+                <a href="../../../category/book-pydata.html">Book-pydata</a>
+            </li>
+            <li >
+                <a href="../../../category/deep-learning-with-python.html">Deep-learning-with-python</a>
+            </li>
+            <li >
+                <a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a>
+            </li>
+            <li >
+                <a href="../../../category/ke wai du wu.html">课外读物</a>
+            </li>
+            <li >
+                <a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen du xue xi.html">深度学习</a>
+            </li>
+            <li class="active">
+                <a href="../../../category/shen jing wang luo.html">神经网络</a>
+            </li>
+            <li >
+                <a href="../../../category/shu ju wa jue.html">数据挖掘</a>
+            </li>
+            <li >
+                <a href="../../../category/shu xue ji chu.html">数学基础</a>
+            </li>
+            <li >
+                <a href="../../../category/tf-example.html">Tf-example</a>
+            </li>
+            <li >
+                <a href="../../../category/tool1.html">Tool1</a>
+            </li>
+            <li >
+                <a href="../../../category/tool2.html">Tool2</a>
+            </li>
+            <li >
+                <a href="../../../category/tools.html">Tools</a>
+            </li>
+            <li >
+                <a href="../../../category/tui jian xi tong.html">推荐系统</a>
+            </li>
+            <li >
+                <a href="../../../category/wen ben wa jue.html">文本挖掘</a>
+            </li>
+</ul>
+</nav>
+<div id="main">
+    <div id="content">
+    <div>
+
+        <h4>Contents</h4>
+        
+
+        <article class="hentry" role="article">
+<header>
+        <h1 class="entry-title">CNN-卷积神经网络理论</h1>
+    <p class="meta">
+<time datetime="2019-01-16T00:00:00+08:00" pubdate>2019-01-16 00:00</time>    </p>
+</header>
+
+    <div class="entry-content"><style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style><body>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="CNN的基本结构">CNN的基本结构<a class="anchor-link" href="#CNN的基本结构">¶</a></h1><p>首先我们来看看CNN的基本结构。一个常见的CNN例子如下图：</p>
+<p><img alt="" src="https://images2015.cnblogs.com/blog/1042406/201703/1042406-20170301104438813-230726230.png"/></p>
+<p>图中是一个图形识别的CNN模型。可以看出最左边的船的图像就是我们的输入层，计算机理解为输入若干个矩阵，这点和DNN基本相同。</p>
+<p>接着是卷积层（Convolution Layer）,这个是CNN特有的，我们后面专门来讲。卷积层的激活函数使用的是ReLU。我们在DNN中介绍过ReLU的激活函数，它其实很简单，就是$ReLU(x) = max(0,x)$。在卷积层后面是池化层(Pooling layer)，这个也是CNN特有的，我们后面也会专门来讲。需要注意的是，池化层没有激活函数。</p>
+<p>卷积层+池化层的组合可以在隐藏层出现很多次，上图中出现两次。而实际上这个次数是根据模型的需要而来的。当然我们也可以灵活使用使用卷积层+卷积层，或者卷积层+卷积层+池化层的组合，这些在构建模型的时候没有限制。但是最常见的CNN都是若干卷积层+池化层的组合，如上图中的CNN结构。</p>
+<p>在若干卷积层+池化层后面是全连接层（Fully Connected Layer, 简称FC），全连接层其实就是我们前面讲的DNN结构，只是输出层使用了Softmax激活函数来做图像识别的分类，这点我们在DNN中也有讲述。</p>
+<p>从上面CNN的模型描述可以看出，CNN相对于DNN，比较特殊的是卷积层和池化层，如果我们熟悉DNN，只要把卷积层和池化层的原理搞清楚了，那么搞清楚CNN就容易很多了。</p>
+<h2 id="初识卷积">初识卷积<a class="anchor-link" href="#初识卷积">¶</a></h2><p>首先，我们去学习卷积层的模型原理，在学习卷积层的模型原理前，我们需要了解什么是卷积，以及CNN中的卷积是什么样子的。</p>
+<p>大家学习数学时都有学过卷积的知识，微积分中卷积的表达式为：$$S(t) = \int x(t-a)w(a) da$$</p>
+<p>离散形式是：$$s(t) = \sum\limits_ax(t-a)w(a)$$</p>
+<p>这个式子如果用矩阵表示可以为：$$s(t)=(X*W)(t)$$</p>
+<p>其中星号表示卷积。</p>
+<p>如果是二维的卷积，则表示式为：$$s(i,j)=(X*W)(i,j) = \sum\limits_m \sum\limits_n x(i-m,j-n) w(m,n)$$</p>
+<p>在CNN中，虽然我们也是说卷积，但是我们的卷积公式和严格意义数学中的定义稍有不同,比如对于二维的卷积，定义为：$$s(i,j)=(X*W)(i,j) = \sum\limits_m \sum\limits_n x(i+m,j+n) w(m,n)$$</p>
+<p>这个式子虽然从数学上讲不是严格意义上的卷积，但是大牛们都这么叫了，那么我们也跟着这么叫了。后面讲的CNN的卷积都是指的上面的最后一个式子。</p>
+<p>其中，我们叫W为我们的卷积核，而X则为我们的输入。如果X是一个二维输入的矩阵，而W也是一个二维的矩阵。但是如果X是多维张量，那么W也是一个多维的张量。</p>
+<h2 id="卷积层">卷积层<a class="anchor-link" href="#卷积层">¶</a></h2><p>有了卷积的基本知识，我们现在来看看CNN中的卷积，假如是对图像卷积，回想我们的上一节的卷积公式，其实就是对输入的图像的不同局部的矩阵和卷积核矩阵各个位置的元素相乘，然后相加得到。</p>
+<p>举个例子如下，图中的输入是一个二维的3x4的矩阵，而卷积核是一个2x2的矩阵。这里我们假设卷积是一次移动一个像素来卷积的，那么首先我们对输入的左上角2x2局部和卷积核卷积，即各个位置的元素相乘再相加，得到的输出矩阵S的$S_{00}$的元素，值为$aw+bx+ey+fz$。接着我们将输入的局部向右平移一个像素，现在是(b,c,f,g)四个元素构成的矩阵和卷积核来卷积，这样我们得到了输出矩阵S的$S_{01}$的元素，同样的方法，我们可以得到输出矩阵S的$S_{02}，S_{10}，S_{11}， S_{12}$的元素。</p>
+<p><img alt="" src="https://images2015.cnblogs.com/blog/1042406/201703/1042406-20170301113126032-1940584843.png"/></p>
+<p>最终我们得到卷积输出的矩阵为一个2x3的矩阵S。</p>
+<p>再举一个动态的卷积过程的例子如下：</p>
+<p>我们有下面这个绿色的5x5输入矩阵，卷积核是一个下面这个黄色的3x3的矩阵。卷积的步幅是一个像素。则卷积的过程如下面的动图。卷积的结果是一个3x3的矩阵。</p>
+<p><img alt="" src="https://images2015.cnblogs.com/blog/1042406/201703/1042406-20170301113742876-1293419888.png"/></p>
+<p><img alt="" src="https://images2015.cnblogs.com/blog/1042406/201703/1042406-20170301113754391-355407175.png"/></p>
+<p><img alt="" src="https://images2015.cnblogs.com/blog/1042406/201703/1042406-20170301113808532-2109486090.gif"/></p>
+<p>上面举的例子都是二维的输入，卷积的过程比较简单，那么如果输入是多维的呢？比如在前面一组卷积层+池化层的输出是3个矩阵，这3个矩阵作为输入呢，那么我们怎么去卷积呢？又比如输入的是对应RGB的彩色图像，即是三个分布对应R，G和B的矩阵呢？</p>
+<p>在斯坦福大学的cs231n的课程上，有一个动态的例子，<a href="http://cs231n.github.io/assets/conv-demo/index.html">链接在这</a>。建议大家对照着例子中的动图看下面的讲解。</p>
+<p>大家打开这个例子可以看到，这里面输入是3个7x7的矩阵。实际上原输入是3个5x5的矩阵。只是在原来的输入周围加上了1的padding，即将周围都填充一圈的0，变成了3个7x7的矩阵。</p>
+<p>例子里面使用了两个卷积核，我们先关注于卷积核W0。和上面的例子相比，由于输入是3个7x7的矩阵，或者说是7x7x3的张量，则我们对应的卷积核W0也必须最后一维是3的张量，这里卷积核W0的单个子矩阵维度为3x3。那么卷积核W0实际上是一个3x3x3的张量。同时和上面的例子比，这里的步幅为2，也就是每次卷积后会移动2个像素的位置。</p>
+<p>最终的卷积过程和上面的2维矩阵类似，上面是矩阵的卷积，即两个矩阵对应位置的元素相乘后相加。这里是张量的卷积，即两个张量的3个子矩阵卷积后，再把卷积的结果相加后再加上偏倚b。</p>
+<p>7x7x3的张量和3x3x3的卷积核张量W0卷积的结果是一个3x3的矩阵。由于我们有两个卷积核W0和W1，因此最后卷积的结果是两个3x3的矩阵。或者说卷积的结果是一个3x3x2的张量。</p>
+<p>仔细回味下卷积的过程，输入是7x7x3的张量，卷积核是两个3x3x3的张量。卷积步幅为2，最后得到了输出是3x3x2的张量。如果把上面的卷积过程用数学公式表达出来就是：$$s(i,j)=(X*W)(i,j) + b = \sum\limits_{k=1}^{n\_in}(X_k*W_k)(i,j) +b$$</p>
+<p>其中，$n\_in$为输入矩阵的个数，或者是张量的最后一维的维数。$X_k$代表第k个输入矩阵。$W_k$代表卷积核的第k个子卷积核矩阵。$s(i,j)$即卷积核$W$对应的输出矩阵的对应位置元素的值。</p>
+<p>通过上面的例子，相信大家对CNN的卷积层的卷积过程有了一定的了解。</p>
+<p>对于卷积后的输出，一般会通过ReLU激活函数，将输出的张量中的小于0的位置对应的元素值都变为0。</p>
+<h2 id="池化层">池化层<a class="anchor-link" href="#池化层">¶</a></h2><p>相比卷积层的复杂，池化层则要简单的多，所谓的池化，个人理解就是对输入张量的各个子矩阵进行压缩。假如是2x2的池化，那么就将子矩阵的每2x2个元素变成一个元素，如果是3x3的池化，那么就将子矩阵的每3x3个元素变成一个元素，这样输入矩阵的维度就变小了。</p>
+<p>要想将输入子矩阵的每nxn个元素变成一个元素，那么需要一个池化标准。常见的池化标准有2个，MAX或者是Average。即取对应区域的最大值或者平均值作为池化后的元素值。</p>
+<p>下面这个例子采用取最大值的池化方法。同时采用的是2x2的池化。步幅为2。</p>
+<p>首先对红色2x2区域进行池化，由于此2x2区域的最大值为6.那么对应的池化输出位置的值为6，由于步幅为2，此时移动到绿色的位置去进行池化，输出的最大值为8.同样的方法，可以得到黄色区域和蓝色区域的输出值。最终，我们的输入4x4的矩阵在池化后变成了2x2的矩阵。进行了压缩。</p>
+<p><img alt="" src="https://images2015.cnblogs.com/blog/1042406/201703/1042406-20170301142333032-627233416.png"/></p>
+<h2 id="模型结构小结">模型结构小结<a class="anchor-link" href="#模型结构小结">¶</a></h2><p>理解了CNN模型中的卷积层和池化层，就基本理解了CNN的基本原理，后面再去理解CNN模型的前向传播算法和反向传播算法就容易了。下一篇我们就来讨论CNN模型的前向传播算法。</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="前向传播算法">前向传播算法<a class="anchor-link" href="#前向传播算法">¶</a></h1><h2 id="回顾CNN的结构">回顾CNN的结构<a class="anchor-link" href="#回顾CNN的结构">¶</a></h2><p>这里我们用一个彩色的汽车样本的图像识别再从感官上回顾下CNN的结构。图中的CONV即为卷积层，POOL即为池化层，而FC即为DNN全连接层，包括了我们上面最后的用Softmax激活函数的输出层。</p>
+<p><img alt="" src="https://images2015.cnblogs.com/blog/1042406/201703/1042406-20170302112126673-1167058801.jpg"/></p>
+<p>从上图可以看出，要理顺CNN的前向传播算法，重点是输入层的前向传播，卷积层的前向传播以及池化层的前向传播。而DNN全连接层和用Softmax激活函数的输出层的前向传播算法我们在讲DNN时已经讲到了。</p>
+<h2 id="输入层前向传播到卷积层">输入层前向传播到卷积层<a class="anchor-link" href="#输入层前向传播到卷积层">¶</a></h2><p>输入层的前向传播是CNN前向传播算法的第一步。一般输入层对应的都是卷积层，因此我们标题是输入层前向传播到卷积层。</p>
+<p>我们这里还是以图像识别为例。</p>
+<p>先考虑最简单的，样本都是二维的黑白图片。这样输入层$X$就是一个矩阵，矩阵的值等于图片的各个像素位置的值。这时和卷积层相连的卷积核$W$就也是矩阵。</p>
+<p>如果样本都是有RGB的彩色图片，这样输入$X$就是3个矩阵，即分别对应R，G和B的矩阵，或者说是一个张量。这时和卷积层相连的卷积核$W$就也是张量，对应的最后一维的维度为3.即每个卷积核都是3个子矩阵组成。</p>
+<p>同样的方法，对于3D的彩色图片之类的样本，我们的输入$X$可以是4维，5维的张量，那么对应的卷积核$W$也是个高维的张量。</p>
+<p>不管维度多高，对于我们的输入，前向传播的过程可以表示为：$$ a^2= sigma(z^2) = \sigma(a^1*W^2 +b^2)$$</p>
+<p>其中，上标代表层数，星号代表卷积，而b代表我们的偏倚, $\sigma$为激活函数，这里一般都是ReLU。</p>
+<p>和DNN的前向传播比较一下，其实形式非常的像，只是我们这儿是张量的卷积，而不是矩阵的乘法。同时由于$W$是张量，那么同样的位置，$W$参数的个数就比DNN多很多了。</p>
+<p>为了简化我们的描述，本文后面如果没有特殊说明，我们都默认输入是3维的张量，即用RBG可以表示的彩色图片。</p>
+<p>这里需要我们自己定义的CNN模型参数是：</p>
+<p>1） 一般我们的卷积核不止一个，比如有K个，那么我们输入层的输出，或者说第二层卷积层的对应的输入就K个。</p>
+<p>2） 卷积核中每个子矩阵的的大小，一般我们都用子矩阵为方阵的卷积核，比如FxF的子矩阵。</p>
+<p>3） 填充padding（以下简称P），我们卷积的时候，为了可以更好的识别边缘，一般都会在输入矩阵在周围加上若干圈的0再进行卷积，加多少圈则P为多少。</p>
+<p>4） 步幅stride（以下简称S），即在卷积过程中每次移动的像素距离大小。</p>
+<p>这些参数我们在上一篇都有讲述。</p>
+<h2 id="隐藏层前向传播到卷积层">隐藏层前向传播到卷积层<a class="anchor-link" href="#隐藏层前向传播到卷积层">¶</a></h2><p>现在我们再来看普通隐藏层前向传播到卷积层时的前向传播算法。</p>
+<p>假设隐藏层的输出是M个矩阵对应的三维张量，则输出到卷积层的卷积核也是M个子矩阵对应的三维张量。这时表达式和输入层的很像，也是$$ a^l= \sigma(z^l) = \sigma(a^{l-1}*W^l +b^l)$$</p>
+<p>其中，上标代表层数，星号代表卷积，而b代表我们的偏倚, $\sigma$为激活函数，这里一般都是ReLU。</p>
+<p>也可以写成M个子矩阵子矩阵卷积后对应位置相加的形式，即：$$ a^l= \sigma(z^l) = \sigma(\sum\limits_{k=1}^{M}z_k^l) = \sigma(\sum\limits_{k=1}^{M}a_k^{l-1}*W_k^l +b^l)$$</p>
+<p>和上一节唯一的区别仅仅在于，这里的输入是隐藏层来的，而不是我们输入的原始图片样本形成的矩阵。</p>
+<p>需要我们定义的CNN模型参数也和上一节一样，这里我们需要定义卷积核的个数K，卷积核子矩阵的维度F，填充大小P以及步幅S。</p>
+<h2 id="隐藏层前向传播到池化层">隐藏层前向传播到池化层<a class="anchor-link" href="#隐藏层前向传播到池化层">¶</a></h2><p>池化层的处理逻辑是比较简单的，我们的目的就是对输入的矩阵进行缩小概括。比如输入的若干矩阵是NxN维的，而我们的池化大小是kxk的区域，则输出的矩阵都是$\frac{N}{k} \times \frac{N}{k}$维的。</p>
+<p>这里需要需要我们定义的CNN模型参数是：</p>
+<p>1）池化区域的大小k</p>
+<p>2）池化的标准，一般是MAX或者Average。</p>
+<h2 id="隐藏层前向传播到全连接层">隐藏层前向传播到全连接层<a class="anchor-link" href="#隐藏层前向传播到全连接层">¶</a></h2><p>由于全连接层就是普通的DNN模型结构，因此我们可以直接使用DNN的前向传播算法逻辑，即：$$a^l = \sigma(z^l) = \sigma(W^la^{l-1} + b^l)$$</p>
+<p>这里的激活函数一般是sigmoid或者tanh。</p>
+<p>经过了若干全连接层之后，最后的一层为Softmax输出层。此时输出层和普通的全连接层唯一的区别是，激活函数是softmax函数。</p>
+<p>这里需要需要我们定义的CNN模型参数是：</p>
+<p>1）全连接层的激活函数</p>
+<p>2）全连接层各层神经元的个数</p>
+<h2 id="前向传播算法小结">前向传播算法小结<a class="anchor-link" href="#前向传播算法小结">¶</a></h2><p>有了上面的基础，我们现在总结下CNN的前向传播算法。</p>
+<p>输入：1个图片样本，CNN模型的层数L和所有隐藏层的类型，对于卷积层，要定义卷积核的大小K，卷积核子矩阵的维度F，填充大小P，步幅S。对于池化层，要定义池化区域大小k和池化标准（MAX或Average），对于全连接层，要定义全连接层的激活函数（输出层除外）和各层的神经元个数。</p>
+<p>输出：CNN模型的输出$a^L$</p>
+<p>1) 根据输入层的填充大小P，填充原始图片的边缘，得到输入张量$a^1$。</p>
+<p>2）初始化所有隐藏层的参数$W,b$</p>
+<p>3）for $l$=2 to $L-1$:</p>
+<p>a) 如果第$l$层是卷积层,则输出为$$ a^l= ReLU(z^l) = ReLU(a^{l-1}*W^l +b^l)$$</p>
+<p>b) 如果第$l$层是池化层,则输出为$ a^l= pool(a^{l-1})$, 这里的pool指按照池化区域大小k和池化标准将输入张量缩小的过程。</p>
+<p>c) 如果第$l$层是全连接层,则输出为$$ a^l= \sigma(z^l) = \sigma(W^la^{l-1} +b^l)$$</p>
+<p>4)对于输出层第L层: $$ a^L= softmax(z^L) = softmax(W^La^{L-1} +b^L)$$</p>
+<p>以上就是CNN前向传播算法的过程总结。有了CNN前向传播算法的基础，我们后面再来理解CNN的反向传播算法就简单多了。下一篇我们来讨论CNN的反向传播算法。</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="反向传播算法">反向传播算法<a class="anchor-link" href="#反向传播算法">¶</a></h1><p>我们首先回顾DNN的反向传播算法。在DNN中，我们是首先计算出输出层的$\delta^L$:</p>
+<p>$$\delta^L = \frac{\partial J(W,b)}{\partial z^L} = \frac{\partial J(W,b)}{\partial a^L}\odot \sigma^{'}(z^L)$$</p>
+<p>利用数学归纳法，用$\delta^{l+1}$的值一步步的向前求出第l层的$\delta^l$，表达式为：</p>
+<p>$$\delta^{l} = \delta^{l+1}\frac{\partial z^{l+1}}{\partial z^{l}} = (W^{l+1})^T\delta^{l+1}\odot \sigma^{'}(z^l)$$</p>
+<p>有了$\delta^l$的表达式，从而求出$W,b$的梯度表达式：</p>
+<p>$$\frac{\partial J(W,b)}{\partial W^l} = \frac{\partial J(W,b,x,y)}{\partial z^l} \frac{\partial z^l}{\partial W^l} = \delta^{l}(a^{l-1})^T$$$$\frac{\partial J(W,b,x,y)}{\partial b^l} = \frac{\partial J(W,b)}{\partial z^l} \frac{\partial z^l}{\partial b^l} = \delta^{l}$$</p>
+<p>有了$W,b$梯度表达式，就可以用梯度下降法来优化$W,b$,求出最终的所有$W,b$的值。</p>
+<p>现在我们想把同样的思想用到CNN中，很明显，CNN有些不同的地方，不能直接去套用DNN的反向传播算法的公式。</p>
+<h2 id="反向传播算法思想">反向传播算法思想<a class="anchor-link" href="#反向传播算法思想">¶</a></h2><p>要套用DNN的反向传播算法到CNN，有几个问题需要解决：</p>
+<p>1）池化层没有激活函数，这个问题倒比较好解决，我们可以令池化层的激活函数为$\sigma(z) = z$，即激活后就是自己本身。这样池化层激活函数的导数为1.</p>
+<p>2）池化层在前向传播的时候，对输入进行了压缩，那么我们现在需要向前反向推导$\delta^{l-1}$，这个推导方法和DNN完全不同。</p>
+<p>3) 卷积层是通过张量卷积，或者说若干个矩阵卷积求和而得的当前层的输出，这和DNN很不相同，DNN的全连接层是直接进行矩阵乘法得到当前层的输出。这样在卷积层反向传播的时候，上一层的$\delta^{l-1}$递推计算方法肯定有所不同。</p>
+<p>4）对于卷积层，由于$W$使用的运算是卷积，那么从$\delta^l$推导出该层的所有卷积核的$W,b$的方式也不同。</p>
+<p>从上面可以看出，问题1比较好解决，但是问题2,3,4就需要好好的动一番脑筋了，而问题2,3,4也是解决CNN反向传播算法的关键所在。另外大家要注意到的是，DNN中的$a_l,z_l$都只是一个向量，而我们CNN中的$a_l,z_l$都是一个张量，这个张量是三维的，即由若干个输入的子矩阵组成。</p>
+<p>下面我们就针对问题2,3,4来一步步研究CNN的反向传播算法。</p>
+<p>在研究过程中，需要注意的是，由于卷积层可以有多个卷积核，各个卷积核的处理方法是完全相同且独立的，为了简化算法公式的复杂度，我们下面提到卷积核都是卷积层中若干卷积核中的一个。</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="已知池化层的$\delta^l$，推导上一隐藏层的$\delta^{l-1}$">已知池化层的$\delta^l$，推导上一隐藏层的$\delta^{l-1}$<a class="anchor-link" href="#已知池化层的$\delta^l$，推导上一隐藏层的$\delta^{l-1}$">¶</a></h2><p>我们首先解决上面的问题2，如果已知池化层的$\delta^l$，推导出上一隐藏层的$\delta^{l-1}$。</p>
+<p>在前向传播算法时，池化层一般我们会用MAX或者Average对输入进行池化，池化的区域大小已知。现在我们反过来，要从缩小后的误差$\delta^l$，还原前一次较大区域对应的误差。</p>
+<p>在反向传播时，我们首先会把$\delta^l$的所有子矩阵矩阵大小还原成池化之前的大小，然后如果是MAX，则把$\delta^l$的所有子矩阵的各个池化局域的值放在之前做前向传播算法得到最大值的位置。如果是Average，则把$\delta^l$的所有子矩阵的各个池化局域的值取平均后放在还原后的子矩阵位置。这个过程一般叫做upsample。</p>
+<p>用一个例子可以很方便的表示：假设我们的池化区域大小是2x2。$\delta^l$的第k个子矩阵为:</p>
+<p>$$\delta_k^l =
+\left( \begin{array}{ccc}
+2&amp; 8 \\
+4&amp; 6 \end{array} \right)$$</p>
+<p>由于池化区域为2x2，我们先讲$\delta_k^l$做还原，即变成：</p>
+<p>$$
+\left( \begin{array}{ccc}
+0&amp;0&amp;0&amp;0 \\ 0&amp;2&amp; 8&amp;0 \\ 0&amp;4&amp;6&amp;0 \\
+0&amp;0&amp;0&amp;0 \end{array} \right)$$</p>
+<p>如果是MAX，假设我们之前在前向传播时记录的最大值位置分别是左上，右下，右上，左下，则转换后的矩阵为：</p>
+<p>$$
+\left( \begin{array}{ccc}
+2&amp;0&amp;0&amp;0 \\ 0&amp;0&amp; 0&amp;8 \\ 0&amp;4&amp;0&amp;0 \\
+0&amp;0&amp;6&amp;0 \end{array} \right)$$</p>
+<p>如果是Average，则进行平均：转换后的矩阵为：</p>
+<p>$$
+\left( \begin{array}{ccc}
+0.5&amp;0.5&amp;2&amp;2 \\ 0.5&amp;0.5&amp;2&amp;2 \\ 1&amp;1&amp;1.5&amp;1.5 \\
+1&amp;1&amp;1.5&amp;1.5 \end{array} \right)$$</p>
+<p>这样我们就得到了上一层 $\frac{\partial J(W,b)}{\partial a_k^{l-1}} $的值，要得到$\delta_k^{l-1}$：$$\delta_k^{l-1} = \frac{\partial J(W,b)}{\partial a_k^{l-1}} \frac{\partial a_k^{l-1}}{\partial z_k^{l-1}} = upsample(\delta_k^l) \odot \sigma^{'}(z_k^{l-1})$$</p>
+<p>其中，upsample函数完成了池化误差矩阵放大与误差重新分配的逻辑。</p>
+<p>我们概括下，对于张量$\delta^{l-1}$，我们有：</p>
+<p>$$\delta^{l-1} = upsample(\delta^l) \odot \sigma^{'}(z^{l-1})$$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="已知卷积层的$\delta^l$，推导上一隐藏层的$\delta^{l-1}$">已知卷积层的$\delta^l$，推导上一隐藏层的$\delta^{l-1}$<a class="anchor-link" href="#已知卷积层的$\delta^l$，推导上一隐藏层的$\delta^{l-1}$">¶</a></h2><p>对于卷积层的反向传播，我们首先回忆下卷积层的前向传播公式：</p>
+<p>$$ a^l= \sigma(z^l) = \sigma(a^{l-1}*W^l +b^l) $$</p>
+<p>其中$n\_in$为上一隐藏层的输入子矩阵个数。</p>
+<p>在DNN中，我们知道$\delta^{l-1}$和$\delta^{l}$的递推关系为：</p>
+<p>$$\delta^{l} = \frac{\partial J(W,b)}{\partial z^l} = \frac{\partial J(W,b)}{\partial z^{l+1}}\frac{\partial z^{l+1}}{\partial z^{l}} = \delta^{l+1}\frac{\partial z^{l+1}}{\partial z^{l}}$$</p>
+<p>因此要推导出$\delta^{l-1}$和$\delta^{l}$的递推关系，必须计算
+$\frac{\partial z^{l}}{\partial z^{l-1}}$的梯度表达式。</p>
+<p>注意到$z^{l}$和$z^{l-1}$的关系为：
+ $$z^l = a^{l-1}*W^l +b^l =\sigma(z^{l-1})*W^l +b^l $$</p>
+<p>因此我们有：</p>
+<p>$$\delta^{l-1} = \delta^{l}\frac{\partial z^{l}}{\partial z^{l-1}} = \delta^{l}*rot180(W^{l}) \odot \sigma^{'}(z^{l-1}) $$</p>
+<p>这里的式子其实和DNN的类似，区别在于对于含有卷积的式子求导时，卷积核被旋转了180度。即式子中的$rot180()$，翻转180度的意思是上下翻转一次，接着左右翻转一次。在DNN中这里只是矩阵的转置。那么为什么呢？由于这里都是张量，直接推演参数太多了。我们以一个简单的例子说明为啥这里求导后卷积核要翻转。</p>
+<p>假设我们$l-1$层的输出$a^{l-1}$是一个3x3矩阵，第$l$层的卷积核$W^l$是一个2x2矩阵，采用1像素的步幅，则输出$z^{l}$是一个2x2的矩阵。我们简化$b^l都是0$,则有$$a^{l-1}*W^l = z^{l}$$</p>
+<p>我们列出$a,W,z$的矩阵表达式如下：</p>
+<p>$$
+\left( \begin{array}{ccc}
+a_{11}&amp;a_{12}&amp;a_{13} \\ a_{21}&amp;a_{22}&amp;a_{23}\\
+a_{31}&amp;a_{32}&amp;a_{33} \end{array} \right) * \left( \begin{array}{ccc}
+w_{11}&amp;w_{12}\\
+w_{21}&amp;w_{22} \end{array} \right) = \left( \begin{array}{ccc}
+z_{11}&amp;z_{12}\\
+z_{21}&amp;z_{22} \end{array} \right)$$</p>
+<p>利用卷积的定义，很容易得出：</p>
+<p>$$z_{11} = a_{11}w_{11} + a_{12}w_{12} + a_{21}w_{21} + a_{22}w_{22} $$$$z_{12} = a_{12}w_{11} + a_{13}w_{12} + a_{22}w_{21} + a_{23}w_{22} $$$$z_{21} = a_{21}w_{11} + a_{22}w_{12} + a_{31}w_{21} + a_{32}w_{22} $$$$z_{22} = a_{22}w_{11} + a_{23}w_{12} + a_{32}w_{21} + a_{33}w_{22} $$</p>
+<p>接着我们模拟反向求导：</p>
+<p>$$\nabla a^{l-1} = \frac{\partial J(W,b)}{\partial a^{l-1}} = \frac{\partial J(W,b)}{\partial z^{l}} \frac{\partial z^{l}}{\partial a^{l-1}} = \delta^{l} \frac{\partial z^{l}}{\partial a^{l-1}}$$</p>
+<p>从上式可以看出，对于$a^{l-1}$的梯度误差$\nabla a^{l-1}$，等于第$l$层的梯度误差乘以$\frac{\partial z^{l}}{\partial a^{l-1}}$，而$\frac{\partial z^{l}}{\partial a^{l-1}}$对应上面的例子中相关联的$w$的值。假设我们的$z$矩阵对应的反向传播误差是$\delta_{11}, \delta_{12}, \delta_{21}, \delta_{22}$组成的2x2矩阵，则利用上面梯度的式子和4个等式，我们可以分别写出$\nabla a^{l-1}$的9个标量的梯度。</p>
+<p>比如对于$a_{11}$的梯度，由于在4个等式中$a_{11}$只和$z_{11}$有乘积关系，从而我们有：</p>
+<p>$$ \nabla a_{11} = \delta_{11}w_{11}$$</p>
+<p>对于$a_{12}$的梯度，由于在4个等式中$a_{12}$和$z_{12}，z_{11}$有乘积关系，从而我们有：</p>
+<p>$$ \nabla a_{12} = \delta_{11}w_{12} + \delta_{12}w_{11}$$</p>
+<p>同样的道理我们得到：</p>
+<p>$$ \nabla a_{13} = \delta_{12}w_{12} $$$$\nabla a_{21} = \delta_{11}w_{21} + \delta_{21}w_{11}$$$$\nabla a_{22} = \delta_{11}w_{22} + \delta_{12}w_{21} + \delta_{21}w_{12} + \delta_{22}w_{11} $$$$ \nabla a_{23} = \delta_{12}w_{22} + \delta_{22}w_{12}$$$$ \nabla a_{31} = \delta_{21}w_{21}$$$$ \nabla a_{32} = \delta_{21}w_{22} + \delta_{22}w_{21}$$$$ \nabla a_{33} = \delta_{22}w_{22} $$</p>
+<p>这上面9个式子其实可以用一个矩阵卷积的形式表示，即：</p>
+<p>$$
+\left( \begin{array}{ccc}
+0&amp;0&amp;0&amp;0 \\ 0&amp;\delta_{11}&amp; \delta_{12}&amp;0 \\ 0&amp;\delta_{21}&amp;\delta_{22}&amp;0 \\
+0&amp;0&amp;0&amp;0 \end{array} \right) * \left( \begin{array}{ccc}
+w_{22}&amp;w_{21}\\
+w_{12}&amp;w_{11} \end{array} \right) = \left( \begin{array}{ccc}
+\nabla a_{11}&amp;\nabla a_{12}&amp;\nabla a_{13} \\ \nabla a_{21}&amp;\nabla a_{22}&amp;\nabla a_{23}\\
+\nabla a_{31}&amp;\nabla a_{32}&amp;\nabla a_{33} \end{array} \right)$$</p>
+<p>为了符合梯度计算，我们在误差矩阵周围填充了一圈0，此时我们将卷积核翻转后和反向传播的梯度误差进行卷积，就得到了前一次的梯度误差。这个例子直观的介绍了为什么对含有卷积的式子反向传播时，卷积核要翻转180度的原因。</p>
+<p>以上就是卷积层的误差反向传播过程。</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="已知卷积层的$\delta^l$，推导该层的$W,b$的梯度">已知卷积层的$\delta^l$，推导该层的$W,b$的梯度<a class="anchor-link" href="#已知卷积层的$\delta^l$，推导该层的$W,b$的梯度">¶</a></h2><p>好了，我们现在已经可以递推出每一层的梯度误差$\delta^l$了，对于全连接层，可以按DNN的反向传播算法求该层$W,b$的梯度，而池化层并没有$W,b$,也不用求$W,b$的梯度。只有卷积层的$W,b$需要求出。</p>
+<p>注意到卷积层$z$和$W,b$的关系为：</p>
+<p>$$z^l = a^{l-1}*W^l +b$$</p>
+<p>因此我们有：</p>
+<p>$$\frac{\partial J(W,b)}{\partial W^{l}} = \frac{\partial J(W,b)}{\partial z^{l}}\frac{\partial z^{l}}{\partial W^{l}} =a^{l-1} *\delta^l$$</p>
+<p>注意到此时卷积核并没有反转，主要是此时是层内的求导，而不是反向传播到上一层的求导。具体过程我们可以分析一下。</p>
+<p>和第4节一样的一个简化的例子，这里输入是矩阵，不是张量，那么对于第l层，某个个卷积核矩阵W的导数可以表示如下：</p>
+<p>$$\frac{\partial J(W,b)}{\partial W_{pq}^{l}} = \sum\limits_i\sum\limits_j(\delta_{ij}^lx_{i+p-1,j+q-1}^{l-1})$$</p>
+<p>假设我们输入$a$是4x4的矩阵，卷积核$W$是3x3的矩阵，输出$z$是2x2的矩阵,那么反向传播的$z$的梯度误差$\delta$也是2x2的矩阵。</p>
+<p>那么根据上面的式子，我们有：</p>
+<p>$$\frac{\partial J(W,b)}{\partial W_{11}^{l}} = a_{11}\delta_{11} + a_{12}\delta_{12} + a_{21}\delta_{21} + a_{22}\delta_{22}$$</p>
+<p>$$\frac{\partial J(W,b)}{\partial W_{12}^{l}} = a_{12}\delta_{11} + a_{13}\delta_{12} + a_{22}\delta_{21} + a_{23}\delta_{22}$$</p>
+<p>$$\frac{\partial J(W,b)}{\partial W_{13}^{l}} = a_{13}\delta_{11} + a_{14}\delta_{12} + a_{23}\delta_{21} + a_{24}\delta_{22}$$</p>
+<p>$$\frac{\partial J(W,b)}{\partial W_{21}^{l}} = a_{21}\delta_{11} + a_{22}\delta_{12} + a_{31}\delta_{21} + a_{32}\delta_{22}$$</p>
+<p>最终我们可以一共得到9个式子。整理成矩阵形式后可得：</p>
+<p>$$\frac{\partial J(W,b)}{\partial W^{l}} =\left( \begin{array}{ccc} a_{11}&amp;a_{12}&amp;a_{13}&amp;a_{14} \\ a_{21}&amp;a_{22}&amp;a_{23}&amp;a_{24} \\ a_{31}&amp;a_{32}&amp;a_{33}&amp;a_{34} \\
+a_{41}&amp;a_{42}&amp;a_{43}&amp;a_{44} \end{array} \right) * \left( \begin{array}{ccc}
+\delta_{11}&amp; \delta_{12} \\ \delta_{21}&amp;\delta_{22} \end{array} \right) $$</p>
+<p>从而可以清楚的看到这次我们为什么没有反转的原因。</p>
+<p>而对于b,则稍微有些特殊，因为$\delta^l$是三维张量，而$b$只是一个向量，不能像DNN那样直接和$\delta^l$相等。通常的做法是将$\delta^l$的各个子矩阵的项分别求和，得到一个误差向量，即为$b$的梯度：$$\frac{\partial J(W,b)}{\partial b^{l}} = \sum\limits_{u,v}(\delta^l)_{u,v}$$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="CNN反向传播算法总结">CNN反向传播算法总结<a class="anchor-link" href="#CNN反向传播算法总结">¶</a></h2><p>现在我们总结下CNN的反向传播算法，以最基本的批量梯度下降法为例来描述反向传播算法。</p>
+<p>输入：m个图片样本，CNN模型的层数L和所有隐藏层的类型，对于卷积层，要定义卷积核的大小K，卷积核子矩阵的维度F，填充大小P，步幅S。对于池化层，要定义池化区域大小k和池化标准（MAX或Average），对于全连接层，要定义全连接层的激活函数（输出层除外）和各层的神经元个数。梯度迭代参数迭代步长$\alpha$,最大迭代次数MAX与停止迭代阈值$\epsilon$</p>
+<p>输出：CNN模型各隐藏层与输出层的$W,b$</p>
+<p>1) 初始化各隐藏层与输出层的各$W,b$的值为一个随机值。</p>
+<p>2）for iter to 1 to MAX：</p>
+<p>2-1) for i =1 to m：</p>
+<p>a) 将CNN输入$a^1$设置为$x_i$对应的张量</p>
+<p>b) for $l$=2 to L-1，根据下面3种情况进行前向传播算法计算：</p>
+<p>b-1) 如果当前是全连接层：则有$a^{i,l} = \sigma(z^{i,l}) = \sigma(W^la^{i,l-1} + b^{l})$</p>
+<p>b-2) 如果当前是卷积层：则有$a^{i,l} = \sigma(z^{i,l}) = \sigma(W^l*a^{i,l-1} + b^{l})$</p>
+<p>b-3) 如果当前是池化层：则有$ a^{i,l}= pool(a^{i,l-1})$, 这里的pool指按照池化区域大小k和池化标准将输入张量缩小的过程。</p>
+<p>c) 对于输出层第L层: $ a^{i,L}= softmax(z^{i,L}) = softmax(W^{L}a^{i,L-1} +b^{L})$</p>
+<p>c) 通过损失函数计算输出层的$\delta^{i,L}$</p>
+<p>d) for $l$= L-1 to 2, 根据下面3种情况进行进行反向传播算法计算:</p>
+<p>d-1) 如果当前是全连接层：$\delta^{i,l} = (W^{l+1})^T\delta^{i,l+1}\odot \sigma^{'}(z^{i,l})$</p>
+<p>d-2) 如果当前是卷积层：$\delta^{i,l} = \delta^{i,l+1}*rot180(W^{l+1}) \odot \sigma^{'}(z^{i,l}) $</p>
+<p>d-3) 如果当前是池化层：$\delta^{i,l} = upsample(\delta^{i,l+1}) \odot \sigma^{'}(z^{i,l})$</p>
+<p>2-2) for $l$ = 2 to L，根据下面2种情况更新第$l$层的$W^l,b^l$:</p>
+<p>2-2-1) 如果当前是全连接层：$W^l = W^l -\alpha \sum\limits_{i=1}^m \delta^{i,l}(a^{i, l-1})^T $， $b^l = b^l -\alpha \sum\limits_{i=1}^m \delta^{i,l}$</p>
+<p>2-2-2) 如果当前是卷积层，对于每一个卷积核有：$W^l = W^l -\alpha \sum\limits_{i=1}^m \delta^{i,l}*rot180(a^{i, l-1}) $， $b^l = b^l -\alpha \sum\limits_{i=1}^m \sum\limits_{u,v}(\delta^{i,l})_{u,v}$</p>
+<p>2-3) 如果所有$W，b$的变化值都小于停止迭代阈值$\epsilon$，则跳出迭代循环到步骤3。</p>
+<p>3） 输出各隐藏层与输出层的线性关系系数矩阵$W$和偏倚向量$b$。</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="参考文献">参考文献<a class="anchor-link" href="#参考文献">¶</a></h1><p><a href="https://www.cnblogs.com/pinard/p/6483207.html">卷积神经网络(CNN)模型结构</a><br/>
+<a href="https://www.cnblogs.com/pinard/p/6489633.html">卷积神经网络(CNN)前向传播算法</a><br/>
+<a href="https://www.cnblogs.com/pinard/p/6494810.html">卷积神经网络(CNN)反向传播算法</a></p>
+</div>
+</div>
+</div>
+</body>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+</div>
+
+
+            <footer>
+<span class="byline author vcard">
+    Posted by
+    <span class="fn">
+            niult
+    </span>
+</span><time datetime="2019-01-16T00:00:00+08:00" pubdate>2019-01-16 00:00</time><span class="categories">
+        <a href="../../../category/shen jing wang luo.html">神经网络</a>
+</span>
+
+    <span class="categories">
+            <a class="category" href="../../../tag/python.html">python</a>, 
+            <a class="category" href="../../../tag/numpy.html">numpy</a>, 
+            <a class="category" href="../../../tag/shen-jing-wang-luo.html">神经网络</a>
+    </span>
+
+<div class="sharing">
+</div>            </footer>
+        </article>
+
+    </div>
+<aside class="sidebar">
+    <section>
+        <h1>Recent Posts</h1>
+        <ul id="recent_posts">
+                <li class="post">
+                    <a href="../../../pages/2019/01/21-a-first-look-at-a-neural-network.html">2.1-a-first-look-at-a-neural-network</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/35-classifying-movie-reviews.html">3.5-classifying-movie-reviews</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/36-classifying-newswires.html">3.6-classifying-newswires</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/37-predicting-house-prices.html">3.7-predicting-house-prices</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/44-overfitting-and-underfitting.html">4.4-overfitting-and-underfitting</a>
+                </li>
+        </ul>
+    </section>
+        <section>
+
+            <h1>Categories</h1>
+            <ul id="recent_posts">
+                    <li><a href="../../../category/01chang yong gong ju.html">01常用工具</a></li>
+                    <li><a href="../../../category/02.wo ai du shu.html">02.我爱读书</a></li>
+                    <li><a href="../../../category/algorithms.html">algorithms</a></li>
+                    <li><a href="../../../category/book.html">book</a></li>
+                    <li><a href="../../../category/book-pydata.html">book-pydata</a></li>
+                    <li><a href="../../../category/deep-learning-with-python.html">deep-learning-with-python</a></li>
+                    <li><a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a></li>
+                    <li><a href="../../../category/ke wai du wu.html">课外读物</a></li>
+                    <li><a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a></li>
+                    <li><a href="../../../category/shen du xue xi.html">深度学习</a></li>
+                    <li><a href="../../../category/shen jing wang luo.html">神经网络</a></li>
+                    <li><a href="../../../category/shu ju wa jue.html">数据挖掘</a></li>
+                    <li><a href="../../../category/shu xue ji chu.html">数学基础</a></li>
+                    <li><a href="../../../category/tf-example.html">tf-example</a></li>
+                    <li><a href="../../../category/tool1.html">tool1</a></li>
+                    <li><a href="../../../category/tool2.html">tool2</a></li>
+                    <li><a href="../../../category/tools.html">tools</a></li>
+                    <li><a href="../../../category/tui jian xi tong.html">推荐系统</a></li>
+                    <li><a href="../../../category/wen ben wa jue.html">文本挖掘</a></li>
+            </ul>
+        </section>
+
+
+    <section>
+        <h1>Tags</h1>
+            <a href="../../../tag/python.html">python</a>, 
+            <a href="../../../tag/numpy.html">numpy</a>, 
+            <a href="../../../tag/deep-learning.html">deep-learning</a>, 
+            <a href="../../../tag/algorithms.html">algorithms</a>, 
+            <a href="../../../tag/wen-ben-wa-jue.html">文本挖掘</a>, 
+            <a href="../../../tag/shen-jing-wang-luo.html">神经网络</a>, 
+            <a href="../../../tag/shu-xue-ji-chu.html">数学基础</a>, 
+            <a href="../../../tag/nlp.html">nlp</a>, 
+            <a href="../../../tag/tf-example.html">tf-example</a>, 
+            <a href="../../../tag/tui-jian-xi-tong.html">推荐系统</a>, 
+            <a href="../../../tag/tf.html">tf</a>, 
+            <a href="../../../tag/ji-huo-han-shu.html">激活函数</a>, 
+            <a href="../../../tag/mapreduce.html">mapreduce</a>, 
+            <a href="../../../tag/spark.html">spark</a>, 
+            <a href="../../../tag/handbook.html">handbook</a>, 
+            <a href="../../../tag/matplotlib.html">matplotlib</a>, 
+            <a href="../../../tag/scikit-learn.html">scikit-learn</a>, 
+            <a href="../../../tag/latex.html">latex</a>, 
+            <a href="../../../tag/pandas.html">pandas</a>, 
+            <a href="../../../tag/jupyter.html">jupyter</a>, 
+            <a href="../../../tag/plot.html">plot</a>, 
+            <a href="../../../tag/pip.html">pip</a>, 
+            <a href="../../../tag/geng-xin-suo-you-mo-kuai.html">更新所有模块</a>, 
+            <a href="../../../tag/shen-du-xue-xi.html">深度学习</a>, 
+            <a href="../../../tag/xun-huan-shen-jing-wang-luo.html">循环神经网络</a>, 
+            <a href="../../../tag/pangrank.html">PangRank</a>, 
+            <a href="../../../tag/book.html">book</a>, 
+            <a href="../../../tag/pydata.html">pydata</a>, 
+            <a href="../../../tag/shell.html">shell</a>, 
+            <a href="../../../tag/pyhton.html">pyhton</a>
+    </section>
+
+
+
+    <section>
+        <h1>GitHub Repos</h1>
+            <a href="https://github.com/1007530194">@1007530194</a> on GitHub
+    </section>
+
+</aside>    </div>
+</div>
+<footer role="contentinfo"><p>
+        活到老，学到老，玩到老
+    <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-132396898-1', 'auto');
+
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    </script>
+</body>
+</html>

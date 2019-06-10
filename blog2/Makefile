@@ -7,10 +7,13 @@ help:
 	@echo "  clean       to clean out site build files"
 	@echo "  runall      to run all notebooks in-place, capturing outputs with the notebook"
 	@echo "  serve       to serve the repository locally with Jekyll"
-	@echo "  site        to build the site HTML locally with Jekyll and store in _site/"
+	@echo "  html        to build the site HTML locally with Jekyll and store in _site/"
 	@echo "  publish     to build the site HTML locally with Jekyll and store in _site/"
 
 
+clean:
+	rm -rf _build
+	rm -rf blog/blog2
 
 install:
 	gem install bundler
@@ -19,20 +22,15 @@ install:
 book:
 	jupyter-book build ./
 
-clean:
-	python scripts/clean.py
+html:
+	bundle exec jekyll build
+	touch blog/blog2/.nojekyll
+
+publish:
+	cd blog && sh commit.sh
 
 runall:
 	jupyter-book run ./content
 
 serve:
 	bundle exec guard
-
-site:
-	bundle exec jekyll build
-	touch _site/.nojekyll
-
-publish:
-	bundle exec jekyll build --destination blog/blog2 --incremental
-	touch _site/.nojekyll
-	cd blog && sh commit.sh
