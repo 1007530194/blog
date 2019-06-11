@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!-->
+<html class="no-js" lang="en"><!--<![endif]-->
+    <head>
+<meta charset="utf-8">
+<title>tf-example-02.07-GBDT &mdash; 魑魅魍魉</title>
+
+<meta name="author" content="niult">
+
+
+
+
+
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<link href="../../../theme/css/main.css" media="screen, projection"
+      rel="stylesheet" type="text/css">
+
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+      rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<script src="../../../theme/js/modernizr-2.0.js"></script>
+<script src="../../../theme/js/ender.js"></script>
+<script src="../../../theme/js/octopress.js" type="text/javascript"></script>
+<script src="../../../theme/js/echarts.min.js" type="text/javascript"></script>
+<script src="../../../theme/js/require.min.js" type="text/javascript"></script>
+
+<header role="banner"><hgroup>
+  <h1><a href="../../../">魑魅魍魉</a></h1>
+</hgroup></header>
+<nav role="navigation">    <ul class="subscription" data-subscription="rss">
+    </ul>
+
+
+<ul class="main-navigation">
+            <li >
+                <a href="../../../category/01chang yong gong ju.html">01常用工具</a>
+            </li>
+            <li >
+                <a href="../../../category/02.wo ai du shu.html">02.我爱读书</a>
+            </li>
+            <li >
+                <a href="../../../category/algorithms.html">Algorithms</a>
+            </li>
+            <li >
+                <a href="../../../category/book.html">Book</a>
+            </li>
+            <li >
+                <a href="../../../category/book-pydata.html">Book-pydata</a>
+            </li>
+            <li >
+                <a href="../../../category/deep-learning-with-python.html">Deep-learning-with-python</a>
+            </li>
+            <li >
+                <a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a>
+            </li>
+            <li >
+                <a href="../../../category/ke wai du wu.html">课外读物</a>
+            </li>
+            <li >
+                <a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen du xue xi.html">深度学习</a>
+            </li>
+            <li >
+                <a href="../../../category/shen jing wang luo.html">神经网络</a>
+            </li>
+            <li >
+                <a href="../../../category/shu ju wa jue.html">数据挖掘</a>
+            </li>
+            <li >
+                <a href="../../../category/shu xue ji chu.html">数学基础</a>
+            </li>
+            <li class="active">
+                <a href="../../../category/tf-example.html">Tf-example</a>
+            </li>
+            <li >
+                <a href="../../../category/tool1.html">Tool1</a>
+            </li>
+            <li >
+                <a href="../../../category/tool2.html">Tool2</a>
+            </li>
+            <li >
+                <a href="../../../category/tools.html">Tools</a>
+            </li>
+            <li >
+                <a href="../../../category/tui jian xi tong.html">推荐系统</a>
+            </li>
+            <li >
+                <a href="../../../category/wen ben wa jue.html">文本挖掘</a>
+            </li>
+</ul>
+</nav>
+<div id="main">
+    <div id="content">
+    <div>
+
+        <h4>Contents</h4>
+        
+
+        <article class="hentry" role="article">
+<header>
+        <h1 class="entry-title">tf-example-02.07-GBDT</h1>
+    <p class="meta">
+<time datetime="2019-01-16T00:00:00+08:00" pubdate>2019-01-16 00:00</time>    </p>
+</header>
+
+    <div class="entry-content"><style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style><body>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Gradient-Boosted-Decision-Tree">Gradient Boosted Decision Tree<a class="anchor-link" href="#Gradient-Boosted-Decision-Tree">¶</a></h1><p>利用张力流实现梯度提升决策树(GBDT)，对手写数字图像进行分类。这个示例使用手写数字的MNIST数据库作为训练样本 (<a href="http://yann.lecun.com/exdb/mnist/">http://yann.lecun.com/exdb/mnist/</a>).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>
+
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">tensorflow.contrib.boosted_trees.estimator_batch.estimator</span> <span class="k">import</span> <span class="n">GradientBoostedDecisionTreeClassifier</span>
+<span class="kn">from</span> <span class="nn">tensorflow.contrib.boosted_trees.proto</span> <span class="k">import</span> <span class="n">learner_pb2</span> <span class="k">as</span> <span class="n">gbdt_learner</span>
+
+<span class="c1"># Ignore all GPUs (current TF GBDT does not support GPU).</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"CUDA_VISIBLE_DEVICES"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Import MNIST data</span>
+<span class="c1"># Set verbosity to display errors only (Remove this line for showing warnings)</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">set_verbosity</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">tensorflow.examples.tutorials.mnist</span> <span class="k">import</span> <span class="n">input_data</span>
+<span class="n">mnist</span> <span class="o">=</span> <span class="n">input_data</span><span class="o">.</span><span class="n">read_data_sets</span><span class="p">(</span><span class="s2">"tmp/data/"</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">source_url</span><span class="o">=</span><span class="s1">'http://yann.lecun.com/exdb/mnist/'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Extracting tmp/data/train-images-idx3-ubyte.gz
+Extracting tmp/data/train-labels-idx1-ubyte.gz
+Extracting tmp/data/t10k-images-idx3-ubyte.gz
+Extracting tmp/data/t10k-labels-idx1-ubyte.gz
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Parameters</span>
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">4096</span> <span class="c1"># The number of samples per batch</span>
+<span class="n">num_classes</span> <span class="o">=</span> <span class="mi">10</span> <span class="c1"># The 10 digits</span>
+<span class="n">num_features</span> <span class="o">=</span> <span class="mi">784</span> <span class="c1"># Each image is 28x28 pixels</span>
+<span class="n">max_steps</span> <span class="o">=</span> <span class="mi">10000</span>
+
+<span class="c1"># GBDT Parameters</span>
+<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">l1_regul</span> <span class="o">=</span> <span class="mf">0.</span>
+<span class="n">l2_regul</span> <span class="o">=</span> <span class="mf">1.</span>
+<span class="n">examples_per_layer</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">num_trees</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">max_depth</span> <span class="o">=</span> <span class="mi">16</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Fill GBDT parameters into the config proto</span>
+<span class="n">learner_config</span> <span class="o">=</span> <span class="n">gbdt_learner</span><span class="o">.</span><span class="n">LearnerConfig</span><span class="p">()</span>
+<span class="n">learner_config</span><span class="o">.</span><span class="n">learning_rate_tuner</span><span class="o">.</span><span class="n">fixed</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+<span class="n">learner_config</span><span class="o">.</span><span class="n">regularization</span><span class="o">.</span><span class="n">l1</span> <span class="o">=</span> <span class="n">l1_regul</span>
+<span class="n">learner_config</span><span class="o">.</span><span class="n">regularization</span><span class="o">.</span><span class="n">l2</span> <span class="o">=</span> <span class="n">l2_regul</span> <span class="o">/</span> <span class="n">examples_per_layer</span>
+<span class="n">learner_config</span><span class="o">.</span><span class="n">constraints</span><span class="o">.</span><span class="n">max_tree_depth</span> <span class="o">=</span> <span class="n">max_depth</span>
+<span class="n">growing_mode</span> <span class="o">=</span> <span class="n">gbdt_learner</span><span class="o">.</span><span class="n">LearnerConfig</span><span class="o">.</span><span class="n">LAYER_BY_LAYER</span>
+<span class="n">learner_config</span><span class="o">.</span><span class="n">growing_mode</span> <span class="o">=</span> <span class="n">growing_mode</span>
+<span class="n">run_config</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">contrib</span><span class="o">.</span><span class="n">learn</span><span class="o">.</span><span class="n">RunConfig</span><span class="p">(</span><span class="n">save_checkpoints_secs</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="n">learner_config</span><span class="o">.</span><span class="n">multi_class_strategy</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">gbdt_learner</span><span class="o">.</span><span class="n">LearnerConfig</span><span class="o">.</span><span class="n">DIAGONAL_HESSIAN</span><span class="p">)</span>\
+
+<span class="c1"># Create a TensorFlor GBDT Estimator</span>
+<span class="n">gbdt_model</span> <span class="o">=</span> <span class="n">GradientBoostedDecisionTreeClassifier</span><span class="p">(</span>
+    <span class="n">model_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># No save directory specified</span>
+    <span class="n">learner_config</span><span class="o">=</span><span class="n">learner_config</span><span class="p">,</span>
+    <span class="n">n_classes</span><span class="o">=</span><span class="n">num_classes</span><span class="p">,</span>
+    <span class="n">examples_per_layer</span><span class="o">=</span><span class="n">examples_per_layer</span><span class="p">,</span>
+    <span class="n">num_trees</span><span class="o">=</span><span class="n">num_trees</span><span class="p">,</span>
+    <span class="n">center_bias</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">run_config</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [ ]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Display TF info logs</span>
+<span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">set_verbosity</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+<span class="c1"># Define the input function for training</span>
+<span class="n">input_fn</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">numpy_input_fn</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="p">{</span><span class="s1">'images'</span><span class="p">:</span> <span class="n">mnist</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">images</span><span class="p">},</span> <span class="n">y</span><span class="o">=</span><span class="n">mnist</span><span class="o">.</span><span class="n">train</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Train the Model</span>
+<span class="n">gbdt_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">input_fn</span><span class="o">=</span><span class="n">input_fn</span><span class="p">,</span> <span class="n">max_steps</span><span class="o">=</span><span class="n">max_steps</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>INFO:tensorflow:Active Feature Columns: ['images_0', 'images_1', 'images_2', 'images_3', 'images_4', 'images_5', 'images_6', 'images_7', 'images_8', 'images_9', 'images_10', 'images_11', 'images_12', 'images_13', 'images_14', 'images_15', 'images_16', 'images_17', 'images_18', 'images_19', 'images_20', 'images_21', 'images_22', 'images_23', 'images_24', 'images_25', 'images_26', 'images_27', 'images_28', 'images_29', 'images_30', 'images_31', 'images_32', 'images_33', 'images_34', 'images_35', 'images_36', 'images_37', 'images_38', 'images_39', 'images_40', 'images_41', 'images_42', 'images_43', 'images_44', 'images_45', 'images_46', 'images_47', 'images_48', 'images_49', 'images_50', 'images_51', 'images_52', 'images_53', 'images_54', 'images_55', 'images_56', 'images_57', 'images_58', 'images_59', 'images_60', 'images_61', 'images_62', 'images_63', 'images_64', 'images_65', 'images_66', 'images_67', 'images_68', 'images_69', 'images_70', 'images_71', 'images_72', 'images_73', 'images_74', 'images_75', 'images_76', 'images_77', 'images_78', 'images_79', 'images_80', 'images_81', 'images_82', 'images_83', 'images_84', 'images_85', 'images_86', 'images_87', 'images_88', 'images_89', 'images_90', 'images_91', 'images_92', 'images_93', 'images_94', 'images_95', 'images_96', 'images_97', 'images_98', 'images_99', 'images_100', 'images_101', 'images_102', 'images_103', 'images_104', 'images_105', 'images_106', 'images_107', 'images_108', 'images_109', 'images_110', 'images_111', 'images_112', 'images_113', 'images_114', 'images_115', 'images_116', 'images_117', 'images_118', 'images_119', 'images_120', 'images_121', 'images_122', 'images_123', 'images_124', 'images_125', 'images_126', 'images_127', 'images_128', 'images_129', 'images_130', 'images_131', 'images_132', 'images_133', 'images_134', 'images_135', 'images_136', 'images_137', 'images_138', 'images_139', 'images_140', 'images_141', 'images_142', 'images_143', 'images_144', 'images_145', 'images_146', 'images_147', 'images_148', 'images_149', 'images_150', 'images_151', 'images_152', 'images_153', 'images_154', 'images_155', 'images_156', 'images_157', 'images_158', 'images_159', 'images_160', 'images_161', 'images_162', 'images_163', 'images_164', 'images_165', 'images_166', 'images_167', 'images_168', 'images_169', 'images_170', 'images_171', 'images_172', 'images_173', 'images_174', 'images_175', 'images_176', 'images_177', 'images_178', 'images_179', 'images_180', 'images_181', 'images_182', 'images_183', 'images_184', 'images_185', 'images_186', 'images_187', 'images_188', 'images_189', 'images_190', 'images_191', 'images_192', 'images_193', 'images_194', 'images_195', 'images_196', 'images_197', 'images_198', 'images_199', 'images_200', 'images_201', 'images_202', 'images_203', 'images_204', 'images_205', 'images_206', 'images_207', 'images_208', 'images_209', 'images_210', 'images_211', 'images_212', 'images_213', 'images_214', 'images_215', 'images_216', 'images_217', 'images_218', 'images_219', 'images_220', 'images_221', 'images_222', 'images_223', 'images_224', 'images_225', 'images_226', 'images_227', 'images_228', 'images_229', 'images_230', 'images_231', 'images_232', 'images_233', 'images_234', 'images_235', 'images_236', 'images_237', 'images_238', 'images_239', 'images_240', 'images_241', 'images_242', 'images_243', 'images_244', 'images_245', 'images_246', 'images_247', 'images_248', 'images_249', 'images_250', 'images_251', 'images_252', 'images_253', 'images_254', 'images_255', 'images_256', 'images_257', 'images_258', 'images_259', 'images_260', 'images_261', 'images_262', 'images_263', 'images_264', 'images_265', 'images_266', 'images_267', 'images_268', 'images_269', 'images_270', 'images_271', 'images_272', 'images_273', 'images_274', 'images_275', 'images_276', 'images_277', 'images_278', 'images_279', 'images_280', 'images_281', 'images_282', 'images_283', 'images_284', 'images_285', 'images_286', 'images_287', 'images_288', 'images_289', 'images_290', 'images_291', 'images_292', 'images_293', 'images_294', 'images_295', 'images_296', 'images_297', 'images_298', 'images_299', 'images_300', 'images_301', 'images_302', 'images_303', 'images_304', 'images_305', 'images_306', 'images_307', 'images_308', 'images_309', 'images_310', 'images_311', 'images_312', 'images_313', 'images_314', 'images_315', 'images_316', 'images_317', 'images_318', 'images_319', 'images_320', 'images_321', 'images_322', 'images_323', 'images_324', 'images_325', 'images_326', 'images_327', 'images_328', 'images_329', 'images_330', 'images_331', 'images_332', 'images_333', 'images_334', 'images_335', 'images_336', 'images_337', 'images_338', 'images_339', 'images_340', 'images_341', 'images_342', 'images_343', 'images_344', 'images_345', 'images_346', 'images_347', 'images_348', 'images_349', 'images_350', 'images_351', 'images_352', 'images_353', 'images_354', 'images_355', 'images_356', 'images_357', 'images_358', 'images_359', 'images_360', 'images_361', 'images_362', 'images_363', 'images_364', 'images_365', 'images_366', 'images_367', 'images_368', 'images_369', 'images_370', 'images_371', 'images_372', 'images_373', 'images_374', 'images_375', 'images_376', 'images_377', 'images_378', 'images_379', 'images_380', 'images_381', 'images_382', 'images_383', 'images_384', 'images_385', 'images_386', 'images_387', 'images_388', 'images_389', 'images_390', 'images_391', 'images_392', 'images_393', 'images_394', 'images_395', 'images_396', 'images_397', 'images_398', 'images_399', 'images_400', 'images_401', 'images_402', 'images_403', 'images_404', 'images_405', 'images_406', 'images_407', 'images_408', 'images_409', 'images_410', 'images_411', 'images_412', 'images_413', 'images_414', 'images_415', 'images_416', 'images_417', 'images_418', 'images_419', 'images_420', 'images_421', 'images_422', 'images_423', 'images_424', 'images_425', 'images_426', 'images_427', 'images_428', 'images_429', 'images_430', 'images_431', 'images_432', 'images_433', 'images_434', 'images_435', 'images_436', 'images_437', 'images_438', 'images_439', 'images_440', 'images_441', 'images_442', 'images_443', 'images_444', 'images_445', 'images_446', 'images_447', 'images_448', 'images_449', 'images_450', 'images_451', 'images_452', 'images_453', 'images_454', 'images_455', 'images_456', 'images_457', 'images_458', 'images_459', 'images_460', 'images_461', 'images_462', 'images_463', 'images_464', 'images_465', 'images_466', 'images_467', 'images_468', 'images_469', 'images_470', 'images_471', 'images_472', 'images_473', 'images_474', 'images_475', 'images_476', 'images_477', 'images_478', 'images_479', 'images_480', 'images_481', 'images_482', 'images_483', 'images_484', 'images_485', 'images_486', 'images_487', 'images_488', 'images_489', 'images_490', 'images_491', 'images_492', 'images_493', 'images_494', 'images_495', 'images_496', 'images_497', 'images_498', 'images_499', 'images_500', 'images_501', 'images_502', 'images_503', 'images_504', 'images_505', 'images_506', 'images_507', 'images_508', 'images_509', 'images_510', 'images_511', 'images_512', 'images_513', 'images_514', 'images_515', 'images_516', 'images_517', 'images_518', 'images_519', 'images_520', 'images_521', 'images_522', 'images_523', 'images_524', 'images_525', 'images_526', 'images_527', 'images_528', 'images_529', 'images_530', 'images_531', 'images_532', 'images_533', 'images_534', 'images_535', 'images_536', 'images_537', 'images_538', 'images_539', 'images_540', 'images_541', 'images_542', 'images_543', 'images_544', 'images_545', 'images_546', 'images_547', 'images_548', 'images_549', 'images_550', 'images_551', 'images_552', 'images_553', 'images_554', 'images_555', 'images_556', 'images_557', 'images_558', 'images_559', 'images_560', 'images_561', 'images_562', 'images_563', 'images_564', 'images_565', 'images_566', 'images_567', 'images_568', 'images_569', 'images_570', 'images_571', 'images_572', 'images_573', 'images_574', 'images_575', 'images_576', 'images_577', 'images_578', 'images_579', 'images_580', 'images_581', 'images_582', 'images_583', 'images_584', 'images_585', 'images_586', 'images_587', 'images_588', 'images_589', 'images_590', 'images_591', 'images_592', 'images_593', 'images_594', 'images_595', 'images_596', 'images_597', 'images_598', 'images_599', 'images_600', 'images_601', 'images_602', 'images_603', 'images_604', 'images_605', 'images_606', 'images_607', 'images_608', 'images_609', 'images_610', 'images_611', 'images_612', 'images_613', 'images_614', 'images_615', 'images_616', 'images_617', 'images_618', 'images_619', 'images_620', 'images_621', 'images_622', 'images_623', 'images_624', 'images_625', 'images_626', 'images_627', 'images_628', 'images_629', 'images_630', 'images_631', 'images_632', 'images_633', 'images_634', 'images_635', 'images_636', 'images_637', 'images_638', 'images_639', 'images_640', 'images_641', 'images_642', 'images_643', 'images_644', 'images_645', 'images_646', 'images_647', 'images_648', 'images_649', 'images_650', 'images_651', 'images_652', 'images_653', 'images_654', 'images_655', 'images_656', 'images_657', 'images_658', 'images_659', 'images_660', 'images_661', 'images_662', 'images_663', 'images_664', 'images_665', 'images_666', 'images_667', 'images_668', 'images_669', 'images_670', 'images_671', 'images_672', 'images_673', 'images_674', 'images_675', 'images_676', 'images_677', 'images_678', 'images_679', 'images_680', 'images_681', 'images_682', 'images_683', 'images_684', 'images_685', 'images_686', 'images_687', 'images_688', 'images_689', 'images_690', 'images_691', 'images_692', 'images_693', 'images_694', 'images_695', 'images_696', 'images_697', 'images_698', 'images_699', 'images_700', 'images_701', 'images_702', 'images_703', 'images_704', 'images_705', 'images_706', 'images_707', 'images_708', 'images_709', 'images_710', 'images_711', 'images_712', 'images_713', 'images_714', 'images_715', 'images_716', 'images_717', 'images_718', 'images_719', 'images_720', 'images_721', 'images_722', 'images_723', 'images_724', 'images_725', 'images_726', 'images_727', 'images_728', 'images_729', 'images_730', 'images_731', 'images_732', 'images_733', 'images_734', 'images_735', 'images_736', 'images_737', 'images_738', 'images_739', 'images_740', 'images_741', 'images_742', 'images_743', 'images_744', 'images_745', 'images_746', 'images_747', 'images_748', 'images_749', 'images_750', 'images_751', 'images_752', 'images_753', 'images_754', 'images_755', 'images_756', 'images_757', 'images_758', 'images_759', 'images_760', 'images_761', 'images_762', 'images_763', 'images_764', 'images_765', 'images_766', 'images_767', 'images_768', 'images_769', 'images_770', 'images_771', 'images_772', 'images_773', 'images_774', 'images_775', 'images_776', 'images_777', 'images_778', 'images_779', 'images_780', 'images_781', 'images_782', 'images_783']
+INFO:tensorflow:Learner config: num_classes: 10
+regularization {
+  l2: 0.0010000000474974513
+}
+constraints {
+  max_tree_depth: 16
+}
+learning_rate_tuner {
+  fixed {
+    learning_rate: 0.10000000149011612
+  }
+}
+pruning_mode: POST_PRUNE
+growing_mode: LAYER_BY_LAYER
+multi_class_strategy: DIAGONAL_HESSIAN
+
+WARNING:tensorflow:From /Applications/Anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/python/framework/function.py:986: calling Graph.create_op (from tensorflow.python.framework.ops) with compute_shapes is deprecated and will be removed in a future version.
+Instructions for updating:
+Shapes are always computed; don't use the compute_shapes as it has no effect.
+WARNING:tensorflow:From /Applications/Anaconda/anaconda3/lib/python3.6/site-packages/tensorflow/contrib/learn/python/learn/estimators/head.py:678: ModelFnOps.__new__ (from tensorflow.contrib.learn.python.learn.estimators.model_fn) is deprecated and will be removed in a future version.
+Instructions for updating:
+When switching to tf.estimator.Estimator, use tf.estimator.EstimatorSpec. You can use the `estimator_spec` method to create an equivalent one.
+INFO:tensorflow:Create CheckpointSaverHook.
+WARNING:tensorflow:Issue encountered when serializing resources.
+Type is unsupported, or the types of the items don't match field type in CollectionDef. Note this is a warning and probably safe to ignore.
+'_Resource' object has no attribute 'name'
+INFO:tensorflow:Graph was finalized.
+INFO:tensorflow:Running local_init_op.
+INFO:tensorflow:Done running local_init_op.
+WARNING:tensorflow:Issue encountered when serializing resources.
+Type is unsupported, or the types of the items don't match field type in CollectionDef. Note this is a warning and probably safe to ignore.
+'_Resource' object has no attribute 'name'
+INFO:tensorflow:Saving checkpoints for 0 into /var/folders/d3/bqcldz9s7s3c3skhbbk10j3c0000gn/T/tmpb0yvnwgu/model.ckpt.
+WARNING:tensorflow:Issue encountered when serializing resources.
+Type is unsupported, or the types of the items don't match field type in CollectionDef. Note this is a warning and probably safe to ignore.
+'_Resource' object has no attribute 'name'
+INFO:tensorflow:loss = 2.3025992, step = 1
+INFO:tensorflow:Saving checkpoints for 33 into /var/folders/d3/bqcldz9s7s3c3skhbbk10j3c0000gn/T/tmpb0yvnwgu/model.ckpt.
+WARNING:tensorflow:Issue encountered when serializing resources.
+Type is unsupported, or the types of the items don't match field type in CollectionDef. Note this is a warning and probably safe to ignore.
+'_Resource' object has no attribute 'name'
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Evaluate the Model</span>
+<span class="c1"># Define the input function for evaluating</span>
+<span class="n">input_fn</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">estimator</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">numpy_input_fn</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="p">{</span><span class="s1">'images'</span><span class="p">:</span> <span class="n">mnist</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">images</span><span class="p">},</span> <span class="n">y</span><span class="o">=</span><span class="n">mnist</span><span class="o">.</span><span class="n">test</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Use the Estimator 'evaluate' method</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">gbdt_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">input_fn</span><span class="o">=</span><span class="n">input_fn</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Testing Accuracy:"</span><span class="p">,</span> <span class="n">e</span><span class="p">[</span><span class="s1">'accuracy'</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>INFO:tensorflow:Active Feature Columns: ['images_0', 'images_1', 'images_2', 'images_3', 'images_4', 'images_5', 'images_6', 'images_7', 'images_8', 'images_9', 'images_10', 'images_11', 'images_12', 'images_13', 'images_14', 'images_15', 'images_16', 'images_17', 'images_18', 'images_19', 'images_20', 'images_21', 'images_22', 'images_23', 'images_24', 'images_25', 'images_26', 'images_27', 'images_28', 'images_29', 'images_30', 'images_31', 'images_32', 'images_33', 'images_34', 'images_35', 'images_36', 'images_37', 'images_38', 'images_39', 'images_40', 'images_41', 'images_42', 'images_43', 'images_44', 'images_45', 'images_46', 'images_47', 'images_48', 'images_49', 'images_50', 'images_51', 'images_52', 'images_53', 'images_54', 'images_55', 'images_56', 'images_57', 'images_58', 'images_59', 'images_60', 'images_61', 'images_62', 'images_63', 'images_64', 'images_65', 'images_66', 'images_67', 'images_68', 'images_69', 'images_70', 'images_71', 'images_72', 'images_73', 'images_74', 'images_75', 'images_76', 'images_77', 'images_78', 'images_79', 'images_80', 'images_81', 'images_82', 'images_83', 'images_84', 'images_85', 'images_86', 'images_87', 'images_88', 'images_89', 'images_90', 'images_91', 'images_92', 'images_93', 'images_94', 'images_95', 'images_96', 'images_97', 'images_98', 'images_99', 'images_100', 'images_101', 'images_102', 'images_103', 'images_104', 'images_105', 'images_106', 'images_107', 'images_108', 'images_109', 'images_110', 'images_111', 'images_112', 'images_113', 'images_114', 'images_115', 'images_116', 'images_117', 'images_118', 'images_119', 'images_120', 'images_121', 'images_122', 'images_123', 'images_124', 'images_125', 'images_126', 'images_127', 'images_128', 'images_129', 'images_130', 'images_131', 'images_132', 'images_133', 'images_134', 'images_135', 'images_136', 'images_137', 'images_138', 'images_139', 'images_140', 'images_141', 'images_142', 'images_143', 'images_144', 'images_145', 'images_146', 'images_147', 'images_148', 'images_149', 'images_150', 'images_151', 'images_152', 'images_153', 'images_154', 'images_155', 'images_156', 'images_157', 'images_158', 'images_159', 'images_160', 'images_161', 'images_162', 'images_163', 'images_164', 'images_165', 'images_166', 'images_167', 'images_168', 'images_169', 'images_170', 'images_171', 'images_172', 'images_173', 'images_174', 'images_175', 'images_176', 'images_177', 'images_178', 'images_179', 'images_180', 'images_181', 'images_182', 'images_183', 'images_184', 'images_185', 'images_186', 'images_187', 'images_188', 'images_189', 'images_190', 'images_191', 'images_192', 'images_193', 'images_194', 'images_195', 'images_196', 'images_197', 'images_198', 'images_199', 'images_200', 'images_201', 'images_202', 'images_203', 'images_204', 'images_205', 'images_206', 'images_207', 'images_208', 'images_209', 'images_210', 'images_211', 'images_212', 'images_213', 'images_214', 'images_215', 'images_216', 'images_217', 'images_218', 'images_219', 'images_220', 'images_221', 'images_222', 'images_223', 'images_224', 'images_225', 'images_226', 'images_227', 'images_228', 'images_229', 'images_230', 'images_231', 'images_232', 'images_233', 'images_234', 'images_235', 'images_236', 'images_237', 'images_238', 'images_239', 'images_240', 'images_241', 'images_242', 'images_243', 'images_244', 'images_245', 'images_246', 'images_247', 'images_248', 'images_249', 'images_250', 'images_251', 'images_252', 'images_253', 'images_254', 'images_255', 'images_256', 'images_257', 'images_258', 'images_259', 'images_260', 'images_261', 'images_262', 'images_263', 'images_264', 'images_265', 'images_266', 'images_267', 'images_268', 'images_269', 'images_270', 'images_271', 'images_272', 'images_273', 'images_274', 'images_275', 'images_276', 'images_277', 'images_278', 'images_279', 'images_280', 'images_281', 'images_282', 'images_283', 'images_284', 'images_285', 'images_286', 'images_287', 'images_288', 'images_289', 'images_290', 'images_291', 'images_292', 'images_293', 'images_294', 'images_295', 'images_296', 'images_297', 'images_298', 'images_299', 'images_300', 'images_301', 'images_302', 'images_303', 'images_304', 'images_305', 'images_306', 'images_307', 'images_308', 'images_309', 'images_310', 'images_311', 'images_312', 'images_313', 'images_314', 'images_315', 'images_316', 'images_317', 'images_318', 'images_319', 'images_320', 'images_321', 'images_322', 'images_323', 'images_324', 'images_325', 'images_326', 'images_327', 'images_328', 'images_329', 'images_330', 'images_331', 'images_332', 'images_333', 'images_334', 'images_335', 'images_336', 'images_337', 'images_338', 'images_339', 'images_340', 'images_341', 'images_342', 'images_343', 'images_344', 'images_345', 'images_346', 'images_347', 'images_348', 'images_349', 'images_350', 'images_351', 'images_352', 'images_353', 'images_354', 'images_355', 'images_356', 'images_357', 'images_358', 'images_359', 'images_360', 'images_361', 'images_362', 'images_363', 'images_364', 'images_365', 'images_366', 'images_367', 'images_368', 'images_369', 'images_370', 'images_371', 'images_372', 'images_373', 'images_374', 'images_375', 'images_376', 'images_377', 'images_378', 'images_379', 'images_380', 'images_381', 'images_382', 'images_383', 'images_384', 'images_385', 'images_386', 'images_387', 'images_388', 'images_389', 'images_390', 'images_391', 'images_392', 'images_393', 'images_394', 'images_395', 'images_396', 'images_397', 'images_398', 'images_399', 'images_400', 'images_401', 'images_402', 'images_403', 'images_404', 'images_405', 'images_406', 'images_407', 'images_408', 'images_409', 'images_410', 'images_411', 'images_412', 'images_413', 'images_414', 'images_415', 'images_416', 'images_417', 'images_418', 'images_419', 'images_420', 'images_421', 'images_422', 'images_423', 'images_424', 'images_425', 'images_426', 'images_427', 'images_428', 'images_429', 'images_430', 'images_431', 'images_432', 'images_433', 'images_434', 'images_435', 'images_436', 'images_437', 'images_438', 'images_439', 'images_440', 'images_441', 'images_442', 'images_443', 'images_444', 'images_445', 'images_446', 'images_447', 'images_448', 'images_449', 'images_450', 'images_451', 'images_452', 'images_453', 'images_454', 'images_455', 'images_456', 'images_457', 'images_458', 'images_459', 'images_460', 'images_461', 'images_462', 'images_463', 'images_464', 'images_465', 'images_466', 'images_467', 'images_468', 'images_469', 'images_470', 'images_471', 'images_472', 'images_473', 'images_474', 'images_475', 'images_476', 'images_477', 'images_478', 'images_479', 'images_480', 'images_481', 'images_482', 'images_483', 'images_484', 'images_485', 'images_486', 'images_487', 'images_488', 'images_489', 'images_490', 'images_491', 'images_492', 'images_493', 'images_494', 'images_495', 'images_496', 'images_497', 'images_498', 'images_499', 'images_500', 'images_501', 'images_502', 'images_503', 'images_504', 'images_505', 'images_506', 'images_507', 'images_508', 'images_509', 'images_510', 'images_511', 'images_512', 'images_513', 'images_514', 'images_515', 'images_516', 'images_517', 'images_518', 'images_519', 'images_520', 'images_521', 'images_522', 'images_523', 'images_524', 'images_525', 'images_526', 'images_527', 'images_528', 'images_529', 'images_530', 'images_531', 'images_532', 'images_533', 'images_534', 'images_535', 'images_536', 'images_537', 'images_538', 'images_539', 'images_540', 'images_541', 'images_542', 'images_543', 'images_544', 'images_545', 'images_546', 'images_547', 'images_548', 'images_549', 'images_550', 'images_551', 'images_552', 'images_553', 'images_554', 'images_555', 'images_556', 'images_557', 'images_558', 'images_559', 'images_560', 'images_561', 'images_562', 'images_563', 'images_564', 'images_565', 'images_566', 'images_567', 'images_568', 'images_569', 'images_570', 'images_571', 'images_572', 'images_573', 'images_574', 'images_575', 'images_576', 'images_577', 'images_578', 'images_579', 'images_580', 'images_581', 'images_582', 'images_583', 'images_584', 'images_585', 'images_586', 'images_587', 'images_588', 'images_589', 'images_590', 'images_591', 'images_592', 'images_593', 'images_594', 'images_595', 'images_596', 'images_597', 'images_598', 'images_599', 'images_600', 'images_601', 'images_602', 'images_603', 'images_604', 'images_605', 'images_606', 'images_607', 'images_608', 'images_609', 'images_610', 'images_611', 'images_612', 'images_613', 'images_614', 'images_615', 'images_616', 'images_617', 'images_618', 'images_619', 'images_620', 'images_621', 'images_622', 'images_623', 'images_624', 'images_625', 'images_626', 'images_627', 'images_628', 'images_629', 'images_630', 'images_631', 'images_632', 'images_633', 'images_634', 'images_635', 'images_636', 'images_637', 'images_638', 'images_639', 'images_640', 'images_641', 'images_642', 'images_643', 'images_644', 'images_645', 'images_646', 'images_647', 'images_648', 'images_649', 'images_650', 'images_651', 'images_652', 'images_653', 'images_654', 'images_655', 'images_656', 'images_657', 'images_658', 'images_659', 'images_660', 'images_661', 'images_662', 'images_663', 'images_664', 'images_665', 'images_666', 'images_667', 'images_668', 'images_669', 'images_670', 'images_671', 'images_672', 'images_673', 'images_674', 'images_675', 'images_676', 'images_677', 'images_678', 'images_679', 'images_680', 'images_681', 'images_682', 'images_683', 'images_684', 'images_685', 'images_686', 'images_687', 'images_688', 'images_689', 'images_690', 'images_691', 'images_692', 'images_693', 'images_694', 'images_695', 'images_696', 'images_697', 'images_698', 'images_699', 'images_700', 'images_701', 'images_702', 'images_703', 'images_704', 'images_705', 'images_706', 'images_707', 'images_708', 'images_709', 'images_710', 'images_711', 'images_712', 'images_713', 'images_714', 'images_715', 'images_716', 'images_717', 'images_718', 'images_719', 'images_720', 'images_721', 'images_722', 'images_723', 'images_724', 'images_725', 'images_726', 'images_727', 'images_728', 'images_729', 'images_730', 'images_731', 'images_732', 'images_733', 'images_734', 'images_735', 'images_736', 'images_737', 'images_738', 'images_739', 'images_740', 'images_741', 'images_742', 'images_743', 'images_744', 'images_745', 'images_746', 'images_747', 'images_748', 'images_749', 'images_750', 'images_751', 'images_752', 'images_753', 'images_754', 'images_755', 'images_756', 'images_757', 'images_758', 'images_759', 'images_760', 'images_761', 'images_762', 'images_763', 'images_764', 'images_765', 'images_766', 'images_767', 'images_768', 'images_769', 'images_770', 'images_771', 'images_772', 'images_773', 'images_774', 'images_775', 'images_776', 'images_777', 'images_778', 'images_779', 'images_780', 'images_781', 'images_782', 'images_783']
+INFO:tensorflow:Starting evaluation at 2018-07-26-01:00:06
+INFO:tensorflow:Graph was finalized.
+INFO:tensorflow:Restoring parameters from /var/folders/p7/9nxn5g_s5kv636j86zdg2hrr0000gr/T/tmpE_8oiQ/model.ckpt-161
+INFO:tensorflow:Running local_init_op.
+INFO:tensorflow:Done running local_init_op.
+INFO:tensorflow:Finished evaluation at 2018-07-26-01:00:07
+INFO:tensorflow:Saving dict for global step 161: accuracy = 0.9273, global_step = 161, loss = 0.23841818
+WARNING:tensorflow:Issue encountered when serializing resources.
+Type is unsupported, or the types of the items don't match field type in CollectionDef. Note this is a warning and probably safe to ignore.
+'_Resource' object has no attribute 'name'
+Testing Accuracy: 0.9273
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        " linebreaks: { automatic: true, width: '95% container' }, " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+</div>
+
+
+            <footer>
+<span class="byline author vcard">
+    Posted by
+    <span class="fn">
+            niult
+    </span>
+</span><time datetime="2019-01-16T00:00:00+08:00" pubdate>2019-01-16 00:00</time><span class="categories">
+        <a href="../../../category/tf-example.html">tf-example</a>
+</span>
+
+    <span class="categories">
+            <a class="category" href="../../../tag/python.html">python</a>, 
+            <a class="category" href="../../../tag/numpy.html">numpy</a>, 
+            <a class="category" href="../../../tag/tf-example.html">tf-example</a>
+    </span>
+
+<div class="sharing">
+</div>            </footer>
+        </article>
+
+    </div>
+<aside class="sidebar">
+    <section>
+        <h1>Recent Posts</h1>
+        <ul id="recent_posts">
+                <li class="post">
+                    <a href="../../../pages/2019/01/21-a-first-look-at-a-neural-network.html">2.1-a-first-look-at-a-neural-network</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/35-classifying-movie-reviews.html">3.5-classifying-movie-reviews</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/36-classifying-newswires.html">3.6-classifying-newswires</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/37-predicting-house-prices.html">3.7-predicting-house-prices</a>
+                </li>
+                <li class="post">
+                    <a href="../../../pages/2019/01/44-overfitting-and-underfitting.html">4.4-overfitting-and-underfitting</a>
+                </li>
+        </ul>
+    </section>
+        <section>
+
+            <h1>Categories</h1>
+            <ul id="recent_posts">
+                    <li><a href="../../../category/01chang yong gong ju.html">01常用工具</a></li>
+                    <li><a href="../../../category/02.wo ai du shu.html">02.我爱读书</a></li>
+                    <li><a href="../../../category/algorithms.html">algorithms</a></li>
+                    <li><a href="../../../category/book.html">book</a></li>
+                    <li><a href="../../../category/book-pydata.html">book-pydata</a></li>
+                    <li><a href="../../../category/deep-learning-with-python.html">deep-learning-with-python</a></li>
+                    <li><a href="../../../category/ji qi xue xi shi zhan.html">机器学习实战</a></li>
+                    <li><a href="../../../category/ke wai du wu.html">课外读物</a></li>
+                    <li><a href="../../../category/ling ji chu ru men shen du xue xi.html">零基础入门深度学习</a></li>
+                    <li><a href="../../../category/shen du xue xi.html">深度学习</a></li>
+                    <li><a href="../../../category/shen jing wang luo.html">神经网络</a></li>
+                    <li><a href="../../../category/shu ju wa jue.html">数据挖掘</a></li>
+                    <li><a href="../../../category/shu xue ji chu.html">数学基础</a></li>
+                    <li><a href="../../../category/tf-example.html">tf-example</a></li>
+                    <li><a href="../../../category/tool1.html">tool1</a></li>
+                    <li><a href="../../../category/tool2.html">tool2</a></li>
+                    <li><a href="../../../category/tools.html">tools</a></li>
+                    <li><a href="../../../category/tui jian xi tong.html">推荐系统</a></li>
+                    <li><a href="../../../category/wen ben wa jue.html">文本挖掘</a></li>
+            </ul>
+        </section>
+
+
+    <section>
+        <h1>Tags</h1>
+            <a href="../../../tag/python.html">python</a>, 
+            <a href="../../../tag/numpy.html">numpy</a>, 
+            <a href="../../../tag/deep-learning.html">deep-learning</a>, 
+            <a href="../../../tag/algorithms.html">algorithms</a>, 
+            <a href="../../../tag/wen-ben-wa-jue.html">文本挖掘</a>, 
+            <a href="../../../tag/shen-jing-wang-luo.html">神经网络</a>, 
+            <a href="../../../tag/shu-xue-ji-chu.html">数学基础</a>, 
+            <a href="../../../tag/nlp.html">nlp</a>, 
+            <a href="../../../tag/tf-example.html">tf-example</a>, 
+            <a href="../../../tag/tui-jian-xi-tong.html">推荐系统</a>, 
+            <a href="../../../tag/tf.html">tf</a>, 
+            <a href="../../../tag/ji-huo-han-shu.html">激活函数</a>, 
+            <a href="../../../tag/mapreduce.html">mapreduce</a>, 
+            <a href="../../../tag/spark.html">spark</a>, 
+            <a href="../../../tag/handbook.html">handbook</a>, 
+            <a href="../../../tag/matplotlib.html">matplotlib</a>, 
+            <a href="../../../tag/scikit-learn.html">scikit-learn</a>, 
+            <a href="../../../tag/latex.html">latex</a>, 
+            <a href="../../../tag/pandas.html">pandas</a>, 
+            <a href="../../../tag/jupyter.html">jupyter</a>, 
+            <a href="../../../tag/plot.html">plot</a>, 
+            <a href="../../../tag/pip.html">pip</a>, 
+            <a href="../../../tag/geng-xin-suo-you-mo-kuai.html">更新所有模块</a>, 
+            <a href="../../../tag/shen-du-xue-xi.html">深度学习</a>, 
+            <a href="../../../tag/xun-huan-shen-jing-wang-luo.html">循环神经网络</a>, 
+            <a href="../../../tag/pangrank.html">PangRank</a>, 
+            <a href="../../../tag/book.html">book</a>, 
+            <a href="../../../tag/pydata.html">pydata</a>, 
+            <a href="../../../tag/shell.html">shell</a>, 
+            <a href="../../../tag/pyhton.html">pyhton</a>
+    </section>
+
+
+
+    <section>
+        <h1>GitHub Repos</h1>
+            <a href="https://github.com/1007530194">@1007530194</a> on GitHub
+    </section>
+
+</aside>    </div>
+</div>
+<footer role="contentinfo"><p>
+        活到老，学到老，玩到老
+    <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-132396898-1', 'auto');
+
+    ga('require', 'displayfeatures');
+    ga('send', 'pageview');
+    </script>
+</body>
+</html>
