@@ -1,0 +1,5246 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,minimum-scale=1">
+
+  <title>主成分分析</title>
+  <meta name="description" content="PCA简介">
+
+  <link rel="canonical" href="https://jupyter.org/blog/blog2/math/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90.html">
+  <link rel="alternate" type="application/rss+xml" title="MyBook" href="https://jupyter.org/blog/blog2/feed.xml">
+
+  <meta property="og:url"         content="https://jupyter.org/blog/blog2/math/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90.html" />
+<meta property="og:type"        content="article" />
+<meta property="og:title"       content="主成分分析" />
+<meta property="og:description" content="PCA简介" />
+<meta property="og:image"       content="" />
+
+
+  <script type="application/ld+json">
+  {
+  "@context": "http://schema.org",
+  "@type": "NewsArticle",
+  "mainEntityOfPage":
+    "https://jupyter.org/blog/blog2/math/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90.html",
+  "headline":
+    "主成分分析",
+  "datePublished":
+    "2019-06-11T14:48:53+08:00",
+  "dateModified":
+    "2019-06-11T14:48:53+08:00",
+  "description":
+    "PCA简介",
+  "author": {
+    "@type": "Person",
+    "name": "niult"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Data 100 at UC Berkeley",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://jupyter.org/blog/blog2",
+      "width": 60,
+      "height": 60
+    }
+  },
+  "image": {
+    "@type": "ImageObject",
+    "url": "https://jupyter.org/blog/blog2",
+    "height": 60,
+    "width": 60
+  }
+}
+
+  </script>
+  <link rel="stylesheet" href="/blog/blog2/assets/css/styles.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css ">
+  <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+
+  <!-- <link rel="manifest" href="/manifest.json"> -->
+  <!-- <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#efae0a"> -->
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+  <meta name="theme-color" content="#233947">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="/blog/blog2/images/logo/favicon.ico">
+
+  <!-- MathJax Config -->
+  <!-- Allow inline math using $ and automatically break long math lines -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true,
+        processEnvironments: true
+    },
+    CommonHTML: {
+        linebreaks: {
+            automatic: true,
+        },
+    },
+});
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS_CHTML' async></script>
+
+  <!-- DOM updating function -->
+  <script>
+const runWhenDOMLoaded = cb => {
+  if (document.readyState != 'loading') {
+    cb()
+  } else if (document.addEventListener) {
+    document.addEventListener('DOMContentLoaded', cb)
+  } else {
+    document.attachEvent('onreadystatechange', function() {
+      if (document.readyState == 'complete') cb()
+    })
+  }
+}
+
+// Helper function to init things quickly
+initFunction = function(myfunc) {
+  runWhenDOMLoaded(myfunc);
+  document.addEventListener('turbolinks:load', myfunc);
+};
+</script>
+
+  <!-- Define some javascript variables that will be useful in other javascript -->
+  <script>
+    const site_basename = '/blog/blog2';
+  </script>
+
+  <!-- Add AnchorJS to let headers be linked -->
+  <script src="/blog/blog2/assets/js/anchor.min.js"  type="text/javascript"></script>
+  <script>
+
+initFunction(function () {
+    anchors.add("main h1, main h2, main h3, main h4")
+});
+
+</script>
+
+  <!-- Include Turbolinks to make page loads fast -->
+  <!-- https://github.com/turbolinks/turbolinks -->
+  <script src="/blog/blog2/assets/js/turbolinks.js" async></script>
+  <meta name="turbolinks-cache-control" content="no-cache">
+
+  <!-- Load nbinteract for widgets -->
+  
+
+  <!-- Load Thebelab for interactive widgets -->
+  <!-- Include Thebelab for interactive code if it's enabled -->
+
+
+<!-- Display Thebelab button in each code cell -->
+<script>
+/**
+ * Set up thebelab button for code blocks
+ */
+
+const thebelabCellButton = id =>
+  `<a id="thebelab-cell-button-${id}" class="btn thebebtn o-tooltip--left" data-tooltip="Interactive Mode">
+    <img src="/blog/blog2/assets/images/edit-button.svg" alt="Start interactive mode">
+  </a>`
+
+
+const addThebelabButtonToCodeCells =  () => {
+
+  const codeCells = document.querySelectorAll('div.input_area > div.highlighter-rouge:not(.output) pre')
+  codeCells.forEach((codeCell, index) => {
+    const id = codeCellId(index)
+    codeCell.setAttribute('id', id)
+    if (document.getElementById("thebelab-cell-button-" + id) == null) {
+      codeCell.insertAdjacentHTML('afterend', thebelabCellButton(id));
+    }
+  })
+}
+
+initFunction(addThebelabButtonToCodeCells);
+</script>
+
+
+
+<script type="text/x-thebe-config">
+    {
+      requestKernel: true,
+      binderOptions: {
+        repo: 'jupyter/jupyter-book',
+        ref: 'gh-pages',
+      },
+      codeMirrorConfig: {
+        theme: "abcdef"
+      },
+      kernelOptions: {
+        name: 'python3',
+      }
+    }
+</script>
+<script src="https://unpkg.com/thebelab@0.4.0/lib/index.js"></script>
+<script>
+    /**
+     * Add attributes to Thebelab blocks
+     */
+
+    const initThebelab = () => {
+        const addThebelabToCodeCells = () => {
+            console.log("Adding thebelab to code cells...");
+            // If Thebelab hasn't loaded, wait a bit and try again. This
+            // happens because we load ClipboardJS asynchronously.
+            if (window.thebelab === undefined) {
+                setTimeout(addThebelabToCodeCells, 250)
+            return
+            }
+
+            // If we already detect a Thebelab cell, don't re-run
+            if (document.querySelectorAll('div.thebelab-cell').length > 0) {
+                return;
+            }
+
+            // Find all code cells, replace with Thebelab interactive code cells
+            const codeCells = document.querySelectorAll('.input_area pre')
+            codeCells.forEach((codeCell, index) => {
+                const id = codeCellId(index)
+                codeCell.setAttribute('data-executable', 'true')
+
+                // Figure out the language it uses and add this too
+                var parentDiv = codeCell.parentElement.parentElement;
+                var arrayLength = parentDiv.classList.length;
+                for (var ii = 0; ii < arrayLength; ii++) {
+                    var parts = parentDiv.classList[ii].split('language-');
+                    if (parts.length === 2) {
+                        // If found, assign dataLanguage and break the loop
+                        var dataLanguage = parts[1];
+                        break;
+                    }
+                }
+                codeCell.setAttribute('data-language', dataLanguage)
+
+                // If the code cell is hidden, show it
+                var inputCheckbox = document.querySelector(`input#hidebtn${codeCell.id}`);
+                if (inputCheckbox !== null) {
+                    setCodeCellVisibility(inputCheckbox, 'visible');
+                }
+            });
+
+            // Remove the event listener from the page so keyboard press doesn't
+            // Change page
+            document.removeEventListener('keydown', initPageNav)
+            keyboardListener = false;
+
+            // Init thebelab
+            thebelab.bootstrap();
+
+            // Remove copy buttons since they won't work anymore
+            const copyAndThebeButtons = document.querySelectorAll('.copybtn, .thebebtn')
+            copyAndThebeButtons.forEach((button, index) => {
+                button.remove();
+            });
+
+            // Remove outputs since they'll be stale
+            const outputs = document.querySelectorAll('.output *, .output')
+            outputs.forEach((output, index) => {
+                output.remove();
+            });
+        }
+
+        // Add event listener for the function to modify code cells
+        const thebelabButtons = document.querySelectorAll('[id^=thebelab], [id$=thebelab]')
+        thebelabButtons.forEach((thebelabButton,index) => {
+            if (thebelabButton === null) {
+                setTimeout(initThebelab, 250)
+                return
+            };
+            thebelabButton.addEventListener('click', addThebelabToCodeCells);
+        });
+    }
+
+    // Initialize Thebelab
+    initFunction(initThebelab);
+</script>
+
+
+
+  <!-- Load the auto-generating TOC -->
+  <script src="/blog/blog2/assets/js/tocbot.min.js"  type="text/javascript"></script>
+  <script>
+var initToc = function () {
+  tocbot.init({
+    tocSelector: 'nav.onthispage',
+    contentSelector: '.c-textbook__content',
+    headingSelector: 'h2, h3',
+    orderedList: false,
+    collapseDepth: 6,
+    listClass: 'toc__menu',
+    activeListItemClass: "",  // Not using
+    activeLinkClass: "", // Not using
+  });
+  tocbot.refresh();
+}
+initFunction(initToc);
+</script>
+
+  <!-- Google analytics -->
+  <script src="/blog/blog2/assets/js/ga.js" async></script>
+
+  <!-- Clipboard copy button -->
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" async></script>
+
+  <!-- Load JS that depends on site variables -->
+  <script>
+/**
+ * Set up copy/paste for code blocks
+ */
+const codeCellId = index => `codecell${index}`
+
+const clipboardButton = id =>
+  `<a id="copy-button-${id}" class="btn copybtn o-tooltip--left" data-tooltip="Copy" data-clipboard-target="#${id}">
+    <img src="/blog/blog2/assets/images/copy-button.svg" alt="Copy to clipboard">
+  </a>`
+
+// Clears selected text since ClipboardJS will select the text when copying
+const clearSelection = () => {
+  if (window.getSelection) {
+    window.getSelection().removeAllRanges()
+  } else if (document.selection) {
+    document.selection.empty()
+  }
+}
+
+// Changes tooltip text for two seconds, then changes it back
+const temporarilyChangeTooltip = (el, newText) => {
+  const oldText = el.getAttribute('data-tooltip')
+  el.setAttribute('data-tooltip', newText)
+  setTimeout(() => el.setAttribute('data-tooltip', oldText), 2000)
+}
+
+const addCopyButtonToCodeCells = () => {
+  // If ClipboardJS hasn't loaded, wait a bit and try again. This
+  // happens because we load ClipboardJS asynchronously.
+  if (window.ClipboardJS === undefined) {
+    setTimeout(addCopyButtonToCodeCells, 250)
+    return
+  }
+
+  const codeCells = document.querySelectorAll('div.c-textbook__content > div.highlighter-rouge > div.highlight > pre, div.input_area pre')
+  codeCells.forEach((codeCell, index) => {
+    const id = codeCellId(index)
+    codeCell.setAttribute('id', id)
+    if (document.getElementById("copy-button" + id) == null) {
+      codeCell.insertAdjacentHTML('afterend', clipboardButton(id));
+    }
+  })
+
+  const clipboard = new ClipboardJS('.copybtn')
+  clipboard.on('success', event => {
+    clearSelection()
+    temporarilyChangeTooltip(event.trigger, 'Copied!')
+  })
+
+  clipboard.on('error', event => {
+    temporarilyChangeTooltip(event.trigger, 'Failed to copy')
+  })
+
+  // Get rid of clipboard before the next page visit to avoid memory leak
+  document.addEventListener('turbolinks:before-visit', () =>
+    clipboard.destroy()
+  )
+}
+
+initFunction(addCopyButtonToCodeCells);
+</script>
+
+
+  <!-- Hide cell code -->
+  
+<script>
+/**
+Add buttons to hide code cells
+*/
+
+
+var setCodeCellVisibility = function(inputField, kind) {
+    // Update the image and class for hidden
+    var id = inputField.getAttribute('data-id');
+    var codeCell = document.querySelector(`#${id} div.highlight`);
+
+    if (kind === "visible") {
+        codeCell.classList.remove('hidden');
+        inputField.checked = true;
+    } else {
+        codeCell.classList.add('hidden');
+        inputField.checked = false;
+    }
+}
+
+var toggleCodeCellVisibility = function (event) {
+    // The label is clicked, and now we decide what to do based on the input field's clicked status
+    if (event.target.tagName === "LABEL") {
+        var inputField = event.target.previousElementSibling;
+    } else {
+        // It is the span inside the target
+        var inputField = event.target.parentElement.previousElementSibling;
+    }
+
+    if (inputField.checked === true) {
+        setCodeCellVisibility(inputField, "visible");
+    } else {
+        setCodeCellVisibility(inputField, "hidden");
+    }
+}
+
+
+// Button constructor
+const hideCodeButton = id => `<input class="hidebtn" type="checkbox" id="hidebtn${id}" data-id="${id}"><label title="Toggle cell" for="hidebtn${id}" class="plusminus"><span class="pm_h"></span><span class="pm_v"></span></label>`
+
+var addHideButton = function () {
+  // If a hide button is already added, don't add another
+  if (document.querySelector('div.hidecode input') !== null) {
+      return;
+  }
+
+  // Find the input cells and add a hide button
+  document.querySelectorAll('div.input_area').forEach(function (item, index) {
+    if (!item.classList.contains("hidecode")) {
+        // Skip the cell if it doesn't have a hidecode class
+        return;
+    }
+
+    const id = codeCellId(index)
+    item.setAttribute('id', id);
+    // Insert the button just inside the end of the next div
+    item.querySelector('div').insertAdjacentHTML('beforeend', hideCodeButton(id))
+
+    // Set up the visibility toggle
+    hideLink = document.querySelector(`#${id} div.highlight + input + label`);
+    hideLink.addEventListener('click', toggleCodeCellVisibility)
+  });
+}
+
+
+// Initialize the hide buttos
+var initHiddenCells = function () {
+    // Add hide buttons to the cells
+    addHideButton();
+
+    // Toggle the code cells that should be hidden
+    document.querySelectorAll('div.hidecode input').forEach(function (item) {
+        setCodeCellVisibility(item, 'hidden');
+        item.checked = true;
+    })
+}
+
+initFunction(initHiddenCells);
+
+</script>
+
+
+  <!-- Load custom website scripts -->
+  <script src="/blog/blog2/assets/js/scripts.js" async></script>
+
+  <!-- Load custom user CSS and JS  -->
+  <script src="/blog/blog2/assets/custom/custom.js" async></script>
+  <link rel="stylesheet" href="/blog/blog2/assets/custom/custom.css">
+
+  <!-- Update interact links w/ REST param, is defined in includes so we can use templates -->
+  
+<script>
+/**
+  * To auto-embed hub URLs in interact links if given in a RESTful fashion
+ */
+
+function getJsonFromUrl(url) {
+  var query = url.split('?');
+  if (query.length < 2) {
+    // No queries so just return false
+    return false;
+  }
+  query = query[1];
+  // Collect REST params into a dictionary
+  var result = {};
+  query.split("&").forEach(function(part) {
+    var item = part.split("=");
+    result[item[0]] = decodeURIComponent(item[1]);
+  });
+  return result;
+}
+    
+function dict2param(dict) {
+    params = Object.keys(dict).map(function(k) {
+        return encodeURIComponent(k) + '=' + encodeURIComponent(dict[k])
+    });
+    return params.join('&')
+}
+
+// Parse a Binder URL, converting it to the string needed for JupyterHub
+function binder2Jupyterhub(url) {
+  newUrl = {};
+  parts = url.split('v2/gh/')[1];
+  // Grab the base repo information
+  repoinfo = parts.split('?')[0];
+  var [org, repo, ref] = repoinfo.split('/');
+  newUrl['repo'] = ['https://github.com', org, repo].join('/');
+  newUrl['branch'] = ref
+  // Grab extra parameters passed
+  params = getJsonFromUrl(url);
+  if (params['filepath'] !== undefined) {
+    newUrl['subPath'] = params['filepath']
+  }
+  return dict2param(newUrl);
+}
+
+// Filter out potentially unsafe characters to prevent xss
+function safeUrl(url)
+{
+   return String(encodeURIComponent(url))
+            .replace(/&/g, '&amp;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+}
+
+function addParamToInternalLinks(hub) {
+  var links = document.querySelectorAll("a").forEach(function(link) {
+    var href = link.href;
+    // If the link is an internal link...
+    if (href.search("https://jupyter.org") !== -1 || href.startsWith('/') || href.search("127.0.0.1:") !== -1) {
+      // Assume we're an internal link, add the hub param to it
+      var params = getJsonFromUrl(href);
+      if (params !== false) {
+        // We have REST params, so append a new one
+        params['jupyterhub'] = hub;
+      } else {
+        // Create the REST params
+        params = {'jupyterhub': hub};
+      }
+      // Update the link
+      var newHref = href.split('?')[0] + '?' + dict2param(params);
+      link.setAttribute('href', decodeURIComponent(newHref));
+    }
+  });
+  return false;
+}
+
+
+// Update interact links
+function updateInteractLink() {
+    // hack to make this work since it expects a ? in the URL
+    rest = getJsonFromUrl("?" + location.search.substr(1));
+    jupyterHubUrl = rest['jupyterhub'];
+    var hubType = null;
+    var hubUrl = null;
+    if (jupyterHubUrl !== undefined) {
+      hubType = 'jupyterhub';
+      hubUrl = jupyterHubUrl;
+    }
+
+    if (hubType !== null) {
+      // Sanitize the hubUrl
+      hubUrl = safeUrl(hubUrl);
+
+      // Add HTTP text if omitted
+      if (hubUrl.indexOf('http') < 0) {hubUrl = 'http://' + hubUrl;}
+      var interactButtons = document.querySelectorAll("button.interact-button")
+      var lastButton = interactButtons[interactButtons.length-1];
+      var link = lastButton.parentElement;
+
+      // If we've already run this, skip the link updating
+      if (link.nextElementSibling !== null) {
+        return;
+      }
+
+      // Update the link and add context div
+      var href = link.getAttribute('href');
+      if (lastButton.id === 'interact-button-binder') {
+        // If binder links exist, we need to re-work them for jupyterhub
+        if (hubUrl.indexOf('http%3A%2F%2Flocalhost') > -1) {
+          // If localhost, assume we're working from a local Jupyter server and remove `/hub`
+          first = [hubUrl, 'git-sync'].join('/')
+        } else {
+          first = [hubUrl, 'hub', 'user-redirect', 'git-sync'].join('/')
+        }
+        href = first + '?' + binder2Jupyterhub(href);
+      } else {
+        // If interact button isn't binderhub, assume it's jupyterhub
+        // If JupyterHub links, we only need to replace the hub url
+        href = href.replace("", hubUrl);
+        if (hubUrl.indexOf('http%3A%2F%2Flocalhost') > -1) {
+          // Assume we're working from a local Jupyter server and remove `/hub`
+          href = href.replace("/hub/user-redirect", "");
+        }
+      }
+      link.setAttribute('href', decodeURIComponent(href));
+
+      // Add text after interact link saying where we're launching
+      hubUrlNoHttp = decodeURIComponent(hubUrl).replace('http://', '').replace('https://', '');
+      link.insertAdjacentHTML('afterend', '<div class="interact-context">on ' + hubUrlNoHttp + '</div>');
+
+      // Update internal links so we retain the hub url
+      addParamToInternalLinks(hubUrl);
+    }
+}
+
+runWhenDOMLoaded(updateInteractLink)
+document.addEventListener('turbolinks:load', updateInteractLink)
+</script>
+
+
+  <!-- Lunr search code - will only be executed on the /search page -->
+  <script src="/blog/blog2/assets/js/lunr/lunr.min.js" type="text/javascript"></script>
+  <script>var initQuery = function() {
+  // See if we have a search box
+  var searchInput = document.querySelector('input#lunr_search');
+  if (searchInput === null) {
+    return;
+  }
+
+  // Function to parse our lunr cache
+  var idx = lunr(function () {
+    this.field('title')
+    this.field('excerpt')
+    this.field('categories')
+    this.field('tags')
+    this.ref('id')
+
+    this.pipeline.remove(lunr.trimmer)
+
+    for (var item in store) {
+      this.add({
+        title: store[item].title,
+        excerpt: store[item].excerpt,
+        categories: store[item].categories,
+        tags: store[item].tags,
+        id: item
+      })
+    }
+  });
+
+  // Run search upon keyup
+  searchInput.addEventListener('keyup', function () {
+    var resultdiv = document.querySelector('#results');
+    var query = document.querySelector("input#lunr_search").value.toLowerCase();
+    var result =
+      idx.query(function (q) {
+        query.split(lunr.tokenizer.separator).forEach(function (term) {
+          q.term(term, { boost: 100 })
+          if(query.lastIndexOf(" ") != query.length-1){
+            q.term(term, {  usePipeline: false, wildcard: lunr.Query.wildcard.TRAILING, boost: 10 })
+          }
+          if (term != ""){
+            q.term(term, {  usePipeline: false, editDistance: 1, boost: 1 })
+          }
+        })
+      });
+
+      // Empty the results div
+      while (resultdiv.firstChild) {
+        resultdiv.removeChild(resultdiv.firstChild);
+      }
+
+    resultdiv.insertAdjacentHTML('afterbegin', '<p class="results__found">'+result.length+' Result(s) found</p>');
+    for (var item in result) {
+      var ref = result[item].ref;
+      if(store[ref].teaser){
+        var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<div class="archive__item-teaser">'+
+                '<img src="'+store[ref].teaser+'" alt="">'+
+              '</div>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      else{
+    	  var searchitem =
+          '<div class="list__item">'+
+            '<article class="archive__item" itemscope itemtype="https://schema.org/CreativeWork">'+
+              '<h2 class="archive__item-title" itemprop="headline">'+
+                '<a href="'+store[ref].url+'" rel="permalink">'+store[ref].title+'</a>'+
+              '</h2>'+
+              '<p class="archive__item-excerpt" itemprop="description">'+store[ref].excerpt.split(" ").splice(0,20).join(" ")+'...</p>'+
+            '</article>'+
+          '</div>';
+      }
+      resultdiv.insertAdjacentHTML('beforeend', searchitem);
+    }
+  });
+};
+
+initFunction(initQuery);
+</script>
+</head>
+
+  <body>
+    <!-- .js-show-sidebar shows sidebar by default -->
+    <div id="js-textbook" class="c-textbook js-show-sidebar">
+      
+
+
+
+<nav id="js-sidebar" class="c-textbook__sidebar">
+  <a href="https://jupyter.org/jupyter-book/intro.html"><img src="/blog/blog2/images/logo/logo.png" class="textbook_logo" id="sidebar-logo" data-turbolinks-permanent/></a>
+  <h2 class="c-sidebar__title">MyBook</h2>
+  <ul class="c-sidebar__chapters">
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/00Example/index.html"
+        >
+          
+            1.
+          
+          00Example
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/1/index.html"
+                >
+                  
+                    1.1
+                  
+                  1
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/1/1/index.html"
+                    >
+                      
+                        1.1.1
+                        
+                      
+                      1
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/1/2/index.html"
+                    >
+                      
+                        1.1.2
+                        
+                      
+                      2
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/1/intro.html"
+                    >
+                      
+                        1.1.3
+                        
+                      
+                      intro
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/2/index.html"
+                >
+                  
+                    1.2
+                  
+                  2
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/2/why-data-science.html"
+                    >
+                      
+                        1.2.1
+                        
+                      
+                      why-data-science
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/3/index.html"
+                >
+                  
+                    1.3
+                  
+                  3
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/3/Plotting_the_Classics.html"
+                    >
+                      
+                        1.3.1
+                        
+                      
+                      Plotting_the_Classics
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/3/subsection/index.html"
+                    >
+                      
+                        1.3.2
+                        
+                      
+                      subsection
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/4/index.html"
+                >
+                  
+                    1.4
+                  
+                  4
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/4/endnote.html"
+                    >
+                      
+                        1.4.1
+                        
+                      
+                      endnote
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/4/establishing-causality.html"
+                    >
+                      
+                        1.4.2
+                        
+                      
+                      establishing-causality
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/4/observation-and-visualization-john-snow-and-the-broad-street-pump.html"
+                    >
+                      
+                        1.4.3
+                        
+                      
+                      observation-and-visualization-john-snow-and-the-broad-street-pump
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/4/randomization.html"
+                    >
+                      
+                        1.4.4
+                        
+                      
+                      randomization
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/4/snow-s-grand-experiment.html"
+                    >
+                      
+                        1.4.5
+                        
+                      
+                      snow-s-grand-experiment
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/Calls.html"
+                >
+                  
+                    1.5
+                  
+                  Calls
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/causality-and-experiments.html"
+                >
+                  
+                    1.6
+                  
+                  causality-and-experiments
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/Expressions.html"
+                >
+                  
+                    1.7
+                  
+                  Expressions
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/features/index.html"
+                >
+                  
+                    1.8
+                  
+                  features
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/features/citations.html"
+                    >
+                      
+                        1.8.1
+                        
+                      
+                      citations
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/features/features.html"
+                    >
+                      
+                        1.8.2
+                        
+                      
+                      features
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/features/hiding.html"
+                    >
+                      
+                        1.8.3
+                        
+                      
+                      hiding
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/features/interact.html"
+                    >
+                      
+                        1.8.4
+                        
+                      
+                      interact
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/features/interactive_cells.html"
+                    >
+                      
+                        1.8.5
+                        
+                      
+                      interactive_cells
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/features/limits.html"
+                    >
+                      
+                        1.8.6
+                        
+                      
+                      limits
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/features/markdown.html"
+                    >
+                      
+                        1.8.7
+                        
+                      
+                      markdown
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/features/notebooks.html"
+                    >
+                      
+                        1.8.8
+                        
+                      
+                      notebooks
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00Example/features/search.html"
+                    >
+                      
+                        1.8.9
+                        
+                      
+                      search
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/Growth.html"
+                >
+                  
+                    1.9
+                  
+                  Growth
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/Introduction_to_Tables.html"
+                >
+                  
+                    1.10
+                  
+                  Introduction_to_Tables
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/Names.html"
+                >
+                  
+                    1.11
+                  
+                  Names
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/Numbers.html"
+                >
+                  
+                    1.12
+                  
+                  Numbers
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/programming-in-python.html"
+                >
+                  
+                    1.13
+                  
+                  programming-in-python
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/Strings.html"
+                >
+                  
+                    1.14
+                  
+                  Strings
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/Types.html"
+                >
+                  
+                    1.15
+                  
+                  Types
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00Example/what-is-data-science.html"
+                >
+                  
+                    1.16
+                  
+                  what-is-data-science
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/00TensorFlow/index.html"
+        >
+          
+            2.
+          
+          00TensorFlow
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00TensorFlow/DNN%E5%AE%9E%E4%BE%8B%E4%BB%A3%E7%A0%81%E5%9D%97.html"
+                >
+                  
+                    2.1
+                  
+                  DNN实例代码块
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00TensorFlow/DSSM%E5%8F%8C%E5%A1%94%E6%A8%A1%E5%9E%8B.html"
+                >
+                  
+                    2.2
+                  
+                  DSSM双塔模型
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00TensorFlow/keras-RNN%E5%AE%9E%E4%BE%8B.html"
+                >
+                  
+                    2.3
+                  
+                  keras-RNN实例
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00TensorFlow/KerasExample/index.html"
+                >
+                  
+                    2.4
+                  
+                  KerasExample
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/KerasExample/addition_rnn.html"
+                    >
+                      
+                        2.4.1
+                        
+                      
+                      addition_rnn
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/KerasExample/antirectifier.html"
+                    >
+                      
+                        2.4.2
+                        
+                      
+                      antirectifier
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/KerasExample/babi_memnn.html"
+                    >
+                      
+                        2.4.3
+                        
+                      
+                      babi_memnn
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/KerasExample/babi_rnn.html"
+                    >
+                      
+                        2.4.4
+                        
+                      
+                      babi_rnn
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/KerasExample/image_ocr.html"
+                    >
+                      
+                        2.4.5
+                        
+                      
+                      image_ocr
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/KerasExample/imdb_bidirectional_lstm.html"
+                    >
+                      
+                        2.4.6
+                        
+                      
+                      imdb_bidirectional_lstm
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/KerasExample/imdb_cnn.html"
+                    >
+                      
+                        2.4.7
+                        
+                      
+                      imdb_cnn
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/KerasExample/imdb_cnn_lstm.html"
+                    >
+                      
+                        2.4.8
+                        
+                      
+                      imdb_cnn_lstm
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/KerasExample/imdb_lstm.html"
+                    >
+                      
+                        2.4.9
+                        
+                      
+                      imdb_lstm
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/KerasExample/lstm-seq2seq.html"
+                    >
+                      
+                        2.4.10
+                        
+                      
+                      lstm-seq2seq
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/KerasExample/mnist_acgan.html"
+                    >
+                      
+                        2.4.11
+                        
+                      
+                      mnist_acgan
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/KerasExample/mnist_mlp.html"
+                    >
+                      
+                        2.4.12
+                        
+                      
+                      mnist_mlp
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/KerasExample/README.html"
+                    >
+                      
+                        2.4.13
+                        
+                      
+                      README
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/KerasExample/reuters_mlp.html"
+                    >
+                      
+                        2.4.14
+                        
+                      
+                      reuters_mlp
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/KerasExample/tensorboard_embeddings_mnist.html"
+                    >
+                      
+                        2.4.15
+                        
+                      
+                      tensorboard_embeddings_mnist
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00TensorFlow/keras%E6%97%A5%E5%B8%B8%E5%B0%8F%E5%B7%A5%E5%85%B7.html"
+                >
+                  
+                    2.5
+                  
+                  keras日常小工具
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00TensorFlow/kera%E5%AD%A6%E4%B9%A0-%E6%9B%B4%E6%96%B0.html"
+                >
+                  
+                    2.6
+                  
+                  kera学习-更新
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00TensorFlow/kera%E5%AE%9E%E4%BE%8B%E4%BA%8C.html"
+                >
+                  
+                    2.7
+                  
+                  kera实例二
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00TensorFlow/recommendation/index.html"
+                >
+                  
+                    2.8
+                  
+                  recommendation
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/recommendation/DeepFM%E6%A8%A1%E5%9E%8B%E7%90%86%E8%AE%BA%E5%92%8C%E5%AE%9E%E8%B7%B5.html"
+                    >
+                      
+                        2.8.1
+                        
+                      
+                      DeepFM模型理论和实践
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/recommendation/DIN%E6%A8%A1%E5%9E%8B%E7%90%86%E8%AE%BA%E5%92%8C%E5%AE%9E%E8%B7%B5.html"
+                    >
+                      
+                        2.8.2
+                        
+                      
+                      DIN模型理论和实践
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/recommendation/LR.html"
+                    >
+                      
+                        2.8.3
+                        
+                      
+                      LR
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/recommendation/MLR%E6%A8%A1%E5%9E%8B%E7%90%86%E8%AE%BA%E5%92%8C%E5%AE%9E%E8%B7%B5.html"
+                    >
+                      
+                        2.8.4
+                        
+                      
+                      MLR模型理论和实践
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/00TensorFlow/tensorflowExample/index.html"
+                >
+                  
+                    2.9
+                  
+                  tensorflowExample
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0001-ml_introduction.html"
+                    >
+                      
+                        2.9.1
+                        
+                      
+                      0001-ml_introduction
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0002-mnist_dataset_intro.html"
+                    >
+                      
+                        2.9.2
+                        
+                      
+                      0002-mnist_dataset_intro
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0101-helloworld.html"
+                    >
+                      
+                        2.9.3
+                        
+                      
+                      0101-helloworld
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0102-basic_eager_api.html"
+                    >
+                      
+                        2.9.4
+                        
+                      
+                      0102-basic_eager_api
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0103-basic_operations.html"
+                    >
+                      
+                        2.9.5
+                        
+                      
+                      0103-basic_operations
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0201-linear_regression_eager_api.html"
+                    >
+                      
+                        2.9.6
+                        
+                      
+                      0201-linear_regression_eager_api
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0202-linear_regression.html"
+                    >
+                      
+                        2.9.7
+                        
+                      
+                      0202-linear_regression
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0203-logistic_regression_eager_api.html"
+                    >
+                      
+                        2.9.8
+                        
+                      
+                      0203-logistic_regression_eager_api
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0204-nearest_neighbor.html"
+                    >
+                      
+                        2.9.9
+                        
+                      
+                      0204-nearest_neighbor
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0205-kmeans.html"
+                    >
+                      
+                        2.9.10
+                        
+                      
+                      0205-kmeans
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0206-LR.html"
+                    >
+                      
+                        2.9.11
+                        
+                      
+                      0206-LR
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0207-GBDT.html"
+                    >
+                      
+                        2.9.12
+                        
+                      
+                      0207-GBDT
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0208-word2vec.html"
+                    >
+                      
+                        2.9.13
+                        
+                      
+                      0208-word2vec
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0209-random_forest.html"
+                    >
+                      
+                        2.9.14
+                        
+                      
+                      0209-random_forest
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0301-autoencoder.html"
+                    >
+                      
+                        2.9.15
+                        
+                      
+                      0301-autoencoder
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0302-bidirectional_rnn.html"
+                    >
+                      
+                        2.9.16
+                        
+                      
+                      0302-bidirectional_rnn
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0303-convolutional_network_raw.html"
+                    >
+                      
+                        2.9.17
+                        
+                      
+                      0303-convolutional_network_raw
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0304-convolutional_network.html"
+                    >
+                      
+                        2.9.18
+                        
+                      
+                      0304-convolutional_network
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0305-dcgan.html"
+                    >
+                      
+                        2.9.19
+                        
+                      
+                      0305-dcgan
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0306-dynamic_rnn.html"
+                    >
+                      
+                        2.9.20
+                        
+                      
+                      0306-dynamic_rnn
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0307-gan.html"
+                    >
+                      
+                        2.9.21
+                        
+                      
+                      0307-gan
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0308-neural_network_eager_api.html"
+                    >
+                      
+                        2.9.22
+                        
+                      
+                      0308-neural_network_eager_api
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0309-neural_network_raw.html"
+                    >
+                      
+                        2.9.23
+                        
+                      
+                      0309-neural_network_raw
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0310-neural_network.html"
+                    >
+                      
+                        2.9.24
+                        
+                      
+                      0310-neural_network
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0311-recurrent_network.html"
+                    >
+                      
+                        2.9.25
+                        
+                      
+                      0311-recurrent_network
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0312-variational_autoencoder.html"
+                    >
+                      
+                        2.9.26
+                        
+                      
+                      0312-variational_autoencoder
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0401-save_restore_model.html"
+                    >
+                      
+                        2.9.27
+                        
+                      
+                      0401-save_restore_model
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0402-tensorboard_advanced.html"
+                    >
+                      
+                        2.9.28
+                        
+                      
+                      0402-tensorboard_advanced
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0403-tensorboard_basic.html"
+                    >
+                      
+                        2.9.29
+                        
+                      
+                      0403-tensorboard_basic
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0501-build_an_image_dataset.html"
+                    >
+                      
+                        2.9.30
+                        
+                      
+                      0501-build_an_image_dataset
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0502-tensorflow_dataset_api.html"
+                    >
+                      
+                        2.9.31
+                        
+                      
+                      0502-tensorflow_dataset_api
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0601-multigpu_basics.html"
+                    >
+                      
+                        2.9.32
+                        
+                      
+                      0601-multigpu_basics
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/00TensorFlow/tensorflowExample/0602-multigpu_cnn.html"
+                    >
+                      
+                        2.9.33
+                        
+                      
+                      0602-multigpu_cnn
+                    </a>
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/13%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/index.html"
+        >
+          
+            3.
+          
+          13推荐系统
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/13%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/test.html"
+                >
+                  
+                    3.1
+                  
+                  test
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/index.html"
+        >
+          
+            4.
+          
+          14常见算法
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/adaBoost/index.html"
+                >
+                  
+                    4.1
+                  
+                  adaBoost
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/adaBoost/AdaBoost.html"
+                    >
+                      
+                        4.1.1
+                        
+                      
+                      AdaBoost
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/adaBoost/AdaBoost%E5%85%83%E7%AE%97%E6%B3%95%E6%8F%90%E9%AB%98%E5%88%86%E7%B1%BB%E6%80%A7%E8%83%BD.html"
+                    >
+                      
+                        4.1.2
+                        
+                      
+                      AdaBoost元算法提高分类性能
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/apriori/index.html"
+                >
+                  
+                    4.2
+                  
+                  apriori
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/apriori/apriori.html"
+                    >
+                      
+                        4.2.1
+                        
+                      
+                      apriori
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/bayes/index.html"
+                >
+                  
+                    4.3
+                  
+                  bayes
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/bayes/naiveBayes.html"
+                    >
+                      
+                        4.3.1
+                        
+                      
+                      naiveBayes
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/boost/index.html"
+                >
+                  
+                    4.4
+                  
+                  boost
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/boost/Boost%E7%AE%80%E4%BB%8B.html"
+                    >
+                      
+                        4.4.1
+                        
+                      
+                      Boost简介
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/ES%E6%9F%A5%E8%AF%A2.html"
+                >
+                  
+                    4.5
+                  
+                  ES查询
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/fp-growth/index.html"
+                >
+                  
+                    4.6
+                  
+                  fp-growth
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/fp-growth/fp-growth.html"
+                    >
+                      
+                        4.6.1
+                        
+                      
+                      fp-growth
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/k-Nearest%20Neighbor/index.html"
+                >
+                  
+                    4.7
+                  
+                  k-Nearest Neighbor
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/k-Nearest%20Neighbor/knn.html"
+                    >
+                      
+                        4.7.1
+                        
+                      
+                      knn
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/k-Nearest%20Neighbor/knn_%E5%8E%9F%E7%89%88.html"
+                    >
+                      
+                        4.7.2
+                        
+                      
+                      knn_原版
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/kmeans/index.html"
+                >
+                  
+                    4.8
+                  
+                  kmeans
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/kmeans/kmeans.html"
+                    >
+                      
+                        4.8.1
+                        
+                      
+                      kmeans
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/line-regression/index.html"
+                >
+                  
+                    4.9
+                  
+                  line-regression
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/line-regression/line_regression.html"
+                    >
+                      
+                        4.9.1
+                        
+                      
+                      line_regression
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/line-regression/LR.html"
+                    >
+                      
+                        4.9.2
+                        
+                      
+                      LR
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/logistic/index.html"
+                >
+                  
+                    4.10
+                  
+                  logistic
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/logistic/logistic-code.html"
+                    >
+                      
+                        4.10.1
+                        
+                      
+                      logistic-code
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/logistic/logistic-%E7%90%86%E8%AE%BA.html"
+                    >
+                      
+                        4.10.2
+                        
+                      
+                      logistic-理论
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/logistic/temo.html"
+                    >
+                      
+                        4.10.3
+                        
+                      
+                      temo
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/pca/index.html"
+                >
+                  
+                    4.11
+                  
+                  pca
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/pca/pca.html"
+                    >
+                      
+                        4.11.1
+                        
+                      
+                      pca
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/pca%E4%B8%8Esvd%E7%9A%84%E6%AF%94%E8%BE%83/index.html"
+                >
+                  
+                    4.12
+                  
+                  pca与svd的比较
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/pca%E4%B8%8Esvd%E7%9A%84%E6%AF%94%E8%BE%83/pca.html"
+                    >
+                      
+                        4.12.1
+                        
+                      
+                      pca
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/README.html"
+                >
+                  
+                    4.13
+                  
+                  README
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/regressionTree/index.html"
+                >
+                  
+                    4.14
+                  
+                  regressionTree
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/regressionTree/CART.html"
+                    >
+                      
+                        4.14.1
+                        
+                      
+                      CART
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/svd/index.html"
+                >
+                  
+                    4.15
+                  
+                  svd
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/svd/collaborative_filter.html"
+                    >
+                      
+                        4.15.1
+                        
+                      
+                      collaborative_filter
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/svd/svd.html"
+                    >
+                      
+                        4.15.2
+                        
+                      
+                      svd
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/svm/index.html"
+                >
+                  
+                    4.16
+                  
+                  svm
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/svm/smo.html"
+                    >
+                      
+                        4.16.1
+                        
+                      
+                      smo
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/Untitled.html"
+                >
+                  
+                    4.17
+                  
+                  Untitled
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/xgboost/index.html"
+                >
+                  
+                    4.18
+                  
+                  xgboost
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/xgboost/xgboost.html"
+                    >
+                      
+                        4.18.1
+                        
+                      
+                      xgboost
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/xgboost/%E5%8D%81%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8Bxgboost.html"
+                    >
+                      
+                        4.18.2
+                        
+                      
+                      十分钟上手xgboost
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E5%86%B3%E7%AD%96%E6%A0%91(DecisionTree)/index.html"
+                >
+                  
+                    4.19
+                  
+                  决策树(DecisionTree)
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E5%86%B3%E7%AD%96%E6%A0%91(DecisionTree)/decisionTree.html"
+                    >
+                      
+                        4.19.1
+                        
+                      
+                      decisionTree
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E5%86%B3%E7%AD%96%E6%A0%91(DecisionTree)/%E5%86%B3%E7%AD%96%E6%A0%91%E7%AE%80%E4%BB%8B.html"
+                    >
+                      
+                        4.19.2
+                        
+                      
+                      决策树简介
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E5%BB%BA%E6%A8%A1%E8%BF%87%E7%A8%8B.html"
+                >
+                  
+                    4.20
+                  
+                  建模过程
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/index.html"
+                >
+                  
+                    4.21
+                  
+                  推荐算法
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/%E5%8D%8F%E5%90%8C%E8%BF%87%E6%BB%A4%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93.html"
+                    >
+                      
+                        4.21.1
+                        
+                      
+                      协同过滤推荐算法总结
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/%E7%9F%A9%E9%98%B5%E5%88%86%E8%A7%A3.html"
+                    >
+                      
+                        4.21.2
+                        
+                      
+                      矩阵分解
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/index.html"
+                >
+                  
+                    4.22
+                  
+                  文本挖掘
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/LDA%E6%A8%A1%E5%9E%8B.html"
+                    >
+                      
+                        4.22.1
+                        
+                      
+                      LDA模型
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/Word2Vec.html"
+                    >
+                      
+                        4.22.2
+                        
+                      
+                      Word2Vec
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/%E6%96%87%E6%9C%AC%E4%B8%BB%E9%A2%98%E6%A8%A1%E5%9E%8B%E4%B9%8B%E6%BD%9C%E5%9C%A8%E8%AF%AD%E4%B9%89%E7%B4%A2%E5%BC%95(LSI).html"
+                    >
+                      
+                        4.22.3
+                        
+                      
+                      文本主题模型之潜在语义索引(LSI)
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98%E9%A2%84%E5%A4%84%E7%90%86%E4%B9%8BTF-IDF.html"
+                    >
+                      
+                        4.22.4
+                        
+                      
+                      文本挖掘预处理之TF-IDF
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%96%87%E6%9C%AC%E6%8C%96%E6%8E%98/%E9%9A%90%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E6%A8%A1%E5%9E%8BHMM.html"
+                    >
+                      
+                        4.22.5
+                        
+                      
+                      隐马尔科夫模型HMM
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/index.html"
+                >
+                  
+                    4.23
+                  
+                  深度学习
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/LSTM.html"
+                    >
+                      
+                        4.23.1
+                        
+                      
+                      LSTM
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/RNN.html"
+                    >
+                      
+                        4.23.2
+                        
+                      
+                      RNN
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/Seq2Seq.html"
+                    >
+                      
+                        4.23.3
+                        
+                      
+                      Seq2Seq
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/TensorFlow-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A4%84%E7%90%86.html"
+                    >
+                      
+                        4.23.4
+                        
+                      
+                      TensorFlow-字符串处理
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/tensorflow%E5%AD%A6%E4%B9%A0.html"
+                    >
+                      
+                        4.23.5
+                        
+                      
+                      tensorflow学习
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/TensorFlow%E5%B8%B8%E8%A7%81%E4%BB%A3%E7%A0%81%E5%9D%97.html"
+                    >
+                      
+                        4.23.6
+                        
+                      
+                      TensorFlow常见代码块
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/tf%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95.html"
+                    >
+                      
+                        4.23.7
+                        
+                      
+                      tf优化方法
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/tf%E5%87%BD%E6%95%B0.html"
+                    >
+                      
+                        4.23.8
+                        
+                      
+                      tf函数
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/%E4%BA%BA%E5%B7%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html"
+                    >
+                      
+                        4.23.9
+                        
+                      
+                      人工神经网络
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/index.html"
+                >
+                  
+                    4.24
+                  
+                  神经网络
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/AutoEncoder-%E8%87%AA%E7%BC%96%E7%A0%81%E5%AE%9E%E8%B7%B5.html"
+                    >
+                      
+                        4.24.1
+                        
+                      
+                      AutoEncoder-自编码实践
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/AutoEncoder-%E8%87%AA%E7%BC%96%E7%A0%81%E7%90%86%E8%AE%BA.html"
+                    >
+                      
+                        4.24.2
+                        
+                      
+                      AutoEncoder-自编码理论
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/CNN-%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA.html"
+                    >
+                      
+                        4.24.3
+                        
+                      
+                      CNN-卷积神经网络理论
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/DNN-%E6%B7%B1%E5%BA%A6%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.html"
+                    >
+                      
+                        4.24.4
+                        
+                      
+                      DNN-深度神经网络
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/LSTM-%E9%95%BF%E7%9F%AD%E6%9C%9F%E8%AE%B0%E5%BF%86%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA.html"
+                    >
+                      
+                        4.24.5
+                        
+                      
+                      LSTM-长短期记忆网络理论
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/PCA-%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90.html"
+                    >
+                      
+                        4.24.6
+                        
+                      
+                      PCA-主成分分析
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/RBM-%E5%8F%97%E9%99%90%E7%8E%BB%E5%B0%94%E5%85%B9%E6%9B%BC%E6%9C%BA%E5%AE%9E%E8%B7%B5.html"
+                    >
+                      
+                        4.24.7
+                        
+                      
+                      RBM-受限玻尔兹曼机实践
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/RBM-%E5%8F%97%E9%99%90%E7%8E%BB%E5%B0%94%E5%85%B9%E6%9B%BC%E6%9C%BA%E7%90%86%E8%AE%BA.html"
+                    >
+                      
+                        4.24.8
+                        
+                      
+                      RBM-受限玻尔兹曼机理论
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/RNN-%E9%80%92%E5%BD%92%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%90%86%E8%AE%BA.html"
+                    >
+                      
+                        4.24.9
+                        
+                      
+                      RNN-递归神经网络理论
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%90%91%E9%87%8F%E9%99%8D%E7%BB%B4.html"
+                    >
+                      
+                        4.24.10
+                        
+                      
+                      向量降维
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%B8%B8%E8%A7%81%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E6%B1%87%E6%80%BB.html"
+                    >
+                      
+                        4.24.11
+                        
+                      
+                      常见损失函数汇总
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/14%E5%B8%B8%E8%A7%81%E7%AE%97%E6%B3%95/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/%E5%B8%B8%E8%A7%81%E6%BF%80%E5%8A%B1%E5%87%BD%E6%95%B0%E6%B1%87%E6%80%BB.html"
+                    >
+                      
+                        4.24.12
+                        
+                      
+                      常见激励函数汇总
+                    </a>
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/15tools/index.html"
+        >
+          
+            5.
+          
+          15tools
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/15tools/latex/index.html"
+                >
+                  
+                    5.1
+                  
+                  latex
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/latex/LaTeX%E5%85%AC%E5%BC%8F%E5%AE%9E%E4%BE%8B.html"
+                    >
+                      
+                        5.1.1
+                        
+                      
+                      LaTeX公式实例
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/latex/latex%E5%85%AC%E5%BC%8F%E7%BC%96%E5%8F%B7.html"
+                    >
+                      
+                        5.1.2
+                        
+                      
+                      latex公式编号
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/latex/%E5%8D%81%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8BLaTeX.html"
+                    >
+                      
+                        5.1.3
+                        
+                      
+                      十分钟上手LaTeX
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/15tools/numpy/index.html"
+                >
+                  
+                    5.2
+                  
+                  numpy
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/numpy/numpy%E6%95%99%E7%A8%8B00.html"
+                    >
+                      
+                        5.2.1
+                        
+                      
+                      numpy教程00
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/numpy/numpy%E6%95%99%E7%A8%8B01.html"
+                    >
+                      
+                        5.2.2
+                        
+                      
+                      numpy教程01
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/numpy/numpy%E6%95%99%E7%A8%8B02.html"
+                    >
+                      
+                        5.2.3
+                        
+                      
+                      numpy教程02
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/numpy/numpy%E6%95%99%E7%A8%8B03.html"
+                    >
+                      
+                        5.2.4
+                        
+                      
+                      numpy教程03
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/15tools/pandas/index.html"
+                >
+                  
+                    5.3
+                  
+                  pandas
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/pandas/pandas.html"
+                    >
+                      
+                        5.3.1
+                        
+                      
+                      pandas
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/pandas/pandas%E5%87%BD%E6%95%B0%E6%B7%B1%E5%85%A5.html"
+                    >
+                      
+                        5.3.2
+                        
+                      
+                      pandas函数深入
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/pandas/pandas%E6%95%99%E7%A8%8B01.html"
+                    >
+                      
+                        5.3.3
+                        
+                      
+                      pandas教程01
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/pandas/pandas%E6%95%99%E7%A8%8B02.html"
+                    >
+                      
+                        5.3.4
+                        
+                      
+                      pandas教程02
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/pandas/pandas%E6%95%99%E7%A8%8B03.html"
+                    >
+                      
+                        5.3.5
+                        
+                      
+                      pandas教程03
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/pandas/%E5%8D%81%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8BPandas.html"
+                    >
+                      
+                        5.3.6
+                        
+                      
+                      十分钟上手Pandas
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/pandas/%E5%8D%81%E5%88%86%E9%92%9F%E4%B8%8A%E6%89%8BPandas%E5%87%BD%E6%95%B0.html"
+                    >
+                      
+                        5.3.7
+                        
+                      
+                      十分钟上手Pandas函数
+                    </a>
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/15tools/%E7%94%BB%E5%9B%BE/index.html"
+                >
+                  
+                    5.4
+                  
+                  画图
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bfolium%E5%9C%B0%E5%9B%BE.html"
+                    >
+                      
+                        5.4.1
+                        
+                      
+                      python画图之folium地图
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bpycharts-3D%E5%9B%BE.html"
+                    >
+                      
+                        5.4.2
+                        
+                      
+                      python画图之pycharts-3D图
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bpycharts-kline.html"
+                    >
+                      
+                        5.4.3
+                        
+                      
+                      python画图之pycharts-kline
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bpycharts-%E5%85%B6%E4%BB%96.html"
+                    >
+                      
+                        5.4.4
+                        
+                      
+                      python画图之pycharts-其他
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bpycharts-%E5%85%B6%E4%BB%96%E5%9D%90%E6%A0%87%E7%B3%BB.html"
+                    >
+                      
+                        5.4.5
+                        
+                      
+                      python画图之pycharts-其他坐标系
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bpycharts-%E5%9C%B0%E5%9B%BE.html"
+                    >
+                      
+                        5.4.6
+                        
+                      
+                      python画图之pycharts-地图
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bpycharts-%E7%9B%B4%E8%A7%92%E5%9D%90%E6%A0%87%E7%B3%BB.html"
+                    >
+                      
+                        5.4.7
+                        
+                      
+                      python画图之pycharts-直角坐标系
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/%E7%94%BB%E5%9B%BE/python%E7%94%BB%E5%9B%BE%E4%B9%8Bpycharts-%E7%AE%80%E4%BB%8B.html"
+                    >
+                      
+                        5.4.8
+                        
+                      
+                      python画图之pycharts-简介
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/15tools/%E7%94%BB%E5%9B%BE/Untitled.html"
+                    >
+                      
+                        5.4.9
+                        
+                      
+                      Untitled
+                    </a>
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/colabHub/index.html"
+        >
+          
+            6.
+          
+          colabHub
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/colabHub/README.html"
+                >
+                  
+                    6.1
+                  
+                  README
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/colabHub/%E5%88%9D%E5%A7%8B%E5%8C%96.html"
+                >
+                  
+                    6.2
+                  
+                  初始化
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/DownLoadPicture.html"
+        >
+          
+            7.
+          
+          DownLoadPicture
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/Example.html"
+        >
+          
+            8.
+          
+          Example
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/guide/index.html"
+        >
+          
+            9.
+          
+          guide
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/guide/01_overview.html"
+                >
+                  
+                    9.1
+                  
+                  01_overview
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/guide/02_create.html"
+                >
+                  
+                    9.2
+                  
+                  02_create
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/guide/03_build.html"
+                >
+                  
+                    9.3
+                  
+                  03_build
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/guide/04_faq.html"
+                >
+                  
+                    9.4
+                  
+                  04_faq
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/guide/05_advanced.html"
+                >
+                  
+                    9.5
+                  
+                  05_advanced
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/intro.html"
+        >
+          
+            10.
+          
+          intro
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/jupyter-book-start.html"
+        >
+          
+            11.
+          
+          jupyter-book-start
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/LICENSE.html"
+        >
+          
+            12.
+          
+          LICENSE
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/math/index.html"
+        >
+          
+            13.
+          
+          math
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/math/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90.html"
+                >
+                  
+                    13.1
+                  
+                  主成分分析
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/math/%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95.html"
+                >
+                  
+                    13.2
+                  
+                  最小二乘法
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/math/%E7%9F%A9%E9%98%B5%E6%B1%82%E5%AF%BC.html"
+                >
+                  
+                    13.3
+                  
+                  矩阵求导
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/notebooks/index.html"
+        >
+          
+            14.
+          
+          notebooks
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/notebooks/JupyterNotebookTips.html"
+                >
+                  
+                    14.1
+                  
+                  JupyterNotebookTips
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/notebooks/LinearRegression.html"
+                >
+                  
+                    14.2
+                  
+                  LinearRegression
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/notechats/index.html"
+        >
+          
+            15.
+          
+          notechats
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/notechats/notedata%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE.html"
+                >
+                  
+                    15.1
+                  
+                  notedata测试数据
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/package/index.html"
+        >
+          
+            16.
+          
+          package
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/package/folium.html"
+                >
+                  
+                    16.1
+                  
+                  folium
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/package/graphviz%E4%B9%8B%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8.html"
+                >
+                  
+                    16.2
+                  
+                  graphviz之安装使用
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/package/pygithub.html"
+                >
+                  
+                    16.3
+                  
+                  pygithub
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/package/word2vec.html"
+                >
+                  
+                    16.4
+                  
+                  word2vec
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/package/%E5%90%91%E9%87%8F%E5%BC%95%E6%93%8Efaiss.html"
+                >
+                  
+                    16.5
+                  
+                  向量引擎faiss
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/package/%E8%AF%8D%E5%90%91%E9%87%8F%E8%AE%AD%E7%BB%83.html"
+                >
+                  
+                    16.6
+                  
+                  词向量训练
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/paper/index.html"
+        >
+          
+            17.
+          
+          paper
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/paper/atrank/index.html"
+                >
+                  
+                    17.1
+                  
+                  atrank
+                </a>
+
+                
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/paper/atrank/Atrank.html"
+                    >
+                      
+                        17.1.1
+                        
+                      
+                      Atrank
+                    </a>
+                
+                  
+                  
+
+                  <li class="c-sidebar__subsection">
+                    <a class="c-sidebar__entry "
+                      href="/blog/blog2/paper/atrank/Attention.html"
+                    >
+                      
+                        17.1.2
+                        
+                      
+                      Attention
+                    </a>
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/temp/index.html"
+        >
+          
+            18.
+          
+          temp
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/temp/merge.html"
+                >
+                  
+                    18.1
+                  
+                  merge
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/TempDir/index.html"
+        >
+          
+            19.
+          
+          TempDir
+        </a>
+
+        
+
+          
+          
+          
+          
+
+          
+
+          <ul class="c-sidebar__sections u-hidden-visually">
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/TempDir/Test1.html"
+                >
+                  
+                    19.1
+                  
+                  Test1
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/TempDir/%E4%B8%AA%E7%A8%8E%E8%AE%A1%E7%AE%97%E5%99%A8.html"
+                >
+                  
+                    19.2
+                  
+                  个税计算器
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+              
+              
+
+              <li class="c-sidebar__section">
+                <a class="c-sidebar__entry "
+                  href="/blog/blog2/TempDir/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5.html"
+                >
+                  
+                    19.3
+                  
+                  强化学习实践
+                </a>
+
+                
+                
+
+              </li>
+              
+            
+          </ul>
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/Todo.html"
+        >
+          
+            20.
+          
+          Todo
+        </a>
+
+        
+      </li>
+
+      
+    
+      
+      
+
+      
+      
+
+      
+      
+      <li class="c-sidebar__chapter">
+        <a class="c-sidebar__entry "
+          href="/blog/blog2/Untitled.html"
+        >
+          
+            21.
+          
+          Untitled
+        </a>
+
+        
+      </li>
+
+      
+    
+  </ul>
+  <p class="sidebar_footer">Powered by <a href="https://github.com/jupyter/jupyter-book">Jupyter Book</a></p>
+</nav>
+
+      
+      <!-- Empty sidebar placeholder that we'll auto-fill with javascript -->
+      <aside class="sidebar__right">
+          <header><h4 class="nav__title"><i class="fa fa-list"></i>   On this page</h4></header>
+          <nav class="onthispage">
+          </nav>
+      </aside>
+      
+      <main class="c-textbook__page" tabindex="-1">
+          <div class="o-wrapper">
+            <div class="c-sidebar-toggle">
+  <!-- We show the sidebar by default so we use .is-active -->
+  <button
+    id="js-sidebar-toggle"
+    class="hamburger hamburger--arrowalt is-active"
+  >
+    <span class="hamburger-box">
+      <span class="hamburger-inner"></span>
+    </span>
+    <span class="c-sidebar-toggle__label">Toggle Sidebar</span>
+  </button>
+</div>
+
+            
+<div class="buttons">
+<a href="/blog/content/math/%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90.ipynb" download>
+<button id="interact-button-download" class="interact-button">Download</button>
+</a>
+
+<button id="interact-button-thebelab" class="interact-button">Thebelab</button>
+
+
+
+
+
+
+
+
+
+<a href="https://mybinder.org/v2/gh/jupyter/jupyter-book/gh-pages?filepath=..%2Fcontent%2Fmath%2F%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90.ipynb"><button class="interact-button" id="interact-button-binder"><img class="interact-button-logo" src="/blog/blog2/assets/images/logo_binder.svg" alt="Interact" />Interact</button></a>
+
+
+</div>
+
+
+            <div class="c-textbook__content">
+              <h1 id="pca简介">PCA简介</h1>
+
+<h2 id="相关背景">相关背景</h2>
+
+<p>上完陈恩红老师的《机器学习与知识发现》和季海波老师的《矩阵代数》两门课之后，颇有体会。最近在做主成分分析和奇异值分解方面的项目，所以记录一下心得体会。</p>
+
+<p>在许多领域的研究与应用中，往往需要对反映事物的多个变量进行大量的观测，收集大量数据以便进行分析寻找规律。多变量大样本无疑会为研究和应用提供了丰富的信息，但也在一定程度上增加了数据采集的工作量，更重要的是在多数情况下，许多变量之间可能存在相关性，从而增加了问题分析的复杂性，同时对分析带来不便。如果分别对每个指标进行分析，分析往往是孤立的，而不是综合的。盲目减少指标会损失很多信息，容易产生错误的结论。</p>
+
+<p>因此需要找到一个合理的方法，在减少需要分析的指标同时，尽量减少原指标包含信息的损失，以达到对所收集数据进行全面分析的目的。由于各变量间存在一定的相关关系，因此有可能用较少的综合指标分别综合存在于各变量中的各类信息。主成分分析与因子分析就属于这类降维的方法。</p>
+
+<p><a href="http://blog.csdn.net/zhongkelee/article/details/44064401">参考文献</a></p>
+
+<h2 id="问题描述">问题描述</h2>
+
+<p>下表1是某些学生的语文、数学、物理、化学成绩统计：</p>
+
+<p><img src="https://raw.githubusercontent.com/1007530194/data/master/image/blog/20190101/B9DA6A4845C16156E47AD335D18EA6E0.jpg?raw=true" alt="" /></p>
+
+<p>首先，假设这些科目成绩不相关，也就是说某一科目考多少分与其他科目没有关系。那么一眼就能看出来，数学、物理、化学这三门课的成绩构成了这组数据的主成分（很显然，数学作为第一主成分，因为数学成绩拉的最开）。为什么一眼能看出来？因为坐标轴选对了！下面再看一组学生的数学、物理、化学、语文、历史、英语成绩统计，见表2，还能不能一眼看出来：</p>
+
+<p><img src="https://raw.githubusercontent.com/1007530194/data/master/image/blog/20190101/69D88091D516A0064551D8F2881A2EDE.jpg?raw=true" alt="" /></p>
+
+<p>数据太多了，以至于看起来有些凌乱！也就是说，无法直接看出这组数据的主成分，因为在坐标系下这组数据分布的很散乱。究其原因，是因为无法拨开遮住肉眼的迷雾~如果把这些数据在相应的空间中表示出来，也许你就能换一个观察角度找出主成分。如下图1所示：</p>
+
+<p><img src="https://raw.githubusercontent.com/1007530194/data/master/image/blog/20190101/DB0C770D8DD55E5A433B6306D7085BF3.jpg?raw=true" alt="" /></p>
+
+<p>但是，对于更高维的数据，能想象其分布吗？就算能描述分布，如何精确地找到这些主成分的轴？如何衡量你提取的主成分到底占了整个数据的多少信息？所以，我们就要用到主成分分析的处理方法。</p>
+
+<h2 id="数据降维">数据降维</h2>
+
+<p>为了说明什么是数据的主成分，先从数据降维说起。数据降维是怎么回事儿？假设三维空间中有一系列点，这些点分布在一个过原点的斜面上，如果你用自然坐标系x,y,z这三个轴来表示这组数据的话，需要使用三个维度，而事实上，这些点的分布仅仅是在一个二维的平面上，那么，问题出在哪里？如果你再仔细想想，能不能把x,y,z坐标系旋转一下，使数据所在平面与x,y平面重合？这就对了！如果把旋转后的坐标系记为x’,y’,z’，那么这组数据的表示只用x’和y’两个维度表示即可！当然了，如果想恢复原来的表示方式，那就得把这两个坐标之间的变换矩阵存下来。这样就能把数据维度降下来了！但是，我们要看到这个过程的本质，如果把这些数据按行或者按列排成一个矩阵，那么这个矩阵的秩就是2！这些数据之间是有相关性的，这些数据构成的过原点的向量的最大线性无关组包含2个向量，这就是为什么一开始就假设平面过原点的原因！那么如果平面不过原点呢？这就是数据中心化的缘故！将坐标原点平移到数据中心，这样原本不相关的数据在这个新坐标系中就有相关性了！有趣的是，三点一定共面，也就是说三维空间中任意三点中心化后都是线性相关的，一般来讲n维空间中的n个点一定能在一个n-1维子空间中分析！</p>
+
+<p>上一段文字中，认为把数据降维后并没有丢弃任何东西，因为这些数据在平面以外的第三个维度的分量都为0。现在，假设这些数据在z’轴有一个很小的抖动，那么我们仍然用上述的二维表示这些数据，理由是我们可以认为这两个轴的信息是数据的主成分，而这些信息对于我们的分析已经足够了，z’轴上的抖动很有可能是噪声，也就是说本来这组数据是有相关性的，噪声的引入，导致了数据不完全相关，但是，这些数据在z’轴上的分布与原点构成的夹角非常小，也就是说在z’轴上有很大的相关性，综合这些考虑，就可以认为数据在x’,y’ 轴上的投影构成了数据的主成分！</p>
+
+<p>课堂上老师谈到的特征选择的问题，其实就是要剔除的特征主要是和类标签无关的特征。而这里的特征很多是和类标签有关的，但里面存在噪声或者冗余。在这种情况下，需要一种特征降维的方法来减少特征数，减少噪音和冗余，减少过度拟合的可能性。</p>
+
+<p>PCA的思想是将n维特征映射到k维上（k&lt;n），这k维是全新的正交特征。这k维特征称为主成分，是重新构造出来的k维特征，而不是简单地从n维特征中去除其余n-k维特征。</p>
+
+<h1 id="pca实例">PCA实例</h1>
+
+<p>现在假设有一组数据如下：</p>
+
+<p><img src="https://raw.githubusercontent.com/1007530194/data/master/image/blog/20190101/75D505A58D5B23BD4ED7207C087B5F04.jpg?raw=true" alt="" /></p>
+
+<p>行代表了样例，列代表特征，这里有10个样例，每个样例两个特征。可以这样认为，有10篇文档，x是10篇文档中“learn”出现的TF-IDF，y是10篇文档中“study”出现的TF-IDF。
+<strong>第一步</strong>，分别求x和y的平均值，然后对于所有的样例，都减去对应的均值。这里x的均值是1.81，y的均值是1.91，那么一个样例减去均值后即为（0.69,0.49），得到</p>
+
+<p><img src="https://raw.githubusercontent.com/1007530194/data/master/image/blog/20190101/8D90FF4FA2A8A73A23B6D3C61E0892AA.jpg?raw=true" alt="" /></p>
+
+<p><strong>第二步</strong>，求特征协方差矩阵，如果数据是3维，那么协方差矩阵是</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+C =\begin{pmatrix}    cov(x,x) & cov(x,y) & cov(x,z) \\ cov(y,x) & cov(y,y) & cov(y,z) \\  cov(z,x) & cov(z,y) & cov(z,z)\end{pmatrix} %]]></script>
+
+<p>这里只有$x$和$y$，求解得</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+cov =\begin{pmatrix}  0.6166 & 0.6154 \\ 0.6154 & 0.7166 \end{pmatrix} %]]></script>
+
+<p>对角线上分别是$x$和$y$的方差，非对角线上是协方差。协方差是衡量两个变量同时变化的变化程度。协方差大于0表示$x$和$y$若一个增，另一个也增；小于0表示一个增，一个减。如果$ｘ$和$ｙ$是统计独立的，那么二者之间的协方差就是０；但是协方差是０，并不能说明$ｘ$和$ｙ$是独立的。协方差绝对值越大，两者对彼此的影响越大，反之越小。协方差是没有单位的量，因此，如果同样的两个变量所采用的量纲发生变化，它们的协方差也会产生树枝上的变化。</p>
+
+<p><strong>第三步</strong>，求协方差的特征值和特征向量，得到</p>
+
+<script type="math/tex; mode=display">eigenvalues =\begin{pmatrix}  0.0491 \\ 1.2840 \end{pmatrix}</script>
+
+<script type="math/tex; mode=display">% <![CDATA[
+eigenvalues =\begin{pmatrix}  -0.7352 & -0.6779  \\ 0.6779 & -0.7352 \end{pmatrix} %]]></script>
+
+<p>上面是两个特征值，下面是对应的特征向量，特征值$0.0491$对应特征向量为
+ $(-0.7352, 0.6779)^T$ )，这里的特征向量都归一化为单位向量。</p>
+
+<p><strong>第四步</strong>，将特征值按照从大到小的顺序排序，选择其中最大的$k$个，然后将其对应的$k$个特征向量分别作为列向量组成特征向量矩阵。</p>
+
+<p>这里特征值只有两个，我们选择其中最大的那个，这里是1.2840 ，对应的特征向量是$(-0.6779, -0.7352)^T$。</p>
+
+<p><strong>第五步</strong>，将样本点投影到选取的特征向量上。假设样例数为m，特征数为n，减去均值后的样本矩阵为DataAdjust(m*n)，协方差矩阵是n*n，选取的k个特征向量组成的矩阵为EigenVectors(n*k)。那么投影后的数据FinalData为</p>
+
+<p>FinalData(10*1) = DataAdjust(10*2矩阵) x 特征向量(-0.677873399, -0.735178656)T</p>
+
+<p>得到的结果是</p>
+
+<p><img src="https://raw.githubusercontent.com/1007530194/data/master/image/blog/20190101/6982652D0714C2C2B1DE20D04979AF23.jpg?raw=true" alt="" /></p>
+
+<p>这样，就将原始样例的n维特征变成了k维，这k维就是原始特征在k维上的投影。</p>
+
+<p>上面的数据可以认为是learn和study特征融合为一个新的特征叫做LS特征，该特征基本上代表了这两个特征。上述过程如下图2描述：</p>
+
+<p><img src="https://raw.githubusercontent.com/1007530194/data/master/image/blog/20190101/492B41A3AB2E81224EBCE0B2D275B99A.jpg?raw=true" alt="" /></p>
+
+<p>正号表示预处理后的样本点，斜着的两条线就分别是正交的特征向量（由于协方差矩阵是对称的，因此其特征向量正交），最后一步的矩阵乘法就是将原始样本点分别往特征向量对应的轴上做投影。</p>
+
+<p>整个PCA过程貌似及其简单，就是求协方差的特征值和特征向量，然后做数据转换。但是有没有觉得很神奇，为什么求协方差的特征向量就是最理想的k维向量？其背后隐藏的意义是什么？整个PCA的意义是什么？</p>
+
+<h1 id="pca推导">PCA推导</h1>
+
+<p>先看下面这幅图：</p>
+
+<p><img src="https://raw.githubusercontent.com/1007530194/data/master/image/blog/20190101/D501436FE83B8D4B25450A022482D5A4.jpg?raw=true" alt="" /></p>
+
+<p>在第一部分中，我们举了一个学生成绩的例子，里面的数据点是六维的，即每个观测值是6维空间中的一个点。我们希望将6维空间用低维空间表示。</p>
+
+<p>先假定只有二维，即只有两个变量，它们由横坐标和纵坐标所代表；因此每个观测值都有相应于这两个坐标轴的两个坐标值；如果这些数据形成一个椭圆形状的点阵，那么这个椭圆有一个长轴和一个短轴。在短轴方向上，数据变化很少；在极端的情况，短轴如果退化成一点，那只有在长轴的方向才能够解释这些点的变化了；这样，由二维到一维的降维就自然完成了。</p>
+
+<p>上图中，u1就是主成分方向，然后在二维空间中取和u1方向正交的方向，就是u2的方向。则n个数据在u1轴的离散程度最大（方差最大），数据在u1上的投影代表了原始数据的绝大部分信息，即使不考虑u2，信息损失也不多。而且，u1、u2不相关。只考虑u1时，二维降为一维。</p>
+
+<p>椭圆的长短轴相差得越大，降维也越有道理。</p>
+
+<h2 id="最大方差理论">最大方差理论</h2>
+
+<p>在信号处理中认为信号具有较大的方差，噪声有较小的方差，信噪比就是信号与噪声的方差比，越大越好。如前面的图，样本在u1上的投影方差较大，在u2上的投影方差较小，那么可认为u2上的投影是由噪声引起的。</p>
+
+<p>因此我们认为，最好的k维特征是将n维样本点转换为k维后，每一维上的样本方差都很大。</p>
+
+<p>比如我们将下图中的5个点投影到某一维上，这里用一条过原点的直线表示（数据已经中心化）：</p>
+
+<p><img src="https://raw.githubusercontent.com/1007530194/data/master/image/blog/20190101/67EA539D3B60F74AA93BA6ABD6958D08.jpg?raw=true" alt="" /></p>
+
+<p>假设我们选择两条不同的直线做投影，那么左右两条中哪个好呢？根据我们之前的方差最大化理论，左边的好，因为投影后的样本点之间方差最大（也可以说是投影的绝对值之和最大）。</p>
+
+<p>计算投影的方法见下图5：</p>
+
+<p><img src="https://raw.githubusercontent.com/1007530194/data/master/image/blog/20190101/4EE05BAB3CE8C243E39BFF13C16B1AC3.jpg?raw=true" alt="" /></p>
+
+<p>图中，红色点表示样例<a href="http://images.cnblogs.com/cnblogs_com/jerrylead/201104/201104182110531216.png"></a>，蓝色点表示在u上的投影，u是直线的斜率也是直线的方向向量，而且是单位向量。蓝色点是<a href="http://images.cnblogs.com/cnblogs_com/jerrylead/201104/201104182110559971.png"></a>在u上的投影点，离原点的距离是<a href="http://images.cnblogs.com/cnblogs_com/jerrylead/201104/201104182110554921.png"></a>&lt;x,u&gt;（即xTu<a href="http://images.cnblogs.com/cnblogs_com/jerrylead/201104/201104182110567397.png"></a>或者uTx<a href="http://images.cnblogs.com/cnblogs_com/jerrylead/201104/201104182110566458.png"></a>）。</p>
+
+<h2 id="最小二乘法">最小二乘法</h2>
+
+<p>我们使用最小二乘法来确定各个主轴（主成分）的方向。
+ 对给定的一组数据（下面的阐述中，向量一般均指列向量）：</p>
+
+<script type="math/tex; mode=display">\{\vec{\boldsymbol z_1},\vec{\boldsymbol z_2},...,\vec{\boldsymbol z_n} \}</script>
+
+<p>其数据中心位于:</p>
+
+<script type="math/tex; mode=display">\overrightarrow{\boldsymbol{\mu}} = \frac{1}{n}\sum^n_{i=1}\vec{\boldsymbol z_i}​</script>
+
+<p>数据中心化（将坐标原点移到样本点的中心点）：</p>
+
+<script type="math/tex; mode=display">\{\vec{\boldsymbol x_1},\vec{\boldsymbol x_2},...,\vec{\boldsymbol x_n} \}=\{\vec{\boldsymbol z_1}-\overrightarrow{\boldsymbol{\mu}},\vec{\boldsymbol z_2}-\overrightarrow{\boldsymbol{\mu}},...,\vec{\boldsymbol z_n}-\overrightarrow{\boldsymbol{\mu}} \}</script>
+
+<p>中心化后的数据在第一主轴u1方向上分布散的最开，也就是说在u1方向上的投影的绝对值之和最大（也可以说方差最大），计算投影的方法上面已经阐述，就是将x与u1做内积，由于只需要求u1的方向，所以设u1也是单位向量。</p>
+
+<p>在这里，也就是最大化下式：</p>
+
+<script type="math/tex; mode=display">\frac{1}{n}\sum^n_{i=1}\vec{\boldsymbol x_i}\vec{\boldsymbol{u_1}}</script>
+
+<p>由矩阵代数相关知识可知，可以对绝对值符号项进行平方处理，比较方便。所以进而就是最大化下式：</p>
+
+<script type="math/tex; mode=display">\frac{1}{n}\sum^n_{i=1} \left| \vec{\boldsymbol x_i} \cdot \vec{\boldsymbol{u_1}} \right|^2
+ = \frac{1}{n}\sum^n_{i=1} \left( \vec{\boldsymbol x_i} \cdot \vec{\boldsymbol{u_1}} \right)^2</script>
+
+<p>两个向量做内积，可以转化成矩阵乘法：</p>
+
+<script type="math/tex; mode=display">\vec{\boldsymbol x_i} \cdot \vec{\boldsymbol{u_1}} 
+ ={\boldsymbol x_i}^T {\boldsymbol{u_1}}</script>
+
+<p>所以目标函数可以表示为：</p>
+
+<script type="math/tex; mode=display">\frac{1}{n}\sum^n_{i=1} \left( {\boldsymbol x_i}^T {\boldsymbol{u_1}} \right)^2</script>
+
+<p>括号里面就是矩阵乘法表示向量内积，由于列向量转置以后是行向量，行向量乘以列向量得到一个数，一个数的转置还是其本身，所以又可以将目标函数化为：</p>
+
+<script type="math/tex; mode=display">\frac{1}{n}\sum^n_{i=1} \left( {\boldsymbol x_i}^T {\boldsymbol{u_1}} \right)^2 
+=\frac{1}{n}\sum^n_{i=1} \left( {\boldsymbol x_i}^T {\boldsymbol{u_1}} \right)^T \left( {\boldsymbol x_i}^T {\boldsymbol{u_1}} \right)
+\\=\frac{1}{n}\sum^n_{i=1} {\boldsymbol{u_1}}^T {\boldsymbol x_i} {\boldsymbol x_i}^T {\boldsymbol{u_1}}
+\\=\frac{1}{n}{\boldsymbol{u_1}}^T \left( \sum^n_{i=1}  {\boldsymbol x_i} {\boldsymbol x_i}^T \right) {\boldsymbol{u_1}}
+\\=\frac{1}{n}{\boldsymbol{u_1}}^T XX^T {\boldsymbol{u_1}}</script>
+
+<p>其中的${\boldsymbol{u_1}}^T XX^T {\boldsymbol{u_1}}$就是一个二次型，
+ 我们假设 $XX^T$ 的某一特征值为$\lambda$，对应的特征向量为$\xi $，有</p>
+
+<p><script type="math/tex">(XX^T)^T=XX^T</script>
+<script type="math/tex">XX^T\xi=\lambda\xi</script>
+<script type="math/tex">(XX^T\xi)^T\xi=(\lambda\xi)^T\xi</script>
+<script type="math/tex">\xi^TXX^T\xi=\lambda\xi^T\xi</script>
+<script type="math/tex">\xi^TXX^T\xi = (X^T\xi)^T(X^T\xi) =\lVert X^T\xi\rVert^2 = \lambda\xi^T\xi = \lambda\lVert\xi\rVert^2 \ge 0</script></p>
+
+<p>所以 $\lambda \ge 0$ ，$XX^T$ 是半正定的对称矩阵，即 $u_1XX^Tu_1$ 是半正定阵的二次型，由矩阵代数知识得出，目标函数存在最大值！</p>
+
+<p>下面我们求解最大值、取得最大值时u1的方向这两个问题。</p>
+
+<p>先解决第一个问题，对于向量x的二范数平方为:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\|x \|_2^2=<x,x>=x^Tx %]]></script>
+
+<p>同样，目标函数也可以表示成映射后的向量的二范数平方：</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+u_1^TXX^Tu_1=(X^Tu_1)^T(X^Tu_1)=<X^Tu_1,X^Tu_1>=\| X^Tu_1\|_2^2=(\frac{\|X^Tu_1\|}{\|u_1\|_2})^2 %]]></script>
+
+<p>二次型化成一个范数的形式，由于u1取单位向量，最大化目标函数的基本问题也就转化为：对一个矩阵，它对一个向量做变换，变换前后的向量的模长伸缩尺度如何才能最大？我们有矩阵代数中的定理知，向量经矩阵映射前后的向量长度之比的最大值就是这个矩阵的最大奇异值，即：</p>
+
+<script type="math/tex; mode=display">\frac{\|Ax\|}{\|x\|}\le \sigma_1(A)</script>
+
+<p>式中，<img src="https://raw.githubusercontent.com/1007530194/data/master/image/blog/20190101/1C2F2B8D41CE8A162010C55DC174AA82.jpg?raw=true" alt="" />是矩阵A的最大奇异值（亦是矩阵A的二范数），它等于$AA^T$（或$A^TA$）的最大特征值开平方。</p>
+
+<p>针对本问题来说，$XX^T$是半正定对称阵，也就意味着它的特征值都大于等于0，且不同特征值对应的特征向量是正交的，构成所在空间的一组单位正交基。</p>
+
+<p>再解决第二个问题，对一般情况，设对称阵$A^TA \in C^{n\times n}$的n个特征值分别为：</p>
+
+<script type="math/tex; mode=display">\lambda_1 \ge \lambda_2 \ge … \ge \lambda_n \ge 0</script>
+
+<p>相应的单位特征向量为：</p>
+
+<script type="math/tex; mode=display">\xi_1,\xi_2,…,\xi_n</script>
+
+<p>任取一个向量x，用特征向量构成的空间中的这组基表示为：</p>
+
+<p><img src="https://raw.githubusercontent.com/1007530194/data/master/image/blog/20190101/E3BB7229FE186AD66453CB55DC592D2E.jpg?raw=true" alt="" /></p>
+
+<p>则：</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\|x\|_2^2=<x,x>=\alpha_1^2+…+\alpha_n^2 %]]></script>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\|Ax\|_2^2=<Ax,Ax>=(Ax)^TAx=x^TA^TAx=<x,A^TAx>\\=<\alpha_1\xi_1+...+\alpha_n\xi_n,\alpha_1A^TA\xi_1+…+\alpha_nA^TA\xi_n>\\=<\alpha_1\xi_1+...+\alpha_n\xi_n,\alpha_1\lambda_1\xi_1+…+\alpha_n\lambda_n\xi_n>\\=\lambda_1\alpha_1^2+…+\lambda_n\alpha_n^2\\ \le\lambda_1(\alpha_1^2+…+\alpha_n^2)\\ =\lambda_1 \|x\|_2^2 %]]></script>
+
+<p>所以：</p>
+
+<script type="math/tex; mode=display">\frac{\|Ax\|_2}{\|x\|_2} \le \sqrt{\lambda_1} = \sigma_1</script>
+
+<p>针对第二个问题，我们取上式中的$x=u_1,A=X^T$，目标函数 $u_1XX^Tu_1$ 取得最大值，也就是$\max{(u_1XX^Tu_1)}=\max{(|X^Tu_1 |_2^2)}=XX^T$的最大特征值时，对应的特征向量的方向，就是第一主成分$u_1$的方向！（第二主成分的方向为$XX^T$的第二大特征值对应的特征向量的方向，以此类推）。</p>
+
+<p>证明完毕。</p>
+
+<p>主成分所占整个信息的百分比可用下式计算：</p>
+
+<script type="math/tex; mode=display">\sqrt{\frac{\sum_{i=1}^k\sigma_i^2}{\sum_{i=1}^n\sigma_i^2}}</script>
+
+<p>式中分母为$XX^T​$所有奇异值平方和，分子为所选取的前k大奇异值平方和。</p>
+
+<p>有些研究工作表明，所选的主轴总长度占所有主轴长度之和的大约85% 即可，其实，这只是一个大体的说法，具体选多少个，要看实际情况而定。</p>
+
+<h2 id="意义">意义</h2>
+
+<p>PCA将n个特征降维到k个，可以用来进行数据压缩，例如100维的向量最后可以用10维来表示，那么压缩率为90%。同样图像处理领域的KL变换使用PCA做图像压缩，人脸检测和匹配。比如如下摘自另一篇<a href="http://blog.csdn.net/mpbchina/article/details/7384425">博客</a>上的Matlab实验结果：</p>
+
+<p><img src="https://raw.githubusercontent.com/1007530194/data/master/image/blog/20190101/F1D8D0B4A5EC505A658C80C322D4AE65.jpg?raw=true" alt="" /></p>
+
+<p><img src="https://raw.githubusercontent.com/1007530194/data/master/image/blog/20190101/88CD04F0F7824346A051B9899AD4AD0C.jpg?raw=true" alt="" /></p>
+
+<p><img src="https://raw.githubusercontent.com/1007530194/data/master/image/blog/20190101/242C54A98F0B61CA36D87C702C3F2372.jpg?raw=true" alt="" /></p>
+
+<p>可见测试样本为人脸的样本的重建误差显然小于非人脸的重建误差。</p>
+
+<p>另外PCA还可以联系奇异值分解（SVD），来用于预测矩阵中缺失的元素，可以应用到评分预测等实际项目中。详见后续SVD的博客。</p>
+
+<p>有问题或者想法可以和我交流：lichunchun4.0@gmail.com</p>
+
+              <nav class="c-page__nav">
+  
+    
+    <a id="js-page__nav__prev" class="c-page__nav__prev" href="/blog/blog2/math/index">
+      〈 <span class="u-margin-right-tiny"></span> math
+    </a>
+  
+
+  
+    
+    <a id="js-page__nav__next" class="c-page__nav__next" href="/blog/blog2/math/%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95">
+      最小二乘法 <span class="u-margin-right-tiny"></span> 〉
+    </a>
+  
+</nav>
+
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+  </body>
+</html>
