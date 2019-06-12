@@ -13,7 +13,7 @@ help:
 
 clean:
 	rm -rf _build
-	rm -rf blog/blog2
+	rm -rf ../blog/blog2
 
 install:
 	gem install bundler
